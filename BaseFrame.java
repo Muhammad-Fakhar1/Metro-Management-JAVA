@@ -9,6 +9,7 @@ public class BaseFrame extends JFrame {
 
     private final double WIDTH_RATIO;
     private final double HEIGHT_RATIO;
+    private Dimension screenSize;
 
     public BaseFrame(String title, double WIDTH_RATIO, double HEIGHT_RATIO) {
         super(title);
@@ -26,7 +27,7 @@ public class BaseFrame extends JFrame {
     }
 
     private Dimension getScaledDimension() {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int) (screenSize.width * WIDTH_RATIO);
         int height = (int) (screenSize.height * HEIGHT_RATIO);
         return new Dimension(width, height);
