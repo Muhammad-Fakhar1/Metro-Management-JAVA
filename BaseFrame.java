@@ -1,12 +1,13 @@
 package com.metro;
 
-import java.awt.Color;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 public class BaseFrame extends JFrame {
 
+    protected Sidebar sidebar;
     private final double WIDTH_RATIO;
     private final double HEIGHT_RATIO;
     private Dimension screenSize;
@@ -15,14 +16,19 @@ public class BaseFrame extends JFrame {
         super(title);
         this.WIDTH_RATIO = WIDTH_RATIO;
         this.HEIGHT_RATIO = HEIGHT_RATIO;
+        setSize(getScaledDimension());
+        
+        sidebar = new Sidebar(getWidth(), getHeight());
+        setLayout(new BorderLayout());
+        add(sidebar, BorderLayout.WEST);
+        add(new Header("Muhammad Fakhar bin Rashid",getWidth(), getHeight()),BorderLayout.NORTH);
         setupFrame();
     }
 
     private void setupFrame() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        getContentPane().setBackground(Color.white);
+        //getContentPane().setBackground(Color.white);
         setResizable(false);
-        setSize(getScaledDimension());
         setLocationRelativeTo(null);
     }
 
