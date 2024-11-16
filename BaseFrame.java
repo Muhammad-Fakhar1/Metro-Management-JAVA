@@ -4,9 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-public class BaseFrame extends JFrame {
-
+abstract class BaseFrame extends JFrame {
+    
     protected Sidebar sidebar;
     private final double WIDTH_RATIO;
     private final double HEIGHT_RATIO;
@@ -17,12 +18,15 @@ public class BaseFrame extends JFrame {
         this.WIDTH_RATIO = WIDTH_RATIO;
         this.HEIGHT_RATIO = HEIGHT_RATIO;
         setSize(getScaledDimension());
-        
-        sidebar = new Sidebar(getWidth(), getHeight());
         setLayout(new BorderLayout());
-        add(sidebar, BorderLayout.WEST);
-        add(new Header("Muhammad Fakhar bin Rashid",getWidth(), getHeight()),BorderLayout.NORTH);
+
         setupFrame();
+        sidebar = new Sidebar(getWidth(), getHeight());
+        setSidebar();
+        
+        add(sidebar, BorderLayout.WEST);
+        add(new Header("Muhammad Fakhar bin Rashid", "Lahore", getWidth(), getHeight()), BorderLayout.NORTH);
+        setVisible(true);
     }
 
     private void setupFrame() {
@@ -38,4 +42,7 @@ public class BaseFrame extends JFrame {
         int height = (int) (screenSize.height * HEIGHT_RATIO);
         return new Dimension(width, height);
     }
+
+    protected abstract void setSidebar();
+    protected abstract JPanel createBody();
 }

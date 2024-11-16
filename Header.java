@@ -1,16 +1,21 @@
 package com.metro;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
 public class Header extends JPanel {
 
     private final Font HEADER_FONT = new Font("Poppins", Font.BOLD, 22);
     private final int headerHeight;
 
-    public Header(String name, int frameWidth, int frameHeight) {
+    public Header(String name, String branch, int frameWidth, int frameHeight) {
         headerHeight = (int) (frameHeight * 0.10);
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(frameWidth, headerHeight));
@@ -18,7 +23,7 @@ public class Header extends JPanel {
 
         add(createLeftPanel(frameWidth), BorderLayout.WEST);
         add(createCenterPanel(), BorderLayout.CENTER);
-        add(createRightPanel(name), BorderLayout.EAST);
+        add(createRightPanel(name, branch), BorderLayout.EAST);
     }
 
     private JPanel createLeftPanel(int frameWidth) {
@@ -27,9 +32,7 @@ public class Header extends JPanel {
         leftPanel.setBackground(Color.WHITE);
 
         JLabel titleLabel = new JLabel("METRO");
-        
         titleLabel.setFont(HEADER_FONT);
-        titleLabel.setForeground(Color.BLACK);
         leftPanel.add(titleLabel);
 
         return leftPanel;
@@ -41,25 +44,25 @@ public class Header extends JPanel {
         return spacerPanel;
     }
 
-    private JPanel createRightPanel(String name) {
+    private JPanel createRightPanel(String name, String branch) {
         JPanel rightPanel = new JPanel(new GridBagLayout());
         rightPanel.setBackground(Color.WHITE);
-        rightPanel.setBorder(new EmptyBorder(0,0,0,15));
+        rightPanel.setBorder(new EmptyBorder(0, 0, 0, 15));
 
         JPanel rightContent = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         rightContent.setBackground(Color.WHITE);
 
-        JLabel nameLabel = new JLabel(name);
+        JLabel nameLabel = new JLabel("<html>" + name + " | <span style='color: #808080;font-size: 9px'>Branch: " + branch + "</span></html>");
         nameLabel.setFont(new Font("Poppins", Font.PLAIN, 14));
         nameLabel.setForeground(Color.BLACK);
 
-        RoundedPanel panel=new RoundedPanel(30);
+        RoundedPanel panel = new RoundedPanel(30);
         panel.setBackground(Color.GRAY);
-        panel.setPreferredSize(new Dimension(30,30));
+        panel.setPreferredSize(new Dimension(30, 30));
+
 //        JButton actionButton = new JButton("Action");
 //        actionButton.setFont(new Font("Poppins", Font.PLAIN, 12));
 //        actionButton.setFocusPainted(false);
-
         rightContent.add(nameLabel);
         rightContent.add(panel);
         rightPanel.add(rightContent);
