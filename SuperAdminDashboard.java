@@ -1,12 +1,14 @@
 package com.metro;
 
+import java.awt.ScrollPane;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 public class SuperAdminDashboard extends BaseFrame {
 
-    public SuperAdminDashboard(String title, double WIDTH_RATIO, double HEIGHT_RATIO) {
-        super(title, WIDTH_RATIO, HEIGHT_RATIO);
+    public SuperAdminDashboard() {
+        super("Super Admin", 0.80, 0.75);
     }
 
     @Override
@@ -16,10 +18,5 @@ public class SuperAdminDashboard extends BaseFrame {
         sidebar.addButton("Products", new ImageIcon("images/box.png"), e -> System.out.println("products clicked"));
         sidebar.addButton("Employees", new ImageIcon("images/box.png"), e -> System.out.println("products clicked"));
         sidebar.addButton("Settings", new ImageIcon("images/settings.png"), e -> System.out.println("settings clicked"));
-    }
-
-    @Override
-    protected JPanel createBody() {
-        return new JPanel();
     }
 }

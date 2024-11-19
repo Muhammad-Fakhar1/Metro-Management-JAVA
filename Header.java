@@ -19,7 +19,7 @@ public class Header extends JPanel {
         headerHeight = (int) (frameHeight * 0.10);
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(frameWidth, headerHeight));
-        setBackground(Color.WHITE);
+        setBackground(ThemeManager.getHeaderBackgroundColor());
 
         add(createLeftPanel(frameWidth), BorderLayout.WEST);
         add(createCenterPanel(), BorderLayout.CENTER);
@@ -29,7 +29,7 @@ public class Header extends JPanel {
     private JPanel createLeftPanel(int frameWidth) {
         JPanel leftPanel = new JPanel(new GridBagLayout());
         leftPanel.setPreferredSize(new Dimension((int) (frameWidth * 0.225), headerHeight));
-        leftPanel.setBackground(Color.WHITE);
+        leftPanel.setBackground(ThemeManager.getHeaderBackgroundColor());
 
         JLabel titleLabel = new JLabel("METRO");
         titleLabel.setFont(HEADER_FONT);
@@ -40,17 +40,17 @@ public class Header extends JPanel {
 
     private JPanel createCenterPanel() {
         JPanel spacerPanel = new JPanel();
-        spacerPanel.setBackground(Color.WHITE);
+        spacerPanel.setBackground(ThemeManager.getHeaderBackgroundColor());
         return spacerPanel;
     }
 
     private JPanel createRightPanel(String name, String branch) {
         JPanel rightPanel = new JPanel(new GridBagLayout());
-        rightPanel.setBackground(Color.WHITE);
+        rightPanel.setBackground(ThemeManager.getHeaderBackgroundColor());
         rightPanel.setBorder(new EmptyBorder(0, 0, 0, 15));
 
         JPanel rightContent = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
-        rightContent.setBackground(Color.WHITE);
+        rightContent.setBackground(ThemeManager.getHeaderBackgroundColor());
 
         JLabel nameLabel = new JLabel("<html>" + name + " | <span style='color: #808080;font-size: 9px'>Branch: " + branch + "</span></html>");
         nameLabel.setFont(new Font("Poppins", Font.PLAIN, 14));

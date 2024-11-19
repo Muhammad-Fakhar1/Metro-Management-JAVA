@@ -23,7 +23,7 @@ public class SystemStatus extends JPanel {
     public SystemStatus() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(new EmptyBorder(10, 15, 30, 25));
-        setBackground(Color.WHITE);
+        setBackground(ThemeManager.getSidebarBackgroundColor());
         
         createProgressBar();
 
@@ -40,7 +40,7 @@ public class SystemStatus extends JPanel {
     private JPanel createHeadingPanel() {
         JPanel headingPanel = new JPanel();
         headingPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        headingPanel.setBackground(Color.white);
+        headingPanel.setBackground(ThemeManager.getSidebarBackgroundColor());
 
         JLabel headingLabel = new JLabel("System Status");
         headingLabel.setFont(new Font("Poppins", Font.BOLD, 12));
@@ -55,14 +55,14 @@ public class SystemStatus extends JPanel {
         progressBar.setValue(75);
         progressBar.setForeground(Color.black);
         progressBar.setPreferredSize(new Dimension(190, 5));
-        progressBar.setBackground(Color.WHITE);
+        progressBar.setBackground(ThemeManager.getSidebarBackgroundColor());
         progressBar.setBorder(new EmptyBorder(0, 8, 0, 0));
     }
 
     private void addStatusRow(String labelText, String statusText, String iconPath) {
         JPanel rowPanel = new JPanel();
         rowPanel.setLayout(new BorderLayout());
-        rowPanel.setBackground(Color.WHITE);
+        rowPanel.setBackground(ThemeManager.getSidebarBackgroundColor());
 
         ImageIcon icon = new ImageIcon(iconPath);
         JLabel iconLabel = new JLabel(ImageProcessor.resizeIcon(icon, 15, 16));

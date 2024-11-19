@@ -1,9 +1,11 @@
 package com.metro;
 
+import java.awt.ScrollPane;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-public class BranchManagerDashboard extends BaseFrame{
+public class BranchManagerDashboard extends BaseFrame {
 
     public BranchManagerDashboard() {
         super("Branch Manager", 0.80, 0.75);
@@ -18,10 +20,4 @@ public class BranchManagerDashboard extends BaseFrame{
         sidebar.addButton("Cashiers", new ImageIcon("images/box.png"), e -> System.out.println("products clicked"));
         sidebar.addButton("Settings", new ImageIcon("images/settings.png"), e -> System.out.println("settings clicked"));
     }
-
-    @Override
-    protected JPanel createBody() {
-        return new JPanel();
-    }
-    
 }

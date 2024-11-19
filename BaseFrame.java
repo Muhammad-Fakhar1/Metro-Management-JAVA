@@ -1,14 +1,18 @@
 package com.metro;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 abstract class BaseFrame extends JFrame {
-    
+
     protected Sidebar sidebar;
+    protected Header header;
+    protected JScrollPane body;
+    
     private final double WIDTH_RATIO;
     private final double HEIGHT_RATIO;
     private Dimension screenSize;
@@ -17,23 +21,30 @@ abstract class BaseFrame extends JFrame {
         super(title);
         this.WIDTH_RATIO = WIDTH_RATIO;
         this.HEIGHT_RATIO = HEIGHT_RATIO;
-        setSize(getScaledDimension());
-        setLayout(new BorderLayout());
 
         setupFrame();
         sidebar = new Sidebar(getWidth(), getHeight());
-        setSidebar();
+        header = new Header("Muhammad Fakhar bin Rashid", "Lahore", getWidth(), getHeight());
+        body = new JScrollPane();
         
+        
+        setSidebar();
+        setBody();
+
         add(sidebar, BorderLayout.WEST);
-        add(new Header("Muhammad Fakhar bin Rashid", "Lahore", getWidth(), getHeight()), BorderLayout.NORTH);
+        add(body, BorderLayout.CENTER);
+        add(header, BorderLayout.NORTH);
         setVisible(true);
     }
 
     private void setupFrame() {
+        setMinimumSize(getScaledDimension());
+        setLayout(new BorderLayout());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        //getContentPane().setBackground(Color.white);
-        setResizable(false);
+        getContentPane().setBackground(Color.white);
+        //setResizable(false);
         setLocationRelativeTo(null);
+        getRootPane().putClientProperty("JRootPane.titleBarBackground", Color.white);
     }
 
     private Dimension getScaledDimension() {
@@ -42,7 +53,10 @@ abstract class BaseFrame extends JFrame {
         int height = (int) (screenSize.height * HEIGHT_RATIO);
         return new Dimension(width, height);
     }
+    
+    private void setBody(){
+        //body.setBorder(null);
+    }
 
     protected abstract void setSidebar();
-    protected abstract JPanel createBody();
 }

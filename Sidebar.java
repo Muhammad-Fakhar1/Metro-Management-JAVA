@@ -1,6 +1,5 @@
 package com.metro;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -25,7 +24,7 @@ public class Sidebar extends JPanel {
         sidebarWidth = (int) (frameWidth * 0.225);
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(sidebarWidth, frameHeight));
-        setBackground(Color.white);
+        setBackground(ThemeManager.getSidebarBackgroundColor());
 
         setButtonPanel();
         setSystemStatusPanel();
@@ -46,7 +45,7 @@ public class Sidebar extends JPanel {
         button.setBorderPainted(false);
         button.setContentAreaFilled(false);
         button.setOpaque(true);
-        button.setBackground(Color.WHITE);
+        button.setBackground(ThemeManager.getSidebarBackgroundColor());
         button.addActionListener(action);
 
         buttonPanel.add(button);
@@ -55,7 +54,7 @@ public class Sidebar extends JPanel {
     private void setButtonPanel() {
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-        buttonPanel.setBackground(Color.WHITE);
+        buttonPanel.setBackground(ThemeManager.getSidebarBackgroundColor());
         buttonPanel.add(Box.createRigidArea(new Dimension(0, 10)));
     }
 
