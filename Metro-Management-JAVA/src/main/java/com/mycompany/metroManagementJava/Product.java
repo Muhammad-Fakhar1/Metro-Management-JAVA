@@ -1,13 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.metroManagementJava;
 
-/**
- *
- * @author saifj
- */
 public class Product {
     private String productID;
     private String title;
@@ -16,6 +9,7 @@ public class Product {
     private float unitPrice;
     private float cartonPrice;
     private String description;
+    private int quantity;
 
     public Product(String productID, String title, float originalPrice, String category, float unitPrice, float cartonPrice, String description) {
         this.productID = productID;
@@ -78,12 +72,15 @@ public class Product {
     public String getDescription() {
         return description;
     }
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-    
-    
-    
-    
+    }   
 }

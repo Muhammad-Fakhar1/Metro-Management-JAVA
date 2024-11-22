@@ -1,36 +1,32 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.metroManagementJava;
 
-/**
- *
- * @author saifj
- */
-
 public class Employee {
-     private String EmployeeID;
-     private String Name;
-     private String Password;
-     private String address;
-     private String phoneNumber;
-     private String branchhCode;
-     private float salary;
-     private boolean active;
-     
-     private Role role;
 
-    public Employee(String EmployeeID, String Name, String address, String phoneNumber, String branchhCode, float salary, Role role) {
+    private String EmployeeID;
+    private String Name;
+    private String Password;
+    private String address;
+    private String phoneNumber;
+    private String branchCode;
+    private float salary;
+    private boolean active;
+
+    private Role role;
+
+    public Employee(String EmployeeID, String Name, String address, String phoneNumber, String branchCode, float salary, Role role) {
+          this(EmployeeID, Name,"123456", address, phoneNumber, branchCode, salary, role);
+    }
+
+    public Employee(String EmployeeID, String Name,String Password, String address, String phoneNumber, String branchCode, float salary, Role role) {
         this.EmployeeID = EmployeeID;
         this.Name = Name;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.branchhCode = branchhCode;
+        this.branchCode = branchCode;
         this.salary = salary;
         this.role = role;
-        this.active=true;
-        this.Password="123456";
+        this.active = true;
+        this.Password = Password;
     }
 
     public boolean isActive() {
@@ -57,12 +53,12 @@ public class Employee {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getBranchhCode() {
-        return branchhCode;
+    public String getBranchCode() {
+        return branchCode;
     }
 
     public void setBranchhCode(String branchhCode) {
-        this.branchhCode = branchhCode;
+        this.branchCode = branchhCode;
     }
 
     public float getSalary() {
@@ -71,7 +67,8 @@ public class Employee {
 
     public void setSalary(float salary) {
         this.salary = salary;
-    }  
+    }
+
     public String getEmployeeID() {
         return EmployeeID;
     }
@@ -103,9 +100,4 @@ public class Employee {
     public void setRole(Role role) {
         this.role = role;
     }
-    
-   
-     
 }
-
-
