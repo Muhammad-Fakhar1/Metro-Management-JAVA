@@ -35,17 +35,19 @@ public class DataEntryManager {
 }
 
 
-    public void removeProduct(String productID) throws SQLException {
+    public boolean removeProduct(String productID) throws SQLException {
         String sql = "DELETE FROM products WHERE ProductID = '" + productID + "'";
         
         if (DatabaseManager.add(sql)) {
             System.out.println("Product removed successfully.");
+            return true;
         } else {
             System.out.println("Failed to remove product.");
+            return false;
         }
     }
 
-    public void addVendor(Vendor vendor) throws SQLException {
+    public boolean addVendor(Vendor vendor) throws SQLException {
         String sql = "INSERT INTO vendors (VendorID, Name, ContactInfo, AmountSpent, Active) VALUES ('"
                 + vendor.getVendorID() + "', '"
                 + vendor.getName() + "', '"
@@ -55,18 +57,22 @@ public class DataEntryManager {
         
         if (DatabaseManager.add(sql)) {
             System.out.println("Vendor added successfully.");
+            return true;
         } else {
             System.out.println("Failed to add vendor.");
+            return false;
         }
     }
 
-    public void removeVendor(String vendorID) throws SQLException {
+    public boolean removeVendor(String vendorID) throws SQLException {
         String sql = "UPDATE vendors SET Active = FALSE WHERE VendorID = '" + vendorID + "'";
         
         if (DatabaseManager.add(sql)) {
             System.out.println("Vendor deactivated successfully.");
+            return true;
         } else {
             System.out.println("Failed to deactivate vendor.");
+            return false;
         }
     }
 

@@ -31,17 +31,20 @@ public class CashierManager {
         }
     }
 
-    public static void checkout(Order order) throws SQLException {
+    public static boolean checkout(Order order) throws SQLException {
         for (OrderItem item : order.getItems()) {
             String productID = item.getProduct().getProductID();
             int quantity = item.getQuantity();
-            updateProductQuantity(productID, -quantity);
+            if(!updateProductQuantity(productID, -quantity)){
+                return false;
+            }
         }
         order.setStatus("Checked Out");
+        return true;
     }
 
-    private static void updateProductQuantity(String productID, int quantityChange) throws SQLException {
+    private static boolean updateProductQuantity(String productID, int quantityChange) throws SQLException {
         String sql = "UPDATE products SET Quantity = Quantity + " + quantityChange + " WHERE ProductID = '" + productID + "'";
-        DatabaseManager.add(sql);
+        return DatabaseManager.add(sql);
     }
 }

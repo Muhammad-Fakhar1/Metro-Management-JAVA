@@ -89,6 +89,16 @@ public class DatabaseManager {
             return false;
         }
     }
+    
+    public static boolean delete(String stmt) {
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate(stmt);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public static Connection getConnection() {
         return connection;
