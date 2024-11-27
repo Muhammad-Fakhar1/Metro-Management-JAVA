@@ -1,5 +1,6 @@
-package com.metro;
+package Cashier;
 
+import com.metro.BaseFrame;
 import java.awt.ScrollPane;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;

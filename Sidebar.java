@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import javax.swing.Box;
 import javax.swing.border.EmptyBorder;
 
@@ -21,7 +22,7 @@ public class Sidebar extends JPanel {
     private SystemStatus bottomPanel;
 
     public Sidebar(int frameWidth, int frameHeight) {
-        sidebarWidth = (int) (frameWidth * 0.225);
+        sidebarWidth = (int) (frameWidth * 0.20);
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(sidebarWidth, frameHeight));
         setBackground(ThemeManager.getSidebarBackgroundColor());
@@ -41,10 +42,6 @@ public class Sidebar extends JPanel {
         button.setMaximumSize(new Dimension(sidebarWidth, 35));
         button.setBorder(new EmptyBorder(0, 25, 0, 0));
         button.setFont(BUTTON_FONT);
-        button.setFocusPainted(false);
-        button.setBorderPainted(false);
-        button.setContentAreaFilled(false);
-        button.setOpaque(true);
         button.setBackground(ThemeManager.getSidebarBackgroundColor());
         button.addActionListener(action);
 

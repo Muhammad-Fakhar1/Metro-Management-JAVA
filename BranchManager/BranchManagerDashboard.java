@@ -1,11 +1,11 @@
-package com.metro;
+package BranchManager;
 
-import java.awt.ScrollPane;
+import com.metro.BaseFrame;
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 public class BranchManagerDashboard extends BaseFrame {
+
+    private branchManagerBody bmd;
 
     public BranchManagerDashboard() {
         super("Branch Manager", 0.80, 0.75);
@@ -14,10 +14,16 @@ public class BranchManagerDashboard extends BaseFrame {
     @Override
     protected void setSidebar() {
         sidebar.addButton("Dashboard", new ImageIcon("images/home.png"), e -> System.out.println("home clicked"));
-        sidebar.addButton("Reports", new ImageIcon("images/users.png"), e -> System.out.println("vendors clicked"));
         sidebar.addButton("Products", new ImageIcon("images/box.png"), e -> System.out.println("products clicked"));
-        sidebar.addButton("Data Entriers", new ImageIcon("images/box.png"), e -> System.out.println("products clicked"));
-        sidebar.addButton("Cashiers", new ImageIcon("images/box.png"), e -> System.out.println("products clicked"));
+        sidebar.addButton("Employee", new ImageIcon("images/users.png"), e -> updateBody(new EmployeeUI(body.getWidth(), body.getHeight())));
         sidebar.addButton("Settings", new ImageIcon("images/settings.png"), e -> System.out.println("settings clicked"));
+    }
+
+    private void updateBody(branchManagerBody newPanel) {
+        bmd = newPanel;
+        body.add(bmd);
+        body.setViewportView(bmd);
+        body.repaint();
+        body.revalidate();
     }
 }

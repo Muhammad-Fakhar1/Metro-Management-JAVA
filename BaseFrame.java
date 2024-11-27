@@ -7,8 +7,8 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
-abstract class BaseFrame extends JFrame {
-
+public abstract class BaseFrame extends JFrame {
+    
     protected Sidebar sidebar;
     protected Header header;
     protected JScrollPane body;
@@ -16,27 +16,26 @@ abstract class BaseFrame extends JFrame {
     private final double WIDTH_RATIO;
     private final double HEIGHT_RATIO;
     private Dimension screenSize;
-
+    
     public BaseFrame(String title, double WIDTH_RATIO, double HEIGHT_RATIO) {
         super(title);
         this.WIDTH_RATIO = WIDTH_RATIO;
         this.HEIGHT_RATIO = HEIGHT_RATIO;
-
+        
         setupFrame();
         sidebar = new Sidebar(getWidth(), getHeight());
         header = new Header("Muhammad Fakhar bin Rashid", "Lahore", getWidth(), getHeight());
         body = new JScrollPane();
         
-        
         setSidebar();
         setBody();
-
+        
         add(sidebar, BorderLayout.WEST);
         add(body, BorderLayout.CENTER);
         add(header, BorderLayout.NORTH);
         setVisible(true);
     }
-
+    
     private void setupFrame() {
         setMinimumSize(getScaledDimension());
         setLayout(new BorderLayout());
@@ -46,7 +45,7 @@ abstract class BaseFrame extends JFrame {
         setLocationRelativeTo(null);
         getRootPane().putClientProperty("JRootPane.titleBarBackground", Color.white);
     }
-
+    
     private Dimension getScaledDimension() {
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int) (screenSize.width * WIDTH_RATIO);
@@ -54,9 +53,10 @@ abstract class BaseFrame extends JFrame {
         return new Dimension(width, height);
     }
     
-    private void setBody(){
-        //body.setBorder(null);
+    private void setBody() {
+        body.setBorder(null);
+        body.getVerticalScrollBar().setUnitIncrement(16);
     }
-
+    
     protected abstract void setSidebar();
 }
