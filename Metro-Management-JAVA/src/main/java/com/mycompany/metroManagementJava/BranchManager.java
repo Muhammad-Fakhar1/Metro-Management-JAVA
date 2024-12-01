@@ -49,7 +49,7 @@ public class BranchManager {
     public Employee getEmployee(String employeeID) {
         String sql = "SELECT * FROM Employees WHERE EmployeeID = '" + employeeID + "'";
         ResultSet rs = null;
-        Employee employee = null; // Initialize the employee variable
+        Employee employee = null; 
 
         try {
             rs = DatabaseManager.get(sql);

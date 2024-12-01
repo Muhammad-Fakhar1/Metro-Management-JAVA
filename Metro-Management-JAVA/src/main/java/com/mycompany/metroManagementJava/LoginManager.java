@@ -7,9 +7,10 @@ public class LoginManager {
 
     public static Employee login(String employeeID, String password) {
         String query = "SELECT * FROM employees WHERE EmployeeID = '" + employeeID + "'";
-        ResultSet rs =  DatabaseManager.get(query);
-        
+
         try {
+            ResultSet rs = DatabaseManager.get(query);
+
             if (rs != null && password.equals(rs.getString("Password"))) {
                 return new Employee(
                         rs.getString("EmployeeID"),

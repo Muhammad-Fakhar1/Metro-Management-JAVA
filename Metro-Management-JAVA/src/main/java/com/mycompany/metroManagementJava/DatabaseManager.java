@@ -58,11 +58,25 @@ public class DatabaseManager {
                 + "PRIMARY KEY (VendorID), "
                 + "UNIQUE (Name)"
                 + ")";
+        String createBranchesTableSQL = "CREATE TABLE IF NOT EXISTS branches ("
+                + "BranchID VARCHAR(255) NOT NULL, "
+                + "Name VARCHAR(255) NOT NULL, "
+                + "City VARCHAR(255) NOT NULL, "
+                + "Active BOOLEAN NOT NULL DEFAULT TRUE, "
+                + "Address VARCHAR(255) NOT NULL, "
+                + "ContactInfo VARCHAR(255), "
+                + "EmployeeCount INT NOT NULL, "
+                + "BranchManager VARCHAR(255) NOT NULL, "
+                + "DateCreated DATE NOT NULL, "
+                + "PRIMARY KEY (BranchID), "
+                + "UNIQUE (Name)"
+                + ")";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD); Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(createEmployeeTableSQL);
             stmt.executeUpdate(createProductsTableSQL);
             stmt.executeUpdate(createVendorsTableSQL);
+            stmt.executeUpdate(createBranchesTableSQL);
 
             System.out.println("Database initialized successfully!");
         } catch (SQLException e) {
@@ -70,13 +84,10 @@ public class DatabaseManager {
         }
     }
 
-    public static ResultSet get(String getStmt) {
+    public static ResultSet get(String getStmt)throws SQLException{
         ResultSet resultSet = null;
-        try (Statement stmt = connection.createStatement()) {
-            resultSet = stmt.executeQuery(getStmt);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Statement stmt = connection.createStatement();
+        resultSet = stmt.executeQuery(getStmt);
         return resultSet;
     }
 
@@ -89,7 +100,7 @@ public class DatabaseManager {
             return false;
         }
     }
-    
+
     public static boolean delete(String stmt) {
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(stmt);
