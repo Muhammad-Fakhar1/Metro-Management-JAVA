@@ -1,5 +1,6 @@
-package com.metro;
+package com.metro.Components;
 
+import com.metro.ThemeManager;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -11,6 +12,7 @@ import org.knowm.xchart.PieChartBuilder;
 import org.knowm.xchart.style.PieStyler.AnnotationType;
 
 import java.util.Map;
+import org.knowm.xchart.PieSeries;
 
 public class PieChartDisplay extends JPanel {
 
@@ -23,15 +25,21 @@ public class PieChartDisplay extends JPanel {
     }
 
     private void styleChart() {
-        chart.getStyler().setChartTitleVisible(false);
+        chart.getStyler().setChartTitleFont(ThemeManager.getPoppinsFont(10, Font.PLAIN));
         chart.getStyler().setPlotBorderVisible(false);
         chart.getStyler().setChartBackgroundColor(Color.white);
         chart.getStyler().setAnnotationsFontColor(Color.white);
         chart.getStyler().setAnnotationsFont(ThemeManager.getPoppinsFont(8, Font.BOLD));
-        chart.getStyler().setLegendBorderColor(Color.white);
-        chart.getStyler().setAnnotationType(AnnotationType.LabelAndPercentage);
+ 
+        chart.getStyler().setAnnotationType(AnnotationType.Percentage);
         chart.getStyler().setLegendVisible(false);
-  
+        chart.getStyler().setInfoPanelFont(ThemeManager.getPoppinsFont(8, Font.PLAIN));
+        chart.getStyler().setCircular(true);
+        chart.getStyler().setDefaultSeriesRenderStyle(PieSeries.PieSeriesRenderStyle.Donut);
+        chart.getStyler().setDonutThickness(0.50);
+        chart.getStyler().setAnnotationDistance(0.75);
+        chart.getStyler().setStartAngleInDegrees(90);
+        chart.getStyler().setSeriesColors(ThemeManager.getColorForPieChart());
     }
 
     public void addData(Map<String, Double> data) {

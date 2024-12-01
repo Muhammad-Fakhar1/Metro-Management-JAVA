@@ -5,7 +5,7 @@ import com.formdev.flatlaf.ui.FlatButtonBorder;
 import com.formdev.flatlaf.ui.FlatButtonUI;
 import com.formdev.flatlaf.ui.FlatLineBorder;
 import com.formdev.flatlaf.ui.FlatMarginBorder;
-import com.metro.RoundedPanel;
+import com.metro.Components.RoundedPanel;
 import com.metro.ThemeManager;
 import java.awt.BorderLayout;
 import java.awt.Color;

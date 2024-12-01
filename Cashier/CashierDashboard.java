@@ -1,15 +1,12 @@
-package Cashier;
+package com.metro.Cashier;
 
-import com.metro.BaseFrame;
-import java.awt.ScrollPane;
+import com.metro.Components.BaseFrame;
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 public class CashierDashboard extends BaseFrame {
 
     public CashierDashboard() {
-        super("Cashier", 0.80, 0.75);
+        super("Cashier","Muhammad Fakhar bin Rashid","Lahore", 0.80, 0.75);
     }
 
     @Override

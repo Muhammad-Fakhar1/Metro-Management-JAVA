@@ -1,8 +1,9 @@
 package com.metro.BranchManager;
 
-import com.metro.ChartDisplay;
-import com.metro.PieChartDisplay;
-import com.metro.RoundedPanel;
+import com.metro.Components.Body;
+import com.metro.Components.ChartDisplay;
+import com.metro.Components.PieChartDisplay;
+import com.metro.Components.RoundedPanel;
 import com.metro.ThemeManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,7 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-public class DashboardUI extends branchManagerBody {
+public class DashboardUI extends Body {
 
     private final int dashboardWidth;
     private final int dashboardHeight;

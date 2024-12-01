@@ -1,11 +1,10 @@
-package com.metro.BranchManager;
+package com.metro.Sections;
 
-import com.formdev.flatlaf.ui.FlatButtonBorder;
 import com.formdev.flatlaf.ui.FlatMarginBorder;
+import com.metro.Components.Body;
 import com.metro.Controller;
-import com.metro.Product;
-import com.metro.RoundedPanel;
-import com.metro.SuperAdmin.BranchCard;
+import com.metro.Models.Product;
+import com.metro.Components.RoundedPanel;
 import com.metro.ThemeManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -16,13 +15,12 @@ import java.awt.Insets;
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-public class ProductUI extends branchManagerBody {
+public class ProductUI extends Body {
 
     private final int dashboardWidth;
     private final int dashboardHeight;

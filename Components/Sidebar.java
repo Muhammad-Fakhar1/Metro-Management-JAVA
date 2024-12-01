@@ -1,5 +1,7 @@
-package com.metro;
+package com.metro.Components;
 
+import com.metro.ImageProcessor;
+import com.metro.ThemeManager;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;

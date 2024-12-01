@@ -1,4 +1,4 @@
-package com.metro;
+package com.metro.Components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -17,14 +17,14 @@ public abstract class BaseFrame extends JFrame {
     private final double HEIGHT_RATIO;
     private Dimension screenSize;
     
-    public BaseFrame(String title, double WIDTH_RATIO, double HEIGHT_RATIO) {
+    public BaseFrame(String title,String username,String branchName, double WIDTH_RATIO, double HEIGHT_RATIO) {
         super(title);
         this.WIDTH_RATIO = WIDTH_RATIO;
         this.HEIGHT_RATIO = HEIGHT_RATIO;
         
         setupFrame();
         sidebar = new Sidebar(getWidth(), getHeight());
-        header = new Header("Muhammad Fakhar bin Rashid", "Lahore", getWidth(), getHeight());
+        header = new Header(username, branchName, getWidth(), getHeight());
         body = new JScrollPane();
         
         setSidebar();

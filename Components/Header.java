@@ -1,5 +1,6 @@
-package com.metro;
+package com.metro.Components;
 
+import com.metro.ThemeManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,21 +15,26 @@ public class Header extends JPanel {
 
     private final Font HEADER_FONT = new Font("Poppins", Font.BOLD, 22);
     private final int headerHeight;
+    private final String userName;
+    private final String branchName;
 
     public Header(String name, String branch, int frameWidth, int frameHeight) {
         headerHeight = (int) (frameHeight * 0.10);
+        this.userName = name;
+        this.branchName = branch;
+
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(frameWidth, headerHeight));
         setBackground(ThemeManager.getHeaderBackgroundColor());
 
         add(createLeftPanel(frameWidth), BorderLayout.WEST);
         add(createCenterPanel(), BorderLayout.CENTER);
-        add(createRightPanel(name, branch), BorderLayout.EAST);
+        add(createRightPanel(userName, branchName), BorderLayout.EAST);
     }
 
     private JPanel createLeftPanel(int frameWidth) {
         JPanel leftPanel = new JPanel(new GridBagLayout());
-        leftPanel.setPreferredSize(new Dimension((int) (frameWidth * 0.225), headerHeight));
+        leftPanel.setPreferredSize(new Dimension((int) (frameWidth * 0.18), headerHeight));
         leftPanel.setBackground(ThemeManager.getHeaderBackgroundColor());
 
         JLabel titleLabel = new JLabel("METRO");
@@ -52,7 +58,11 @@ public class Header extends JPanel {
         JPanel rightContent = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         rightContent.setBackground(ThemeManager.getHeaderBackgroundColor());
 
-        JLabel nameLabel = new JLabel("<html>" + name + " | <span style='color: #808080;font-size: 9px'>Branch: " + branch + "</span></html>");
+        String branchString = "";
+        if (branch != "") {
+            branchString = " | <span style='color: #808080;font-size: 9px'>Branch: " + branch + "</span>";
+        }
+        JLabel nameLabel = new JLabel("<html>" + name + branchString + "</html>");
         nameLabel.setFont(new Font("Poppins", Font.PLAIN, 14));
         nameLabel.setForeground(Color.BLACK);
 

@@ -1,13 +1,12 @@
-package com.metro.SuperAdmin;
+package com.metro.Sections;
 
-import com.metro.Models.Branch;
-import com.formdev.flatlaf.ui.FlatButtonBorder;
-import com.formdev.flatlaf.ui.FlatLineBorder;
 import com.formdev.flatlaf.ui.FlatMarginBorder;
+import com.metro.Components.Body;
 import com.metro.Controller;
-import com.metro.Models.Employee;
+import com.metro.Models.Product;
 import com.metro.Components.RoundedPanel;
 import com.metro.ThemeManager;
+import com.metro.Models.Vendor;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,46 +14,43 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-public class BranchesUI extends SuperAdminBody {
+public class VendorsUI extends Body {
 
     private final int dashboardWidth;
     private final int dashboardHeight;
     private final Controller controller;
-    private final Employee superAdmin;
-    private ArrayList<Branch> branches;
+    private ArrayList<Vendor> vendors;
     private ArrayList<ImageIcon> icons;
 
-    public BranchesUI(Employee superAdmin,int width, int height) {
-        this.superAdmin=superAdmin;
+    public VendorsUI(int width, int height) {
         this.dashboardWidth = width;
-        this.dashboardHeight = height;
+        this.dashboardHeight = 500;
         this.controller = Controller.getInstance();
-        icons=new ArrayList<>();
+        icons = new ArrayList<>();
+        vendors = new ArrayList<>();
 
-        getBranches();
+        getVendors();
         getIcons();
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(ThemeManager.getBodyBackgroundColor());
-        setBorder(new EmptyBorder(20, 55, 20, 55));
+        setBorder(new EmptyBorder(15, 15, 15, 15));
 
-        add(addSection("Select A Branch", "Branch"));
+        add(addSection("Vendors"));
     }
 
-    public JPanel addSection(String Title, String ButtonTitle) {
-        int size = branches.size();
+    public JPanel addSection(String Title) {
+        int size = vendors.size();
 
         int rows = (int) Math.ceil(size / 3.0);
-        double multiplier = 1 + (rows - 1) * 0.7;//Too stretch or compress the cards
+        double multiplier = 1 + (rows - 1) * 0.6;//Too stretch or compress the cards
 
         int panelHeight = (int) (dashboardHeight * multiplier);
 
@@ -73,18 +69,8 @@ public class BranchesUI extends SuperAdminBody {
         container.setBackground(ThemeManager.getBodyBackgroundColor());
         container.setBorder(new FlatMarginBorder(new Insets(15, 0, 0, 0)));
 
-        JButton button = new JButton("Add " + ButtonTitle);
-        button.setFont(new Font("Poppins", Font.PLAIN, 12));
-        button.setPreferredSize(new Dimension(150, 40));
-        button.setFocusPainted(false);
-        button.setBorder(new FlatButtonBorder());
-        button.setBackground(Color.WHITE);
-        button.setForeground(Color.LIGHT_GRAY);
-
-        container.add(button);
-
         for (int i = 0; i < size; i++) {
-            container.add(new BranchCard(superAdmin,branches.get(i), icons));
+            container.add(new VendorCard(vendors.get(i), icons));
         }
 
         int placeholders = (rows + 1) * 3 - size - 1;
@@ -98,13 +84,13 @@ public class BranchesUI extends SuperAdminBody {
         return stats;
     }
 
-    private void getBranches() {
-        branches = controller.getBranches();
+    private void getVendors() {
+        vendors = controller.getVendors();
     }
 
     private void getIcons() {
-        String[] imagePaths = {"images/building.png", "images/location.png", "images/telephone.png", "images/users.png", "images/calendar.png","images/profile.png"};
-        for (int i = 0; i < 6; i++) {
+        String[] imagePaths = {"images/users.png", "images/cash.png","images/mail.png"};
+        for (int i = 0; i < 3; i++) {
             icons.add(new ImageIcon(imagePaths[i]));
         }
     }

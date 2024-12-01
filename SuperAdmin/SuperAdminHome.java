@@ -1,14 +1,17 @@
 package com.metro.SuperAdmin;
 
-import com.metro.BaseFrame;
+import com.metro.Components.BaseFrame;
+import com.metro.Models.Employee;
 
 public class SuperAdminHome extends BaseFrame{
     
     private SuperAdminBody sab;
+    private Employee superAdmin;
     
-    public SuperAdminHome() {
-        super("Super Admin","Muhammad Fakhar bin Rashid","", 0.80, 0.75);
-        sab=new BranchesUI(body.getWidth(), body.getHeight());
+    public SuperAdminHome(Employee superAdmin) {
+        super("Super Admin",superAdmin.getName(),"", 0.80, 0.75);
+        this.superAdmin=superAdmin;
+        sab=new BranchesUI(superAdmin,body.getWidth(), body.getHeight());
         updateBody(sab);    
     }
 

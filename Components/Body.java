@@ -1,4 +1,4 @@
-package com.metro;
+package com.metro.Components;
 
 import javax.swing.JPanel;
 

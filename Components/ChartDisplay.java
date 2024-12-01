@@ -1,9 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package com.metro;
+package com.metro.Components;
 
+import com.metro.ThemeManager;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -11,7 +8,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
-import org.knowm.xchart.SwingWrapper;
 
 import java.util.List;
 import javax.swing.JPanel;
@@ -44,11 +40,14 @@ public class ChartDisplay extends JPanel {
         chart.getStyler().setPlotGridVerticalLinesVisible(false);
         
         chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideNW);
+        chart.getStyler().setLegendFont(ThemeManager.getPoppinsFont(10, Font.PLAIN));
+        chart.getStyler().setLegendBorderColor(Color.lightGray);
 
         chart.getStyler().setAxisTicksLineVisible(false);
         chart.getStyler().setAxisTickLabelsColor(Color.gray);
         chart.getStyler().setAxisTickLabelsFont(ThemeManager.getPoppinsFont(10, Font.PLAIN));
         chart.getStyler().setAxisTickPadding(20);
+        chart.getStyler().setChartTitleVisible(false);
     }
 
     public void addSeries(String seriesName, List<Number> xData, List<Number> yData) {

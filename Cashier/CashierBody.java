@@ -1,6 +1,6 @@
-package Cashier;
+package com.metro.Cashier;
 
-import com.metro.Body;
+import com.metro.Components.Body;
 
 public class CashierBody extends Body{
     

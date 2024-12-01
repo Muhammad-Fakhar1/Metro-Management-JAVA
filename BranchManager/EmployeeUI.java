@@ -1,12 +1,14 @@
-package BranchManager;
+package com.metro.BranchManager;
 
+import com.formdev.flatlaf.ui.FlatLineBorder;
 import com.metro.Controller;
-import com.metro.RoundedPanel;
+import com.metro.Components.RoundedPanel;
 import com.metro.ThemeManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,18 +17,17 @@ import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 public class EmployeeUI extends branchManagerBody {
 
-    private Controller controller;
+    private final Controller controller;
     private DefaultTableModel tableModel;
     private JTable table;
     private TableRowSorter<DefaultTableModel> rowSorter;
-    private int height;
-    private int width;
+    private final int height;
+    private final int width;
 
     public EmployeeUI(int height, int width) {
         this.height = height;
@@ -35,7 +36,8 @@ public class EmployeeUI extends branchManagerBody {
         controller = Controller.getInstance();
 
         setLayout(new BorderLayout());
-        setBorder(new EmptyBorder(10, 20, 0, 20));
+        setBackground(ThemeManager.getBodyBackgroundColor());
+        setBorder(new EmptyBorder(20, 20, 0, 20));
 
         add(createHeader(), BorderLayout.NORTH);
         add(createTable(), BorderLayout.CENTER);
@@ -50,6 +52,7 @@ public class EmployeeUI extends branchManagerBody {
         JPanel panel = new JPanel();
         panel.setBorder(new EmptyBorder(0, 0, 15, 0));
         panel.setLayout(new BorderLayout());
+        panel.setBackground(ThemeManager.getBodyBackgroundColor());
 
         panel.add(label, BorderLayout.WEST);
         panel.add(createFilterButtons(), BorderLayout.EAST);
@@ -62,6 +65,7 @@ public class EmployeeUI extends branchManagerBody {
 
         roundedPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
         roundedPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+        roundedPanel.setBackground(ThemeManager.getBodyBackgroundColor());
 
         JLabel label = new JLabel("Filters: ");
         label.setFont(ThemeManager.getPoppinsFont(12, Font.PLAIN));
@@ -71,9 +75,9 @@ public class EmployeeUI extends branchManagerBody {
         JButton dataEntryButton = new JButton("Data Entry");
         JButton cashierButton = new JButton("Cashier");
 
-        allButton.setFont(ThemeManager.getPoppinsFont(12, Font.PLAIN));
-        dataEntryButton.setFont(ThemeManager.getPoppinsFont(12, Font.PLAIN));
-        cashierButton.setFont(ThemeManager.getPoppinsFont(12, Font.PLAIN));
+        allButton.setFont(ThemeManager.getPoppinsFont(10, Font.PLAIN));
+        dataEntryButton.setFont(ThemeManager.getPoppinsFont(10, Font.PLAIN));
+        cashierButton.setFont(ThemeManager.getPoppinsFont(10, Font.PLAIN));
 
         allButton.addActionListener(e -> applyFilter("All"));
         dataEntryButton.addActionListener(e -> applyFilter("Data Entry"));
@@ -105,7 +109,7 @@ public class EmployeeUI extends branchManagerBody {
 
     private void styleTable() {
         table.setRowHeight(40);
-        table.setBorder(new EmptyBorder(0, 0, 0, 0));
+        table.setBorder(new FlatLineBorder(new Insets(0,0,0,0), Color.white, 0, 8));
         table.setFont(new Font("Poppins", Font.PLAIN, 12));
         table.getTableHeader().setFont(new Font("Poppins", Font.BOLD, 10));
         table.getTableHeader().setForeground(Color.lightGray);
@@ -115,14 +119,18 @@ public class EmployeeUI extends branchManagerBody {
         table.setFocusable(false);
         table.setEnabled(false);
 
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        table.setDefaultRenderer(Object.class, centerRenderer);
+        table.getColumnModel().getColumn(0).setPreferredWidth(150); // Name column
+        table.getColumnModel().getColumn(1).setPreferredWidth(300); // Address column
+        table.getColumnModel().getColumn(2).setPreferredWidth(110); // Salary column
+        table.getColumnModel().getColumn(3).setPreferredWidth(95); // Role column
     }
 
     private void populateTable() {
         String[][] employees = controller.getEmployees();
         for (String[] employee : employees) {
+            for (int i = 0; i < employee.length; i++) {
+                employee[i] = "          " + employee[i];
+            }
             tableModel.addRow(employee);
         }
     }

@@ -1,6 +1,6 @@
 package com.metro.DataEntry;
 
-import com.metro.BaseFrame;
+import com.metro.Components.BaseFrame;
 import javax.swing.ImageIcon;
 
 public class DataEntryDashboard extends BaseFrame {
@@ -8,7 +8,7 @@ public class DataEntryDashboard extends BaseFrame {
     private DataEntryBody deb;
 
     public DataEntryDashboard() {
-        super("Data Entry", 0.80, 0.75);
+        super("Data Entry","Muhammad Fakhar bin Rashid","Lahore", 0.80, 0.75);
         deb = new DashboardUI(body.getWidth(), body.getHeight());
         updateBody(deb);
     }
