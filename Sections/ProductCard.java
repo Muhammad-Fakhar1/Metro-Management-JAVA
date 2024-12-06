@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.metro.Sections;
 
 import com.formdev.flatlaf.ui.FlatLineBorder;
@@ -59,15 +55,14 @@ public class ProductCard extends Card {
         center.setOpaque(false);
         center.setBorder(new EmptyBorder(10, 15, 0, 15));
 
-        center.add(createInfoPanel(icons.get(0),  p.getCategory(),12,Font.PLAIN));
-        center.add(createInfoPanel(icons.get(1),  p.getQuantity()+" Units",12,Font.PLAIN));
-        center.add(Box.createVerticalStrut(20));
-        center.add(createInfoPanel(null, " Prices (Rs) ",11,Font.BOLD));
+        center.add(createInfoPanel(icons.get(0), p.getCategory(), 12, Font.PLAIN));
+        center.add(createInfoPanel(icons.get(1), p.getQuantity() + " Units", 12, Font.PLAIN));
+        center.add(createInfoPanel(null, " Prices (Rs) ", 11, Font.BOLD));
 
         RoundedPanel pricesPanel = new RoundedPanel(10);
         pricesPanel.setLayout(new GridLayout(2, 3, 5, 5));
         pricesPanel.setBorder(new EmptyBorder(5, 20, 5, 0));
-        pricesPanel.setBackground(new Color(242,242,242));
+        pricesPanel.setBackground(new Color(242, 242, 242));
 
         pricesPanel.add(new JLabel("Original"));
         pricesPanel.add(new JLabel("Unit"));
@@ -83,7 +78,7 @@ public class ProductCard extends Card {
         return center;
     }
 
-    private JPanel createInfoPanel(ImageIcon icon, String text,int fontSize, int fontWeight) {
+    private JPanel createInfoPanel(ImageIcon icon, String text, int fontSize, int fontWeight) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panel.setOpaque(false);
 
@@ -103,7 +98,7 @@ public class ProductCard extends Card {
     private JPanel createBottomPanel() {
         JPanel bottom = new JPanel(new BorderLayout());
         bottom.setOpaque(false);
-        bottom.setBorder(new EmptyBorder(15, 15, 15, 15));
+        bottom.setBorder(new EmptyBorder(15, 15, 0, 15));
 
         return bottom;
     }

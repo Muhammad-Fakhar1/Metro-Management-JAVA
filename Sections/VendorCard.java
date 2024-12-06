@@ -7,8 +7,6 @@ package com.metro.Sections;
 import com.formdev.flatlaf.ui.FlatLineBorder;
 import com.metro.Components.Card;
 import com.metro.ImageProcessor;
-import com.metro.Models.Product;
-import com.metro.Components.RoundedPanel;
 import com.metro.ThemeManager;
 import com.metro.Models.Vendor;
 import java.awt.BorderLayout;
@@ -16,7 +14,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 import javax.swing.Box;
@@ -29,18 +26,24 @@ import javax.swing.border.EmptyBorder;
 
 public class VendorCard extends Card {
 
-    public VendorCard(Vendor v, ArrayList<ImageIcon> icons) {
+    public VendorCard(Vendor v, ArrayList<ImageIcon> icons, boolean showButoon) {
         setBackground(Color.white);
         setBorder(new FlatLineBorder(new Insets(5, 5, 0, 5), new Color(238, 238, 238), 3, 15));
-        setLayout(new BorderLayout());
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JPanel top = createTopPanel(v);
         JPanel center = createCenterPanel(v, icons);
-        JPanel bottom = createBottomPanel();
+        JButton bottom = createBottomPanel();
 
-        add(top, BorderLayout.NORTH);
-        add(center, BorderLayout.CENTER);
-        add(bottom, BorderLayout.SOUTH);
+        add(top);
+        add(center);
+        if (showButoon) {
+            add(bottom);
+        }else{
+                    add(Box.createVerticalStrut(20));
+        }
+        add(Box.createVerticalStrut(5));
+        
     }
 
     private JPanel createTopPanel(Vendor v) {
@@ -63,9 +66,9 @@ public class VendorCard extends Card {
         center.setBorder(new EmptyBorder(10, 15, 0, 15));
 
         center.add(createInfoPanel(icons.get(0), v.getVendorID(), 12, Font.PLAIN));
-        center.add(createInfoPanel(icons.get(1), "Rs. "+Float.toString(v.getAmountSpent())+" spent", 12, Font.PLAIN));
+        center.add(createInfoPanel(icons.get(1), "Rs. " + Float.toString(v.getAmountSpent()) + " spent", 12, Font.PLAIN));
         center.add(createInfoPanel(icons.get(2), v.getContactInfo(), 12, Font.PLAIN));
-        center.add(Box.createVerticalStrut(20));
+        center.add(Box.createVerticalStrut(10));
         return center;
     }
 
@@ -86,19 +89,17 @@ public class VendorCard extends Card {
         return panel;
     }
 
-    private JPanel createBottomPanel() {
-        JPanel bottom = new JPanel(new BorderLayout());
-        bottom.setOpaque(false);
-        bottom.setBorder(new EmptyBorder(15, 15, 15, 15));
-
+    private JButton createBottomPanel() {
         JButton btn = new JButton("Add Product");
-        btn.setIconTextGap(10);
-        btn.setPreferredSize(new Dimension(0, 50));
+ 
+        btn.setAlignmentX(CENTER_ALIGNMENT); // Ensure the button aligns centrally
+
+        btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50)); // Full width
+        btn.setPreferredSize(new Dimension(0, 50)); // Preferred height
+        btn.setFocusPainted(false);
+
         btn.addActionListener(e -> System.out.println("Product clicked!"));
-
-        bottom.add(btn);
-
-        return bottom;
+        return btn;
     }
 
     private JLabel createLabel(String text, Font font, Color color, EmptyBorder border) {
