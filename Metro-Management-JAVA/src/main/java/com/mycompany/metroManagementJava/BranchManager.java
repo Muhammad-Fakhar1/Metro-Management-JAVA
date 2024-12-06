@@ -16,6 +16,8 @@ public class BranchManager {
             while (rs.next()) {
                 String employeeID = rs.getString("EmployeeID");
                 String name = rs.getString("Name");
+                String email = rs.getString("Email");
+                String CNIC = rs.getString("CNIC");
                 String address = rs.getString("Address");
                 String phoneNumber = rs.getString("PhoneNumber");
                 String branch = rs.getString("BranchCode");
@@ -23,7 +25,8 @@ public class BranchManager {
                 String roleString = rs.getString("Role");
                 Role role = Role.valueOf(roleString.toUpperCase());
 
-                Employee employee = new Employee(employeeID, name, address, phoneNumber, branch, salary, role);
+
+                Employee employee =new Employee(employeeID, name,email,CNIC, address, phoneNumber, branch, salary, role);
                 employees.add(employee);
             }
         } catch (Exception e) {
@@ -56,6 +59,8 @@ public class BranchManager {
             if (rs.next()) {
                 String id = rs.getString("EmployeeID");
                 String name = rs.getString("Name");
+                String email = rs.getString("Email");
+                String CNIC = rs.getString("CNIC");
                 String address = rs.getString("Address");
                 String phoneNumber = rs.getString("PhoneNumber");
                 String branch = rs.getString("BranchCode");
@@ -63,7 +68,7 @@ public class BranchManager {
                 String roleString = rs.getString("Role");
                 Role role = Role.valueOf(roleString.toUpperCase());
 
-                employee = new Employee(id, name, address, phoneNumber, branch, salary, role);
+                employee = new Employee(id, name,email,CNIC, address, phoneNumber, branch, salary, role);
             }
         } catch (Exception e) {
             e.printStackTrace();

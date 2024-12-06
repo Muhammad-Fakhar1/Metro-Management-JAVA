@@ -4,20 +4,21 @@ public class Employee {
 
     private String EmployeeID;
     private String Name;
+    private String email;
+    private String cnic;
     private String Password;
     private String address;
     private String phoneNumber;
     private String branchCode;
     private float salary;
     private boolean active;
-
     private Role role;
 
-    public Employee(String EmployeeID, String Name, String address, String phoneNumber, String branchCode, float salary, Role role) {
-          this(EmployeeID, Name,"123456", address, phoneNumber, branchCode, salary, role);
+    public Employee(String EmployeeID, String Name,String email,String cnic, String address, String phoneNumber, String branchCode, float salary, Role role) {
+          this(EmployeeID, Name,"123456",email,cnic, address, phoneNumber, branchCode, salary, role);
     }
 
-    public Employee(String EmployeeID, String Name,String Password, String address, String phoneNumber, String branchCode, float salary, Role role) {
+    public Employee(String EmployeeID, String Name,String Password,String email,String cnic, String address, String phoneNumber, String branchCode, float salary, Role role) {
         this.EmployeeID = EmployeeID;
         this.Name = Name;
         this.address = address;
@@ -27,6 +28,8 @@ public class Employee {
         this.role = role;
         this.active = true;
         this.Password = Password;
+        this.email = email;
+        this.cnic = cnic;
     }
 
     public boolean isActive() {
@@ -99,5 +102,25 @@ public class Employee {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getCnic() {
+        return cnic;
+    }
+
+    public void setCnic(String cnic) {
+        this.cnic = cnic;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setBranchCode(String branchCode) {
+        this.branchCode = branchCode;
     }
 }

@@ -1,5 +1,8 @@
 package com.mycompany.metroManagementJava;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -10,9 +13,13 @@ import java.util.Map;
 
 public class DataEntryManager {
 
-    public boolean addProduct(Product product) throws SQLException {
+    private static final String LOG_FILE="DATA_ENTRY_LOG.txt";
+
+    public boolean addProduct(Product product, String EmployeeID, String VendorID) throws SQLException {
         String todayDate = LocalDate.now().toString();
         double purchaseAmount = product.getOriginalPrice() * product.getQuantity();
+
+        String log = EmployeeID + "," + product.getProductID() + "," + product.getQuantity() + "," + todayDate + "," + purchaseAmount;
 
         String checkSql = "SELECT Quantity FROM products WHERE ProductID = '" + product.getProductID() + "'";
         ResultSet rs = DatabaseManager.get(checkSql);
@@ -51,7 +58,36 @@ public class DataEntryManager {
         }
         rs2.close();
 
+        String vendorUpdateSql = "UPDATE vendors SET TotalPurchase = TotalPurchase + " + purchaseAmount + " WHERE ID = '" + VendorID + "'";
+        if (!DatabaseManager.add(vendorUpdateSql)) {
+            return false;
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE))) {
+            writer.write(log);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return true;
+    }
+
+    public Product getProduct(String productTitle) throws SQLException {
+        String sql="SELECT * FROM products WHERE ProductName = '" + productTitle + "'";
+        ResultSet rs = DatabaseManager.get(sql);
+        if (rs.next()) {
+            String productID = rs.getString("ProductID");
+            String title = rs.getString("Title");
+            float originalPrice = rs.getFloat("OriginalPrice");
+            String category = rs.getString("Category");
+            float unitPrice = rs.getFloat("UnitPrice");
+            float cartonPrice = rs.getFloat("CartonPrice");
+            String description = rs.getString("Description");
+            int quantity = rs.getInt("Quantity");
+
+            return new Product(productID,productTitle,originalPrice,category,unitPrice,cartonPrice,description,quantity);
+        }
+        return null;
     }
 
     public boolean removeProduct(String productID) throws SQLException {
@@ -108,7 +144,8 @@ public class DataEntryManager {
                     rs.getString("Category"),
                     rs.getFloat("UnitPrice"),
                     rs.getFloat("CartonPrice"),
-                    rs.getString("Description")
+                    rs.getString("Description"),
+                    rs.getInt("quantity")
             );
 
             productsByCategory.computeIfAbsent(product.getCategory(), k -> new ArrayList<>()).add(product);

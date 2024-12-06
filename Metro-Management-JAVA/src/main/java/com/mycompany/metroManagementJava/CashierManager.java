@@ -1,10 +1,15 @@
 package com.mycompany.metroManagementJava;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class CashierManager {
+
+    private static final String LOG_FILE="CASHIER_LOG_FILE.txt";
 
     public static boolean checkProductAvailability(Order order, String productID, int requiredQuantity) throws SQLException {
         int existingQuantityInOrder = order.existingItemQuantity(productID);
@@ -32,13 +37,21 @@ public class CashierManager {
         }
     }
 
-    public static boolean checkout(Order order) throws SQLException {
+    public static boolean checkout(Order order,String EmployeeID) throws SQLException {
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE))) {
         for (OrderItem item : order.getItems()) {
             String productID = item.getProduct().getProductID();
             int quantity = item.getQuantity();
+            String log=EmployeeID+","+productID+","+quantity+","+item.getAmount();
+            writer.write(log);
+            writer.newLine();
             if (!updateProductQuantity(productID, -quantity)) {
                 return false;
             }
+        }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         String todayDate = LocalDate.now().toString();
