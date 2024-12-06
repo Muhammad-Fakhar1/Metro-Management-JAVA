@@ -6,35 +6,36 @@ import java.time.format.DateTimeFormatter;
 
 public class ReportManager {
 
-    private static double getTotalAmount(int daysRange, String columnName) throws SQLException {
+    private static double getTotalAmount(LocalDate startDate, LocalDate endDate, String columnName) throws SQLException {
         double totalAmount = 0.0;
-        LocalDate currentDate = LocalDate.now();
+        
+        if (startDate.isAfter(endDate)) {
+            throw new IllegalArgumentException("Start date must be before or equal to end date.");
+        }
 
-        for (int i = 0; i < daysRange; i++) {
-            LocalDate dateToCheck = currentDate.minusDays(i);
-            String dateString = dateToCheck.format(DateTimeFormatter.ISO_DATE);
+        String query = "SELECT SUM(" + columnName + ") as totalAmount FROM sales_purchase WHERE date BETWEEN ? AND ?";
+        
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+             
+            pstmt.setString(1, startDate.format(DateTimeFormatter.ISO_DATE));
+            pstmt.setString(2, endDate.format(DateTimeFormatter.ISO_DATE));
 
-            String query = "SELECT " + columnName + " FROM sales_purchase WHERE date = '" + dateString + "'";
-            ResultSet rs = DatabaseManager.get(query);
-            
-            try {
+            try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    totalAmount += rs.getDouble(columnName);
-                }
-            } finally {
-                if (rs != null) {
-                    rs.close();
+                    totalAmount = rs.getDouble("totalAmount");
                 }
             }
         }
+        
         return totalAmount;
     }
 
-    public static double getSale(int daysRange) throws SQLException {
-        return getTotalAmount(daysRange, "sale");
+    public static double getSale(LocalDate startDate, LocalDate endDate) throws SQLException {
+        return getTotalAmount(startDate, endDate, "sale");
     }
 
-    public static double getPurchase(int daysRange) throws SQLException {
-        return getTotalAmount(daysRange, "purchase");
+    public static double getPurchase(LocalDate startDate, LocalDate endDate) throws SQLException {
+        return getTotalAmount(startDate, endDate, "purchase");
     }
 }
