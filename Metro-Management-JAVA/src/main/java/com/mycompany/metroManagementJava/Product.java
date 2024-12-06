@@ -1,4 +1,3 @@
-
 package com.mycompany.metroManagementJava;
 
 public class Product {

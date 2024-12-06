@@ -2,6 +2,7 @@ package com.mycompany.metroManagementJava;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class CashierManager {
 
@@ -35,10 +36,24 @@ public class CashierManager {
         for (OrderItem item : order.getItems()) {
             String productID = item.getProduct().getProductID();
             int quantity = item.getQuantity();
-            if(!updateProductQuantity(productID, -quantity)){
+            if (!updateProductQuantity(productID, -quantity)) {
                 return false;
             }
         }
+
+        String todayDate = LocalDate.now().toString();
+
+        ResultSet rs = DatabaseManager.get("SELECT * FROM sales_purchase WHERE date = '" + todayDate + "'");
+        double orderTotalPrice = order.getTotalPrice();
+
+        if (rs.next()) {
+            double currSale = rs.getFloat("sale");
+            double updatedSale = currSale + orderTotalPrice;
+            DatabaseManager.add("UPDATE sales_purchase SET sale = " + updatedSale + " WHERE date = '" + todayDate + "'");
+        } else {
+            DatabaseManager.add("INSERT INTO sales_purchase (date, sale, purchase) VALUES ('" + todayDate + "', " + orderTotalPrice + ", 0)");
+        }
+
         order.setStatus("Checked Out");
         return true;
     }

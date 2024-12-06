@@ -1,10 +1,6 @@
 package com.mycompany.metroManagementJava;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class DatabaseManager {
 
@@ -58,6 +54,7 @@ public class DatabaseManager {
                 + "PRIMARY KEY (VendorID), "
                 + "UNIQUE (Name)"
                 + ")";
+
         String createBranchesTableSQL = "CREATE TABLE IF NOT EXISTS branches ("
                 + "BranchID VARCHAR(255) NOT NULL, "
                 + "Name VARCHAR(255) NOT NULL, "
@@ -72,11 +69,19 @@ public class DatabaseManager {
                 + "UNIQUE (Name)"
                 + ")";
 
+        String createSalesPurchaseTableSQL = "CREATE TABLE IF NOT EXISTS sales_purchase ("
+                + "date DATE NOT NULL, "
+                + "sale FLOAT NOT NULL, "
+                + "purchase FLOAT NOT NULL, "
+                + "PRIMARY KEY (date)"
+                + ")";
+
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD); Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(createEmployeeTableSQL);
             stmt.executeUpdate(createProductsTableSQL);
             stmt.executeUpdate(createVendorsTableSQL);
             stmt.executeUpdate(createBranchesTableSQL);
+            stmt.executeUpdate(createSalesPurchaseTableSQL);
 
             System.out.println("Database initialized successfully!");
         } catch (SQLException e) {
@@ -84,7 +89,7 @@ public class DatabaseManager {
         }
     }
 
-    public static ResultSet get(String getStmt)throws SQLException{
+    public static ResultSet get(String getStmt) throws SQLException {
         ResultSet resultSet = null;
         Statement stmt = connection.createStatement();
         resultSet = stmt.executeQuery(getStmt);
@@ -104,6 +109,16 @@ public class DatabaseManager {
     public static boolean delete(String stmt) {
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(stmt);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean update(String updateStmt) {
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate(updateStmt);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
