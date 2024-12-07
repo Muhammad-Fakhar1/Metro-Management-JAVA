@@ -4,9 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,7 +41,7 @@ public class Assets {
 
             while (rs.next()) {
                 Vendor vendor = new Vendor(
-                        rs.getString("VendorID"),
+                        rs.getInt("VendorID"),
                         rs.getString("Name"),
                         rs.getString("ContactInfo"),
                         rs.getFloat("AmountSpent"),
@@ -67,7 +65,7 @@ public class Assets {
             ResultSet rs = DatabaseManager.get(sql);
             while (rs.next()) {
                 Product product = new Product(
-                        rs.getString("ProductID"),
+                        rs.getInt("ProductID"),
                         rs.getString("Title"),
                         rs.getFloat("OriginalPrice"),
                         rs.getString("Category"),
@@ -93,7 +91,7 @@ public class Assets {
         try {
             ResultSet rs = DatabaseManager.get(sql);
             if (rs.next()) {
-                String productID = rs.getString("ProductID");
+                int productID = rs.getInt("ProductID");
                 String title = rs.getString("Title");
                 float originalPrice = rs.getFloat("OriginalPrice");
                 String category = rs.getString("Category");
@@ -118,7 +116,7 @@ public class Assets {
         try {
             resultSet = DatabaseManager.get(sql);
             while (resultSet.next()) {
-                String branchId = resultSet.getString("BranchID");
+                int branchId = resultSet.getInt("BranchID");
                 String name = resultSet.getString("Name");
                 String city = resultSet.getString("City");
                 boolean active = resultSet.getBoolean("Active");

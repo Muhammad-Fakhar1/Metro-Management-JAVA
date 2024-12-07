@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Employee {
 
-    private String EmployeeID;
+    private int EmployeeID;
     private String Name;
     private String email;
     private String cnic;
@@ -17,44 +17,36 @@ public class Employee {
     private boolean active;
     private Role role;
 
-    public Employee(String EmployeeID, String Name,String email,String cnic, String address, String phoneNumber, String branchCode, float salary, Role role) {
-          this(EmployeeID, Name,"123456",email,cnic, address, phoneNumber, branchCode, salary, role);
-    }
-    
 
-    public Employee(String EmployeeID, String Name,String Password,String email,String cnic, String address, String phoneNumber, String branchCode, float salary, Role role) {
-        this.EmployeeID = EmployeeID;
+    @JsonCreator
+    public Employee(
+            @JsonProperty("Name") String Name,
+            @JsonProperty("email") String email,
+            @JsonProperty("cnic") String cnic,
+            @JsonProperty("address") String address,
+            @JsonProperty("phoneNumber") String phoneNumber,
+            @JsonProperty("branchCode") String branchCode,
+            @JsonProperty("salary") float salary,
+            @JsonProperty("role") Role role
+    ) {
         this.Name = Name;
+        this.Password = "123456";
+        this.email = email;
+        this.cnic = cnic;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.branchCode = branchCode;
         this.salary = salary;
         this.role = role;
         this.active = true;
-        this.Password = Password;
-        this.email = email;
-        this.cnic = cnic;
     }
 
-    @JsonCreator
-    public Employee(
-            @JsonProperty("EmployeeID") String EmployeeID,
-            @JsonProperty("Name") String Name,
-            @JsonProperty("email") String email,
-            @JsonProperty("cnic") String cnic,
-            @JsonProperty("Password") String Password,
-            @JsonProperty("address") String address,
-            @JsonProperty("phoneNumber") String phoneNumber,
-            @JsonProperty("branchCode") String branchCode,
-            @JsonProperty("salary") float salary,
-            @JsonProperty("active") boolean active,
-            @JsonProperty("role") Role role
-    ) {
+    public Employee(int EmployeeID, String Name, String Password, String email, String cnic, String address, String phoneNumber, String branchCode, float salary, boolean active, Role role) {
         this.EmployeeID = EmployeeID;
         this.Name = Name;
+        this.Password = Password;
         this.email = email;
         this.cnic = cnic;
-        this.Password = Password;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.branchCode = branchCode;
@@ -62,7 +54,7 @@ public class Employee {
         this.active = active;
         this.role = role;
     }
-    
+
     public boolean isActive() {
         return active;
     }
@@ -103,11 +95,11 @@ public class Employee {
         this.salary = salary;
     }
 
-    public String getEmployeeID() {
+    public int getEmployeeID() {
         return EmployeeID;
     }
 
-    public void setEmployeeID(String EmployeeID) {
+    public void setEmployeeID(int EmployeeID) {
         this.EmployeeID = EmployeeID;
     }
 
@@ -154,8 +146,8 @@ public class Employee {
     public void setBranchCode(String branchCode) {
         this.branchCode = branchCode;
     }
-    
-     @Override
+
+    @Override
     public String toString() {
         return "Employee{" + "EmployeeID=" + EmployeeID + ", Name=" + Name + ", email=" + email + ", cnic=" + cnic + ", Password=" + Password + ", address=" + address + ", phoneNumber=" + phoneNumber + ", branchCode=" + branchCode + ", salary=" + salary + ", active=" + active + ", role=" + role + '}';
     }

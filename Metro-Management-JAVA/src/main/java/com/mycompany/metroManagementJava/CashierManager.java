@@ -11,7 +11,7 @@ public class CashierManager {
 
     private static final String LOG_FILE="CASHIER_LOG_FILE.txt";
 
-    public static boolean checkProductAvailability(Order order, String productID, int requiredQuantity) throws SQLException {
+    public static boolean checkProductAvailability(Order order, int productID, int requiredQuantity) throws SQLException {
         int existingQuantityInOrder = order.existingItemQuantity(productID);
         requiredQuantity += existingQuantityInOrder;
 
@@ -41,7 +41,7 @@ public class CashierManager {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE))) {
         for (OrderItem item : order.getItems()) {
-            String productID = item.getProduct().getProductID();
+            int productID = item.getProduct().getProductID();
             int quantity = item.getQuantity();
             String log=EmployeeID+","+productID+","+quantity+","+item.getAmount();
             writer.write(log);
@@ -71,7 +71,7 @@ public class CashierManager {
         return order;
     }
 
-    private static boolean updateProductQuantity(String productID, int quantityChange) throws SQLException {
+    private static boolean updateProductQuantity(int productID, int quantityChange) throws SQLException {
         String sql = "UPDATE products SET Quantity = Quantity + " + quantityChange + " WHERE ProductID = '" + productID + "'";
         return DatabaseManager.add(sql);
     }

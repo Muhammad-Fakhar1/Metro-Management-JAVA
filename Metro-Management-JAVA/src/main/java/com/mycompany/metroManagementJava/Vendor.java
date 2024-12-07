@@ -5,36 +5,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Vendor {
 
-    private String vendorID;
+    private int vendorID;
     private String name;
     private String contactInfo;
     private float amountSpent;
     boolean isActive;
 
-    public Vendor(String vendorID, String name, String contactInfo, float amountSpent) {
-        this(vendorID, name, contactInfo, amountSpent, true);
-    }
-
     @JsonCreator
     public Vendor(
-            @JsonProperty("vendorID") String vendorID,
             @JsonProperty("name") String name,
-            @JsonProperty("contactInfo") String contactInfo,
-            @JsonProperty("amountSpent") float amountSpent,
-            @JsonProperty("active") boolean active
+            @JsonProperty("contactInfo") String contactInfo
     ) {
+        this.name = name;
+        this.contactInfo = contactInfo;
+        this.amountSpent = 0;
+        this.isActive = true;
+    }
+
+    public Vendor(int vendorID, String name, String contactInfo, float amountSpent, boolean isActive) {
         this.vendorID = vendorID;
         this.name = name;
         this.contactInfo = contactInfo;
         this.amountSpent = amountSpent;
-        this.isActive = active;
+        this.isActive = isActive;
     }
 
-    public String getVendorID() {
+    public int getVendorID() {
         return vendorID;
     }
 
-    public void setVendorID(String vendorID) {
+    public void setVendorID(int vendorID) {
         this.vendorID = vendorID;
     }
 

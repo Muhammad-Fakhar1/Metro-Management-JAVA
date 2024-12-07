@@ -14,7 +14,7 @@ public class LoginManager {
             if (rs != null && rs.next()) { 
                 if (password.equals(rs.getString("Password"))) {
                     return new Employee(
-                            rs.getString("EmployeeID"),
+                            rs.getInt("EmployeeID"),
                             rs.getString("Name"),
                             rs.getString("Password"),
                             rs.getString("Email"),
@@ -23,6 +23,7 @@ public class LoginManager {
                             rs.getString("PhoneNumber"),
                             rs.getString("BranchCode"),
                             rs.getFloat("Salary"),
+                            rs.getBoolean("Active"),
                             Role.valueOf(rs.getString("Role"))
                     );
                 }
@@ -31,6 +32,6 @@ public class LoginManager {
             e.printStackTrace();
         }
 
-        return null; // Return null if login fails
+        return null; 
     }
 }

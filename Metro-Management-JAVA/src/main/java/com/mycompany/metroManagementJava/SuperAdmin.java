@@ -38,4 +38,18 @@ public class SuperAdmin {
         }
     }
 
+    public static boolean addBranchManager(Employee employee, String branchID) {
+        BranchManager.addEmployee(employee);
+        String sql = "UPDATE Branches SET BranchManager ='" + employee.getEmployeeID() + "' WHERE BranchID = '" + branchID + "'";
+        
+        if (DatabaseManager.update(sql)) {
+            System.out.println("Branch Manager Appointed");
+            return true;
+        } else {
+            System.out.println("Failed to appoint Branch manager");
+            return false;
+        }
+
+    }
+
 }

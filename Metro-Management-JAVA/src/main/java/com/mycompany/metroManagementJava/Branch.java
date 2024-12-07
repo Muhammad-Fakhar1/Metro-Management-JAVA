@@ -1,10 +1,12 @@
 package com.mycompany.metroManagementJava;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 
 public class Branch {
 
-    private String branchId;
+    private int branchId;
     private String name;
     private String city;
     private boolean isActive;
@@ -14,7 +16,14 @@ public class Branch {
     private String branchManager;
     private final LocalDate dateCreated;
 
-    public Branch(String branchId, String name, String city, String address, String phone, String branchManagerId) {
+    @JsonCreator
+    public Branch(
+            @JsonProperty("name") String name,
+            @JsonProperty("city") String city,
+            @JsonProperty("address") String address,
+            @JsonProperty("phone") String phone,
+            @JsonProperty("branchManagerId") String branchManagerId
+    ) {
         this.branchId = branchId;
         this.name = name;
         this.city = city;
@@ -26,7 +35,7 @@ public class Branch {
         this.dateCreated = LocalDate.now();
     }
 
-    public Branch(String branchId, String name, String city,boolean isActive, String address, String phone,int numberOfEmployees, String branchManagerId,LocalDate date) {
+    public Branch(int branchId, String name, String city, boolean isActive, String address, String phone, int numberOfEmployees, String branchManagerId, LocalDate date) {
         this.branchId = branchId;
         this.name = name;
         this.city = city;
@@ -38,11 +47,11 @@ public class Branch {
         this.dateCreated = date;
     }
 
-    public String getBranchId() {
+    public int getBranchId() {
         return branchId;
     }
 
-    public void setBranchId(String branchId) {
+    public void setBranchId(int branchId) {
         this.branchId = branchId;
     }
 

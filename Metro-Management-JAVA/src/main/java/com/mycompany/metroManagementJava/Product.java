@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Product {
 
-    private String productID;
+    private int productID;
     private String title;
     private float originalPrice;
     private String category;
@@ -16,7 +16,6 @@ public class Product {
 
     @JsonCreator
     public Product(
-            @JsonProperty("productID") String productID,
             @JsonProperty("title") String title,
             @JsonProperty("originalPrice") float originalPrice,
             @JsonProperty("category") String category,
@@ -24,7 +23,6 @@ public class Product {
             @JsonProperty("cartonPrice") float cartonPrice,
             @JsonProperty("description") String description,
             @JsonProperty("quantity") int quantity) {
-        this.productID = productID;
         this.title = title;
         this.originalPrice = originalPrice;
         this.category = category;
@@ -34,11 +32,23 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public String getProductID() {
+    public Product(int productID,String title, float originalPrice, String category, float unitPrice, float cartonPrice, String description, int quantity) {
+        this.productID=productID;
+        this.title = title;
+        this.originalPrice = originalPrice;
+        this.category = category;
+        this.unitPrice = unitPrice;
+        this.cartonPrice = cartonPrice;
+        this.description = description;
+        this.quantity = quantity;
+    }
+
+    
+    public int getProductID() {
         return productID;
     }
 
-    public void setProductID(String productID) {
+    public void setProductID(int productID) {
         this.productID = productID;
     }
 

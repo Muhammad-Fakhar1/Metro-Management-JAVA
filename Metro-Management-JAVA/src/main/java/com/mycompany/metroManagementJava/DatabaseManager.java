@@ -22,10 +22,10 @@ public class DatabaseManager {
 
     public static void initializeDatabase() {
         String createEmployeeTableSQL = "CREATE TABLE IF NOT EXISTS employees ("
-                + "EmployeeID VARCHAR(255) NOT NULL, "
+                + "EmployeeID INT AUTO_INCREMENT NOT NULL, "
                 + "Name VARCHAR(255) NOT NULL UNIQUE, "
                 + "Password VARCHAR(255) NOT NULL, "
-                + "Email VARCHAR(255) NOT NULL, "
+                + "Email VARCHAR(255) NOT NULL UNIQUE, "
                 + "CNIC VARCHAR(255) NOT NULL, "
                 + "Address VARCHAR(255), "
                 + "PhoneNumber VARCHAR(20), "
@@ -38,7 +38,7 @@ public class DatabaseManager {
                 + ")";
 
         String createProductsTableSQL = "CREATE TABLE IF NOT EXISTS products ("
-                + "ProductID VARCHAR(255) NOT NULL, "
+                + "ProductID INT AUTO_INCREMENT NOT NULL, "
                 + "Title VARCHAR(255) NOT NULL UNIQUE, "
                 + "OriginalPrice FLOAT NOT NULL, "
                 + "Category VARCHAR(255), "
@@ -51,7 +51,7 @@ public class DatabaseManager {
                 + ")";
 
         String createVendorsTableSQL = "CREATE TABLE IF NOT EXISTS vendors ("
-                + "VendorID VARCHAR(255) NOT NULL, "
+                + "VendorID INT AUTO_INCREMENT NOT NULL, "
                 + "Name VARCHAR(255) NOT NULL, "
                 + "ContactInfo VARCHAR(255), "
                 + "AmountSpent FLOAT NOT NULL, "
@@ -61,16 +61,17 @@ public class DatabaseManager {
                 + ")";
 
         String createBranchesTableSQL = "CREATE TABLE IF NOT EXISTS branches ("
-                + "BranchID VARCHAR(255) NOT NULL, "
+                + "BranchID INT AUTO_INCREMENT NOT NULL, "
                 + "Name VARCHAR(255) NOT NULL, "
                 + "City VARCHAR(255) NOT NULL, "
                 + "Active BOOLEAN NOT NULL DEFAULT TRUE, "
                 + "Address VARCHAR(255) NOT NULL, "
                 + "ContactInfo VARCHAR(255), "
                 + "EmployeeCount INT NOT NULL, "
-                + "BranchManager VARCHAR(255) NOT NULL, "
+                + "BranchManager INT NOT NULL, "
                 + "DateCreated DATE NOT NULL, "
                 + "PRIMARY KEY (BranchID), "
+                + "FOREIGN KEY (BranchManager) REFERENCES employees(EmployeeID)"
                 + "UNIQUE (Name)"
                 + ")";
 

@@ -3,8 +3,7 @@ package com.mycompany.metroManagementJava;
 public class BranchManager {
 
     public static boolean addEmployee(Employee employee) {
-        String sql = "INSERT INTO Employees (EmployeeID, Name, Password,Email,CNIC,Address, PhoneNumber, BranchCode, Salary, Role, Active) VALUES ("
-                + "'" + employee.getEmployeeID() + "', "
+        String sql = "INSERT INTO Employees (Name, Password,Email,CNIC,Address, PhoneNumber, BranchCode, Salary, Role, Active) VALUES ("
                 + "'" + employee.getName() + "', "
                 + "'" + employee.getPassword() + "', "
                 + "'" + employee.getEmail() + "', "

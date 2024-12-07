@@ -1,12 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.metroManagementJava;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Workforce {
 
@@ -18,8 +13,9 @@ public class Workforce {
         try {
             rs = DatabaseManager.get(sql);
             if (rs.next()) {
-                String id = rs.getString("EmployeeID");
+                int empID = rs.getInt("EmployeeID");
                 String name = rs.getString("Name");
+                String password = rs.getString("Password");
                 String email = rs.getString("Email");
                 String CNIC = rs.getString("CNIC");
                 String address = rs.getString("Address");
@@ -28,8 +24,9 @@ public class Workforce {
                 float salary = rs.getFloat("Salary");
                 String roleString = rs.getString("Role");
                 Role role = Role.valueOf(roleString.toUpperCase());
+                boolean active = rs.getBoolean("Active");
 
-                employee = new Employee(id, name, email, CNIC, address, phoneNumber, branch, salary, role);
+                employee = new Employee(empID, name, password, email, CNIC, address, phoneNumber, branch, salary, active, role);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,8 +51,9 @@ public class Workforce {
         try {
             rs = DatabaseManager.get(sql);
             while (rs.next()) {
-                String employeeID = rs.getString("EmployeeID");
+                int employeeID = rs.getInt("EmployeeID");
                 String name = rs.getString("Name");
+                String password = rs.getString("Password");
                 String email = rs.getString("Email");
                 String CNIC = rs.getString("CNIC");
                 String address = rs.getString("Address");
@@ -64,8 +62,9 @@ public class Workforce {
                 float salary = rs.getFloat("Salary");
                 String roleString = rs.getString("Role");
                 Role role = Role.valueOf(roleString.toUpperCase());
+                boolean active = rs.getBoolean("Active");
 
-                Employee employee = new Employee(employeeID, name, email, CNIC, address, phoneNumber, branch, salary, role);
+                Employee employee = new Employee(employeeID, name, password, email, CNIC, address, phoneNumber, branch, salary, active, role);
                 employees.add(employee);
             }
         } catch (Exception e) {

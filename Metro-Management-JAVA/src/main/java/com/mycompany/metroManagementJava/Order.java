@@ -16,7 +16,7 @@ public class Order {
 
     public void addProduct(Product product, int quantity) {
         for (OrderItem item : items) {
-            if (item.getProduct().getProductID().equals(product.getProductID())) {
+            if (item.getProduct().getProductID()==product.getProductID()) {
                 item.setQuantity(item.getQuantity() + quantity);
                 recalculateTotalPrice();
                 return;
@@ -37,9 +37,9 @@ public class Order {
         return items;
     }
 
-    public int existingItemQuantity(String productID) {
+    public int existingItemQuantity(int productID) {
         for (OrderItem item : items) {
-            if (item.getProduct().getProductID().equals(productID)) {
+            if (item.getProduct().getProductID()==productID) {
                 return item.getQuantity();
             }
         }
