@@ -12,8 +12,8 @@ import java.util.logging.Logger;
 
 public class Assets {
 
-    public static List<Category> getCategories() {
-        List<Category> categories = new ArrayList<>();
+    public static ArrayList<Category> getAllCategories() {
+        ArrayList<Category> categories = new ArrayList<>();
         String sql = "SELECT * FROM categoryList";
         ResultSet rs;
         try {
@@ -23,8 +23,9 @@ public class Assets {
                 int productCount = rs.getInt("productCount");
                 float GSTRate = rs.getFloat("GSTRate");
                 boolean Active = rs.getBoolean("Active");
+                String description = rs.getString("description");
 
-                categories.add(new Category(categoryTitle, productCount, GSTRate, Active));
+                categories.add(new Category(categoryTitle, productCount, GSTRate, description, Active));
             }
             rs.close();
         } catch (SQLException ex) {
@@ -34,8 +35,8 @@ public class Assets {
         return categories;
     }
 
-    public static List<Vendor> getAllVendors() {
-        List<Vendor> vendors = new ArrayList<>();
+    public static ArrayList<Vendor> getAllVendors() {
+        ArrayList<Vendor> vendors = new ArrayList<>();
         String sql = "SELECT * FROM vendors";
         try {
             ResultSet rs = DatabaseManager.get(sql);
@@ -59,29 +60,32 @@ public class Assets {
         return vendors;
     }
 
-    public static Map<String, List<Product>> getAllProducts() throws SQLException {
-        Map<String, List<Product>> productsByCategory = new HashMap<>();
+    public static ArrayList<Product> getAllProducts() {
+        ArrayList<Product> products = new ArrayList<>();
         String sql = "SELECT * FROM Products";
-        ResultSet rs = DatabaseManager.get(sql);
+        try {
+            ResultSet rs = DatabaseManager.get(sql);
+            while (rs.next()) {
+                Product product = new Product(
+                        rs.getString("ProductID"),
+                        rs.getString("Title"),
+                        rs.getFloat("OriginalPrice"),
+                        rs.getString("Category"),
+                        rs.getFloat("UnitPrice"),
+                        rs.getFloat("CartonPrice"),
+                        rs.getString("Description"),
+                        rs.getInt("quantity")
+                );
 
-        while (rs.next()) {
-            Product product = new Product(
-                    rs.getString("ProductID"),
-                    rs.getString("Title"),
-                    rs.getFloat("OriginalPrice"),
-                    rs.getString("Category"),
-                    rs.getFloat("UnitPrice"),
-                    rs.getFloat("CartonPrice"),
-                    rs.getString("Description"),
-                    rs.getInt("quantity")
-            );
+                products.add(product);
+            }
 
-            productsByCategory.computeIfAbsent(product.getCategory(), k -> new ArrayList<>()).add(product);
+            rs.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
 
-        rs.close();
-
-        return productsByCategory;
+        return products;
     }
 
     public static Product getProduct(String pID) {

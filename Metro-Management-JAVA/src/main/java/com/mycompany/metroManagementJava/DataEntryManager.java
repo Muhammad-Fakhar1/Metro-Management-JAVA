@@ -11,26 +11,17 @@ public class DataEntryManager {
 
     private static final String LOG_FILE = "DATA_ENTRY_LOG.txt";
 
+    private static void logAction(String log) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE, true))) {
+            writer.write(log);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static boolean addProduct(Product product, String EmployeeID, String VendorID) {
-        String employeeCheckSql = "SELECT * FROM employees WHERE EmployeeID = '" + EmployeeID + "'";
         try {
-            ResultSet employeeResultSet = DatabaseManager.get(employeeCheckSql);
-            if (!employeeResultSet.next()) {
-                employeeResultSet.close();
-                System.out.println("Employee not found with ID: " + EmployeeID);
-                return false;
-            }
-            employeeResultSet.close();
-
-            String vendorCheckSql = "SELECT * FROM vendors WHERE VendorID = '" + VendorID + "'";
-            ResultSet vendorResultSet = DatabaseManager.get(vendorCheckSql);
-            if (!vendorResultSet.next()) {
-                vendorResultSet.close();
-                System.out.println("Vendor not found with ID: " + VendorID);
-                return false;
-            }
-            vendorResultSet.close();
-
             String todayDate = LocalDate.now().toString();
             double purchaseAmount = product.getOriginalPrice() * product.getQuantity();
 
@@ -60,7 +51,6 @@ public class DataEntryManager {
                         + product.getDescription() + "', "
                         + product.getQuantity() + ")";
                 if (!DatabaseManager.add(insertSql)) {
-                    System.out.println("Failed to insert new product with ProductID: " + product.getProductID());
                     return false;
                 }
             }
@@ -75,24 +65,22 @@ public class DataEntryManager {
                 }
             } else {
                 if (!DatabaseManager.add("INSERT INTO sales_purchase (date, sale, purchase) VALUES ('" + todayDate + "', 0, " + purchaseAmount + ")")) {
-                    System.out.println("Failed to insert new sales_purchase record for date: " + todayDate);
                     return false;
                 }
             }
             rs2.close();
 
-            String vendorUpdateSql = "UPDATE vendors SET AmountSpent = AmountSpent + " + purchaseAmount + " WHERE vendorID = '" + VendorID + "'";
-            if (!DatabaseManager.add(vendorUpdateSql)) {
-                System.out.println("Failed to update vendor total purchase for VendorID: " + VendorID);
+            String categoryUpdateSql = "UPDATE category SET productCount = productCount + 1 WHERE categoryTitle = '" + product.getCategory() + "'";
+            if (!DatabaseManager.update(categoryUpdateSql)) {
                 return false;
             }
 
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE, true))) {
-                writer.write(log);
-                writer.newLine();
-            } catch (IOException e) {
-                e.printStackTrace();
+            String vendorUpdateSql = "UPDATE vendors SET AmountSpent = AmountSpent + " + purchaseAmount + " WHERE vendorID = '" + VendorID + "'";
+            if (!DatabaseManager.update(vendorUpdateSql)) {
+                return false;
             }
+
+            logAction(log);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -102,42 +90,84 @@ public class DataEntryManager {
 
     public static boolean removeProduct(String productID) throws SQLException {
         String sql = "DELETE FROM products WHERE ProductID = '" + productID + "'";
+        boolean result = DatabaseManager.add(sql);
 
-        if (DatabaseManager.add(sql)) {
+        if (result) {
+            String log = "Removed product with ProductID: " + productID;
+            logAction(log);
             System.out.println("Product removed successfully.");
-            return true;
         } else {
             System.out.println("Failed to remove product.");
-            return false;
         }
+        
+        return result;
     }
 
-    public static boolean addVendor(Vendor vendor) throws SQLException {
+    public static boolean addVendor(Vendor vendor) {
         String sql = "INSERT INTO vendors (VendorID, Name, ContactInfo, AmountSpent, Active) VALUES ('"
                 + vendor.getVendorID() + "', '"
                 + vendor.getName() + "', '"
                 + vendor.getContactInfo() + "', "
                 + vendor.getAmountSpent() + ", "
                 + (vendor.isActive() ? "TRUE" : "FALSE") + ")";
+        boolean result = DatabaseManager.add(sql);
 
-        if (DatabaseManager.add(sql)) {
+        if (result) {
+            String log = "Added vendor with VendorID: " + vendor.getVendorID();
+            logAction(log);
             System.out.println("Vendor added successfully.");
-            return true;
         } else {
             System.out.println("Failed to add vendor.");
-            return false;
         }
+
+        return result;
     }
 
     public static boolean removeVendor(String vendorID) throws SQLException {
         String sql = "UPDATE vendors SET Active = FALSE WHERE VendorID = '" + vendorID + "'";
+        boolean result = DatabaseManager.add(sql);
 
-        if (DatabaseManager.add(sql)) {
+        if (result) {
+            String log = "Deactivated vendor with VendorID: " + vendorID;
+            logAction(log);
             System.out.println("Vendor deactivated successfully.");
-            return true;
         } else {
             System.out.println("Failed to deactivate vendor.");
-            return false;
         }
+
+        return result;
+    }
+
+    public static boolean addCategory(Category category) throws SQLException {
+        String sql = "INSERT INTO category (categoryTitle, productCount, GSTRate) VALUES ('"
+                + category.getTitle() + "', "
+                + category.getProductCount() + ", "
+                + category.getGSTRate() + ")";
+        boolean result = DatabaseManager.add(sql);
+
+        if (result) {
+            String log = "Added category with Title: " + category.getTitle();
+            logAction(log);
+            System.out.println("Category added successfully.");
+        } else {
+            System.out.println("Failed to add category.");
+        }
+
+        return result;
+    }
+
+    public static boolean removeCategory(String categoryTitle) throws SQLException {
+        String sql = "UPDATE category SET Active = FALSE WHERE categoryTitle = '" + categoryTitle + "'";
+        boolean result = DatabaseManager.add(sql);
+
+        if (result) {
+            String log = "Deactivated category with Title: " + categoryTitle;
+            logAction(log);
+            System.out.println("Category deactivated successfully.");
+        } else {
+            System.out.println("Failed to deactivate category.");
+        }
+
+        return result;
     }
 }

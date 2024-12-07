@@ -1,5 +1,8 @@
 package com.mycompany.metroManagementJava;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Employee {
 
     private String EmployeeID;
@@ -17,6 +20,7 @@ public class Employee {
     public Employee(String EmployeeID, String Name,String email,String cnic, String address, String phoneNumber, String branchCode, float salary, Role role) {
           this(EmployeeID, Name,"123456",email,cnic, address, phoneNumber, branchCode, salary, role);
     }
+    
 
     public Employee(String EmployeeID, String Name,String Password,String email,String cnic, String address, String phoneNumber, String branchCode, float salary, Role role) {
         this.EmployeeID = EmployeeID;
@@ -32,6 +36,33 @@ public class Employee {
         this.cnic = cnic;
     }
 
+    @JsonCreator
+    public Employee(
+            @JsonProperty("EmployeeID") String EmployeeID,
+            @JsonProperty("Name") String Name,
+            @JsonProperty("email") String email,
+            @JsonProperty("cnic") String cnic,
+            @JsonProperty("Password") String Password,
+            @JsonProperty("address") String address,
+            @JsonProperty("phoneNumber") String phoneNumber,
+            @JsonProperty("branchCode") String branchCode,
+            @JsonProperty("salary") float salary,
+            @JsonProperty("active") boolean active,
+            @JsonProperty("role") Role role
+    ) {
+        this.EmployeeID = EmployeeID;
+        this.Name = Name;
+        this.email = email;
+        this.cnic = cnic;
+        this.Password = Password;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.branchCode = branchCode;
+        this.salary = salary;
+        this.active = active;
+        this.role = role;
+    }
+    
     public boolean isActive() {
         return active;
     }
@@ -122,5 +153,10 @@ public class Employee {
 
     public void setBranchCode(String branchCode) {
         this.branchCode = branchCode;
+    }
+    
+     @Override
+    public String toString() {
+        return "Employee{" + "EmployeeID=" + EmployeeID + ", Name=" + Name + ", email=" + email + ", cnic=" + cnic + ", Password=" + Password + ", address=" + address + ", phoneNumber=" + phoneNumber + ", branchCode=" + branchCode + ", salary=" + salary + ", active=" + active + ", role=" + role + '}';
     }
 }

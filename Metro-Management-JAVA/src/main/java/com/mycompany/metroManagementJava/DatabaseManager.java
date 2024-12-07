@@ -10,16 +10,15 @@ public class DatabaseManager {
     private static final String PASSWORD = "";
     private static Connection connection;
 
-        static {
+    static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
-          initializeDatabase();
+            initializeDatabase();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
     public static void initializeDatabase() {
         String createEmployeeTableSQL = "CREATE TABLE IF NOT EXISTS employees ("
@@ -30,11 +29,12 @@ public class DatabaseManager {
                 + "CNIC VARCHAR(255) NOT NULL, "
                 + "Address VARCHAR(255), "
                 + "PhoneNumber VARCHAR(20), "
-                + "BranchCode VARCHAR(50) NOT NULL,"
+                + "BranchCode VARCHAR(50) NOT NULL, "
                 + "Salary FLOAT, "
                 + "Active BOOLEAN, "
                 + "Role VARCHAR(50), "
-                + "PRIMARY KEY (EmployeeID)"
+                + "PRIMARY KEY (EmployeeID), "
+                + "FOREIGN KEY (BranchCode) REFERENCES branches(BranchID)"
                 + ")";
 
         String createProductsTableSQL = "CREATE TABLE IF NOT EXISTS products ("
@@ -46,7 +46,8 @@ public class DatabaseManager {
                 + "CartonPrice FLOAT NOT NULL, "
                 + "Description VARCHAR(255), "
                 + "Quantity INT NOT NULL, "
-                + "PRIMARY KEY (ProductID)"
+                + "PRIMARY KEY (ProductID), "
+                + "FOREIGN KEY (Category) REFERENCES category(categoryTitle)"
                 + ")";
 
         String createVendorsTableSQL = "CREATE TABLE IF NOT EXISTS vendors ("
@@ -80,13 +81,21 @@ public class DatabaseManager {
                 + "PRIMARY KEY (date)"
                 + ")";
 
-
+        String createCategoryTableSQL = "CREATE TABLE IF NOT EXISTS category ("
+                + "categoryTitle VARCHAR(255) NOT NULL UNIQUE, "
+                + "productCount INT NOT NULL, "
+                + "GSTRate FLOAT NOT NULL, "
+                + "description VARCHAR(255) NOT NULL UNIQUE, "
+                + "Active BOOLEAN NOT NULL DEFAULT TRUE, "
+                + "PRIMARY KEY (categoryTitle)"
+                + ")";
 
         try (Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate(createBranchesTableSQL);
+            stmt.executeUpdate(createCategoryTableSQL);
             stmt.executeUpdate(createEmployeeTableSQL);
             stmt.executeUpdate(createProductsTableSQL);
             stmt.executeUpdate(createVendorsTableSQL);
-            stmt.executeUpdate(createBranchesTableSQL);
             stmt.executeUpdate(createSalesPurchaseTableSQL);
 
             System.out.println("Database initialized successfully!");
@@ -200,8 +209,8 @@ public class DatabaseManager {
         }
     }
 
-
     private static class ReconnectTask implements Runnable {
+
         @Override
         public void run() {
             while (true) {

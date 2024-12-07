@@ -1,5 +1,8 @@
 package com.mycompany.metroManagementJava;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Vendor {
 
     private String vendorID;
@@ -9,10 +12,17 @@ public class Vendor {
     boolean isActive;
 
     public Vendor(String vendorID, String name, String contactInfo, float amountSpent) {
-       this(vendorID, name, contactInfo, amountSpent, true);
+        this(vendorID, name, contactInfo, amountSpent, true);
     }
 
-    public Vendor(String vendorID, String name, String contactInfo, float amountSpent,boolean active) {
+    @JsonCreator
+    public Vendor(
+            @JsonProperty("vendorID") String vendorID,
+            @JsonProperty("name") String name,
+            @JsonProperty("contactInfo") String contactInfo,
+            @JsonProperty("amountSpent") float amountSpent,
+            @JsonProperty("active") boolean active
+    ) {
         this.vendorID = vendorID;
         this.name = name;
         this.contactInfo = contactInfo;

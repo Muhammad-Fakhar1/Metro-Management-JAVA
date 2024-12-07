@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -67,56 +68,86 @@ public class Server {
 
     private static void handleGet(BufferedReader in, PrintWriter out) throws IOException {
         String type = in.readLine();
-        String identifier = in.readLine();
+        String identifier;
 
         switch (type) {
             case "PRODUCT":
+                identifier = in.readLine();
                 Product product = Assets.getProduct(identifier);
                 if (product != null) {
                     out.println(objectMapper.writeValueAsString(product));
                 } else {
                     out.println("null");
                 }
+                out.flush();
                 break;
             case "ALL_PRODUCTS":
+                ArrayList<Product> products = Assets.getAllProducts();
+                if (products != null) {
+                    String productsJson = objectMapper.writeValueAsString(products);
+                    out.println(productsJson);
+                } else {
+                    out.println("null");
+                }
+                out.flush();
+
                 break;
             case "ALL_VENDORS":
+                ArrayList<Vendor> vendors = Assets.getAllVendors();
+                if (vendors != null) {
+                    String vendorsJson = objectMapper.writeValueAsString(vendors);
+                    out.println(vendorsJson);
+                } else {
+                    out.println("null");
+                }
+                out.flush();
                 break;
             case "ALL_CATEGORIES":
+                ArrayList<Category> categories = Assets.getAllCategories();
+                if (categories != null) {
+                    String categoriesJson = objectMapper.writeValueAsString(categories);
+                    out.println(categories);
+                } else {
+                    out.println("null");
+                }
+                out.flush();
                 break;
             case "CHECKOUT":
                 break;
             case "EMPLOYEES":
+                identifier = in.readLine();
+                ArrayList<Employee> employees = Workforce.getAllEmployees(identifier);
+                if (employees != null) {
+                    String employeesJson = objectMapper.writeValueAsString(employees);
+                    out.println(employeesJson);
+                } else {
+                    out.println("null");
+                }
+                out.flush();
 
             default:
                 out.println("Invalid type");
                 break;
         }
     }
-    
 
     private static void handleAdd(BufferedReader in, PrintWriter out) throws IOException {
         String type = in.readLine();
-        System.out.println("Received type: " + type);
-        String empID = in.readLine();
-        System.out.println("Received empID: " + empID);
-        String vendorID = in.readLine();
-        System.out.println("Received vendorID: " + vendorID);
+        String id1;
+        String id2;
 
-        String objectString = in.readLine();
-        System.out.println("Received objectString: " + objectString);
+        String objectString;
 
         switch (type) {
             case "PRODUCT":
-                System.out.println("Handling PRODUCT");
+                id1 = in.readLine();
+                id2 = in.readLine();
+                objectString = in.readLine();
                 try {
                     Product product = objectMapper.readValue(objectString, Product.class);
-                    System.out.println("Parsed product: " + product);
-                    if (DataEntryManager.addProduct(product, empID, vendorID)) {
-                        System.out.println("Product added successfully");
+                    if (DataEntryManager.addProduct(product, id1, id2)) {
                         out.println("Product added successfully");
                     } else {
-                        System.out.println("Failed to add product");
                         out.println("Failed to add product");
                     }
                 } catch (Exception e) {
@@ -125,26 +156,43 @@ public class Server {
                     out.println("Error parsing product JSON");
                 }
                 break;
-            case "ALL_PRODUCTS":
-                System.out.println("Handling ALL_PRODUCTS");
-                // Add logic for handling ALL_PRODUCTS
+            case "EMPLOYEE":
+                try {
+                    objectString = in.readLine();
+                    Employee employee = objectMapper.readValue(objectString, Employee.class);
+                    if (BranchManager.addEmployee(employee)) {
+                        out.println("Employee added successfully");
+                    } else {
+                        out.println("Failed to add employee");
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error parsing product JSON: " + e.getMessage());
+                    e.printStackTrace();
+                    out.println("Error parsing product JSON");
+                }
                 break;
-            case "ALL_VENDORS":
-                System.out.println("Handling ALL_VENDORS");
-                // Add logic for handling ALL_VENDORS
+            case "VENDOR":
+                try {
+                    objectString = in.readLine();
+                    Vendor vendor = objectMapper.readValue(objectString,Vendor.class);
+                    if (DataEntryManager.addVendor(vendor)) {
+                        out.println("Vendor added successfully");
+                    } else {
+                        out.println("Failed to add vendor");
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error parsing product JSON: " + e.getMessage());
+                    e.printStackTrace();
+                    out.println("Error parsing product JSON");
+                }
                 break;
-            case "ALL_CATEGORIES":
+            case "CATEGORY":
                 System.out.println("Handling ALL_CATEGORIES");
-                // Add logic for handling ALL_CATEGORIES
                 break;
             case "CHECKOUT":
                 System.out.println("Handling CHECKOUT");
-                // Add logic for handling CHECKOUT
                 break;
-            case "EMPLOYEES":
-                System.out.println("Handling EMPLOYEES");
-                // Add logic for handling EMPLOYEES
-                break;
+
             default:
                 System.out.println("Invalid type received: " + type);
                 out.println("Invalid type");
@@ -153,4 +201,3 @@ public class Server {
     }
 
 }
-

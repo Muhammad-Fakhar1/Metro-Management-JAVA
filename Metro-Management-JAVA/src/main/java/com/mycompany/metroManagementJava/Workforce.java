@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Workforce {
 
-    public Employee getEmployee(String employeeID) {
+    public static Employee getEmployee(String employeeID) {
         String sql = "SELECT * FROM Employees WHERE EmployeeID = '" + employeeID + "'";
         ResultSet rs = null;
         Employee employee = null;
@@ -46,10 +46,10 @@ public class Workforce {
         return employee;
     }
 
-    public List<Employee> getAllEmployees(String Attribute, String Value) {
+    public static ArrayList<Employee> getAllEmployees(String Attribute, String Value) {
         String sql = "SELECT * FROM Employees WHERE " + Attribute + " = '" + Value + "'";
         ResultSet rs = null;
-        List<Employee> employees = new ArrayList<>();
+        ArrayList<Employee> employees = new ArrayList<>();
 
         try {
             rs = DatabaseManager.get(sql);
@@ -83,8 +83,8 @@ public class Workforce {
         return employees;
     }
 
-    public List<Employee> getAllEmployees(String branchCode) {
-        return this.getAllEmployees("BranchCode", branchCode);
+    public static ArrayList<Employee> getAllEmployees(String branchCode) {
+        return getAllEmployees("BranchCode", branchCode);
     }
 
 }
