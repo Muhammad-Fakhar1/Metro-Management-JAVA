@@ -88,10 +88,10 @@ public class DataEntryManager {
         return true;
     }
 
-    public static boolean removeProduct(String productID) throws SQLException {
+    public static boolean removeProduct(String productID) {
         String sql = "DELETE FROM products WHERE ProductID = '" + productID + "'";
-        boolean result = DatabaseManager.add(sql);
-
+        boolean result;
+        result = DatabaseManager.delete(sql);
         if (result) {
             String log = "Removed product with ProductID: " + productID;
             logAction(log);
@@ -99,7 +99,7 @@ public class DataEntryManager {
         } else {
             System.out.println("Failed to remove product.");
         }
-        
+
         return result;
     }
 
@@ -123,7 +123,7 @@ public class DataEntryManager {
         return result;
     }
 
-    public static boolean removeVendor(String vendorID) throws SQLException {
+    public static boolean removeVendor(String vendorID) {
         String sql = "UPDATE vendors SET Active = FALSE WHERE VendorID = '" + vendorID + "'";
         boolean result = DatabaseManager.add(sql);
 
@@ -156,9 +156,9 @@ public class DataEntryManager {
         return result;
     }
 
-    public static boolean removeCategory(String categoryTitle) throws SQLException {
+    public static boolean removeCategory(String categoryTitle) {
         String sql = "UPDATE category SET Active = FALSE WHERE categoryTitle = '" + categoryTitle + "'";
-        boolean result = DatabaseManager.add(sql);
+        boolean result = DatabaseManager.delete(sql);
 
         if (result) {
             String log = "Deactivated category with Title: " + categoryTitle;

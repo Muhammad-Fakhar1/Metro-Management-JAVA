@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class SuperAdmin {
 
-    public boolean createBranch(Branch branch) {
+    public static boolean createBranch(Branch branch) {
         String sql = "INSERT INTO branches (BranchID, Name, City, Active, Address, ContactInfo, EmployeeCount, BranchManager, DateCreated) "
                 + "VALUES ('" + branch.getBranchId() + "', "
                 + "'" + branch.getName() + "', "
@@ -26,7 +26,7 @@ public class SuperAdmin {
 
     }
 
-    public boolean removeBranch(String branchId) {
+    public static boolean removeBranch(String branchId) {
         String sql = "UPDATE Branches SET Active = FALSE WHERE BranchID = '" + branchId + "'";
 
         if (DatabaseManager.add(sql)) {
