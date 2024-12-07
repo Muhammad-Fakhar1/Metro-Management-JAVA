@@ -14,12 +14,14 @@ public class Vendor {
     @JsonCreator
     public Vendor(
             @JsonProperty("name") String name,
-            @JsonProperty("contactInfo") String contactInfo
+            @JsonProperty("contactInfo") String contactInfo,
+            @JsonProperty("amountSpent") float amountSpent,
+            @JsonProperty("active") boolean active
     ) {
         this.name = name;
         this.contactInfo = contactInfo;
-        this.amountSpent = 0;
-        this.isActive = true;
+        this.amountSpent = amountSpent;
+        this.isActive = active;
     }
 
     public Vendor(int vendorID, String name, String contactInfo, float amountSpent, boolean isActive) {
@@ -29,7 +31,9 @@ public class Vendor {
         this.amountSpent = amountSpent;
         this.isActive = isActive;
     }
+    
 
+    
     public int getVendorID() {
         return vendorID;
     }

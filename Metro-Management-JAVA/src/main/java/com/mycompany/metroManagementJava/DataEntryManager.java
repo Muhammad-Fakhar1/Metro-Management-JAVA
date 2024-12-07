@@ -41,8 +41,7 @@ public class DataEntryManager {
                 }
             } else {
                 rs.close();
-                String insertSql = "INSERT INTO products (ProductID, Title, OriginalPrice, Category, UnitPrice, CartonPrice, Description, Quantity) VALUES ('"
-                        + product.getProductID() + "', '"
+                String insertSql = "INSERT INTO products (Title, OriginalPrice, Category, UnitPrice, CartonPrice, Description, Quantity) VALUES ('"
                         + product.getTitle() + "', "
                         + product.getOriginalPrice() + ", '"
                         + product.getCategory() + "', "
@@ -104,8 +103,7 @@ public class DataEntryManager {
     }
 
     public static boolean addVendor(Vendor vendor) {
-        String sql = "INSERT INTO vendors (VendorID, Name, ContactInfo, AmountSpent, Active) VALUES ('"
-                + vendor.getVendorID() + "', '"
+        String sql = "INSERT INTO vendors (Name, ContactInfo, AmountSpent, Active) VALUES ('"
                 + vendor.getName() + "', '"
                 + vendor.getContactInfo() + "', "
                 + vendor.getAmountSpent() + ", "

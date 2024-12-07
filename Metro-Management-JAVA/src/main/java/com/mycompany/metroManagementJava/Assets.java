@@ -126,7 +126,7 @@ public class Assets {
                 String branchManager = resultSet.getString("BranchManager");
                 LocalDate dateCreated = resultSet.getDate("DateCreated").toLocalDate();
 
-                Branch branch = new Branch(branchId, name, city, active, address, phone, numberOfEmployees, branchManager, dateCreated);
+                Branch branch = new Branch(branchId, name, city, active, address, phone, numberOfEmployees , dateCreated);
                 branches.add(branch);
             }
         } catch (SQLException ex) {

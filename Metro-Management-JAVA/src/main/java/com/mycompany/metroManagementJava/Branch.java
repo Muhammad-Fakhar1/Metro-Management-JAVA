@@ -13,7 +13,7 @@ public class Branch {
     private String address;
     private String phone;
     private int numberOfEmployees;
-    private String branchManager;
+    private Employee branchManager;
     private final LocalDate dateCreated;
 
     @JsonCreator
@@ -31,11 +31,10 @@ public class Branch {
         this.address = address;
         this.phone = phone;
         this.numberOfEmployees = 0;
-        this.branchManager = branchManagerId;
         this.dateCreated = LocalDate.now();
     }
 
-    public Branch(int branchId, String name, String city, boolean isActive, String address, String phone, int numberOfEmployees, String branchManagerId, LocalDate date) {
+    public Branch(int branchId, String name, String city, boolean isActive, String address, String phone, int numberOfEmployees, LocalDate date) {
         this.branchId = branchId;
         this.name = name;
         this.city = city;
@@ -43,7 +42,6 @@ public class Branch {
         this.address = address;
         this.phone = phone;
         this.numberOfEmployees = numberOfEmployees;
-        this.branchManager = branchManagerId;
         this.dateCreated = date;
     }
 
@@ -103,11 +101,11 @@ public class Branch {
         this.numberOfEmployees = numberOfEmployees;
     }
 
-    public String getBranchManager() {
+    public Employee getBranchManager() {
         return branchManager;
     }
 
-    public void setBranchManager(String branchManager) {
+    public void setBranchManager(Employee branchManager) {
         this.branchManager = branchManager;
     }
 

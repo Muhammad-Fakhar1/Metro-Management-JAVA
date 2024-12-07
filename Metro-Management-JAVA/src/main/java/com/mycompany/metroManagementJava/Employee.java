@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Employee {
 
     private int EmployeeID;
-    private String Name;
+    private String name;
     private String email;
     private String cnic;
     private String Password;
@@ -22,6 +22,7 @@ public class Employee {
 
     @JsonCreator
     public Employee(
+            @JsonProperty("EmployeeID") int id,
             @JsonProperty("Name") String Name,
             @JsonProperty("email") String email,
             @JsonProperty("cnic") String cnic,
@@ -29,9 +30,10 @@ public class Employee {
             @JsonProperty("phoneNumber") String phoneNumber,
             @JsonProperty("branchCode") String branchCode,
             @JsonProperty("salary") float salary,
-            @JsonProperty("role") Role role
+            @JsonProperty("role") Role role,
+            @JsonProperty("active") boolean active
     ) {
-        this.Name = Name;
+        this.name = Name;
         this.Password = "123456";
         this.email = email;
         this.cnic = cnic;
@@ -40,12 +42,12 @@ public class Employee {
         this.branchCode = branchCode;
         this.salary = salary;
         this.role = role;
-        this.active = true;
+        this.active = active;
     }
 
     public Employee(int EmployeeID, String Name, String Password, String email, String cnic, String address, String phoneNumber, String branchCode, float salary, boolean active, Role role) {
         this.EmployeeID = EmployeeID;
-        this.Name = Name;
+        this.name = Name;
         this.Password = Password;
         this.email = email;
         this.cnic = cnic;
@@ -106,11 +108,11 @@ public class Employee {
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String Name) {
-        this.Name = Name;
+        this.name = Name;
     }
 
     public String getPassword() {
@@ -151,6 +153,6 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employee{" + "EmployeeID=" + EmployeeID + ", Name=" + Name + ", email=" + email + ", cnic=" + cnic + ", Password=" + Password + ", address=" + address + ", phoneNumber=" + phoneNumber + ", branchCode=" + branchCode + ", salary=" + salary + ", active=" + active + ", role=" + role + '}';
+        return "Employee{" + "EmployeeID=" + EmployeeID + ", Name=" + name + ", email=" + email + ", cnic=" + cnic + ", Password=" + Password + ", address=" + address + ", phoneNumber=" + phoneNumber + ", branchCode=" + branchCode + ", salary=" + salary + ", active=" + active + ", role=" + role + '}';
     }
 }
