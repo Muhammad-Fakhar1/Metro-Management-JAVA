@@ -48,7 +48,9 @@ public class Server {
                     case "ADD":
                         handleAdd(in, out);
                     case "REMOVE":
-                        handleRemove(in,out);
+                        handleRemove(in, out);
+                    case "LOGIN":
+                        handleLogin(in, out);
                         break;
                     case "CLOSE":
                         out.println("Connection closed by client");
@@ -177,7 +179,7 @@ public class Server {
             case "VENDOR":
                 try {
                     objectString = in.readLine();
-                    Vendor vendor = objectMapper.readValue(objectString,Vendor.class);
+                    Vendor vendor = objectMapper.readValue(objectString, Vendor.class);
                     if (DataEntryManager.addVendor(vendor)) {
                         out.println("Vendor added successfully");
                     } else {
@@ -205,6 +207,21 @@ public class Server {
 
     private static void handleRemove(BufferedReader in, PrintWriter out) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private static void handleLogin(BufferedReader in, PrintWriter out) throws IOException {
+        String email = in.readLine();
+        String password = in.readLine();
+
+        Employee employee = LoginManager.login(email, password);
+
+        if (employee != null) {
+            String employeeJson = objectMapper.writeValueAsString(employee);
+            out.println(employeeJson);
+        } else {
+            out.println("null");
+        }
+        out.flush();
     }
 
 }
