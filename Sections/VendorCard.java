@@ -1,11 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.metro.Sections;
 
 import com.formdev.flatlaf.ui.FlatLineBorder;
 import com.metro.Components.Card;
+import com.metro.Forms.ProductAdditionForm;
 import com.metro.ImageProcessor;
 import com.metro.ThemeManager;
 import com.metro.Models.Vendor;
@@ -15,6 +12,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -26,7 +25,12 @@ import javax.swing.border.EmptyBorder;
 
 public class VendorCard extends Card {
 
+    private Vendor v;
+    private ProductAdditionForm productForm;
+
     public VendorCard(Vendor v, ArrayList<ImageIcon> icons, boolean showButoon) {
+        super(v.getName());
+        this.v = v;
         setBackground(Color.white);
         setBorder(new FlatLineBorder(new Insets(5, 5, 0, 5), new Color(238, 238, 238), 3, 15));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -39,11 +43,11 @@ public class VendorCard extends Card {
         add(center);
         if (showButoon) {
             add(bottom);
-        }else{
-                    add(Box.createVerticalStrut(20));
+        } else {
+            add(Box.createVerticalStrut(20));
         }
         add(Box.createVerticalStrut(5));
-        
+
     }
 
     private JPanel createTopPanel(Vendor v) {
@@ -91,14 +95,27 @@ public class VendorCard extends Card {
 
     private JButton createBottomPanel() {
         JButton btn = new JButton("Add Product");
- 
-        btn.setAlignmentX(CENTER_ALIGNMENT); // Ensure the button aligns centrally
-
-        btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50)); // Full width
-        btn.setPreferredSize(new Dimension(0, 50)); // Preferred height
+        btn.setAlignmentX(CENTER_ALIGNMENT);
+        btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        btn.setPreferredSize(new Dimension(0, 50));
         btn.setFocusPainted(false);
 
-        btn.addActionListener(e -> System.out.println("Product clicked!"));
+        btn.addActionListener(e -> {
+            if (productForm == null) {
+                productForm = new ProductAdditionForm("", data -> {
+
+                }, 500, 510);
+                productForm.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        productForm = null;
+                    }
+                });
+            } else {
+                productForm.toFront();
+                productForm.requestFocus();
+            }
+        });
         return btn;
     }
 
@@ -108,5 +125,9 @@ public class VendorCard extends Card {
         label.setForeground(color);
         label.setBorder(border);
         return label;
+    }
+
+    public Vendor getCardValue() {
+        return v;
     }
 }

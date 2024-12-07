@@ -21,8 +21,11 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 public class ProductCard extends Card {
+    private Product p;
 
     public ProductCard(Product p, ArrayList<ImageIcon> icons) {
+        super(p.getTitle());
+        this.p=p;
         setBackground(Color.white);
         setBorder(new FlatLineBorder(new Insets(5, 5, 0, 5), new Color(238, 238, 238), 3, 15));
         setLayout(new BorderLayout());
@@ -109,5 +112,9 @@ public class ProductCard extends Card {
         label.setForeground(color);
         label.setBorder(border);
         return label;
+    }
+    
+    public Product getCardValue(){
+        return p;
     }
 }

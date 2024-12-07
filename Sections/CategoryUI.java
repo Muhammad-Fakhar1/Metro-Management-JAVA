@@ -6,31 +6,30 @@ import com.metro.Models.Product;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
-public class ProductUI extends Body {
+public class CategoryUI extends Body {
 
-    private ArrayList<Product> products;
+   // private ArrayList<Product> categories;
     private final ArrayList<ImageIcon> icons;
-    
-    public ProductUI(int width, int height, boolean showButton) {
 
+    public CategoryUI(int width, int height, boolean showButton) {
         this.showButton = showButton;
         this.dashboardWidth = width;
         this.dashboardHeight = 400;
-        this.title = "Products";
+
+        this.title = "Categories";
         this.showButton = false;
         icons = new ArrayList<>();
-        products = new ArrayList<>();
+        //categories = new ArrayList<>();
         cards = new ArrayList<>();
 
         setupSearchField();
-        getProducts();
+        getCategories();
         setupUI();
     }
-
-    private void getProducts() {
-        products = controller.getProducts();
+    private void getCategories() {
+       // categories = controller.getProducts();
         getIcons();
-        createProductCards();
+        //createProductCards();
     }
 
     private void getIcons() {
@@ -40,10 +39,11 @@ public class ProductUI extends Body {
         }
     }
 
-    private void createProductCards() {
-        for (Product product : products) {
-            Card card = new ProductCard(product, icons);
-            cards.add(card);
-        }
-    }
+//    private void createCategoryCards() {
+//        for (Category product : categories) {
+//            Card card = new ProductCard(product, icons);
+//            cards.add(card);
+//        }
+//    }
+    
 }
