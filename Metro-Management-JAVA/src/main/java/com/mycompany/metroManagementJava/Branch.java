@@ -22,19 +22,22 @@ public class Branch {
             @JsonProperty("city") String city,
             @JsonProperty("address") String address,
             @JsonProperty("phone") String phone,
-            @JsonProperty("branchManagerId") String branchManagerId
+            @JsonProperty("isActive") boolean isActive,
+            @JsonProperty("numberOfEmployees") int numberOfEmployees,
+            @JsonProperty("branchManager") Employee branchManager,
+            @JsonProperty("dateCreated") String dateCreated 
     ) {
-        this.branchId = branchId;
         this.name = name;
         this.city = city;
-        this.isActive = true;
         this.address = address;
         this.phone = phone;
-        this.numberOfEmployees = 0;
-        this.dateCreated = LocalDate.now();
+        this.isActive = isActive;
+        this.numberOfEmployees = numberOfEmployees;
+        this.branchManager = branchManager;
+        this.dateCreated = LocalDate.parse(dateCreated);  
     }
 
-    public Branch(int branchId, String name, String city, boolean isActive, String address, String phone, int numberOfEmployees, LocalDate date) {
+    public Branch(int branchId, String name, String city, boolean isActive, String address, String phone, int numberOfEmployees,Employee branchManager, LocalDate date) {
         this.branchId = branchId;
         this.name = name;
         this.city = city;
@@ -42,6 +45,7 @@ public class Branch {
         this.address = address;
         this.phone = phone;
         this.numberOfEmployees = numberOfEmployees;
+        this.branchManager=this.branchManager;
         this.dateCreated = date;
     }
 

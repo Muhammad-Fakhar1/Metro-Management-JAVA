@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Workforce {
 
-    public static Employee getEmployee(String employeeID) {
+    public static Employee getEmployee(int employeeID) {
         String sql = "SELECT * FROM Employees WHERE EmployeeID = '" + employeeID + "'";
         ResultSet rs = null;
         Employee employee = null;

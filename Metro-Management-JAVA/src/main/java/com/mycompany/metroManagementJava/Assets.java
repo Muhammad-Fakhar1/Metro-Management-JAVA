@@ -86,6 +86,7 @@ public class Assets {
         return products;
     }
 
+    
     public static Product getProduct(String pID) {
         String sql = "SELECT * FROM products WHERE ProductID = '" + pID + "'";
         try {
@@ -108,10 +109,10 @@ public class Assets {
         return null;
     }
 
-    public static List<Branch> getAllBranches() {
+    public static ArrayList<Branch> getAllBranches() {
         String sql = "SELECT * FROM Branches";
         ResultSet resultSet;
-        List<Branch> branches = new ArrayList<>();
+        ArrayList<Branch> branches = new ArrayList<>();
 
         try {
             resultSet = DatabaseManager.get(sql);
@@ -123,10 +124,12 @@ public class Assets {
                 String address = resultSet.getString("Address");
                 String phone = resultSet.getString("ContactInfo");
                 int numberOfEmployees = resultSet.getInt("EmployeeCount");
-                String branchManager = resultSet.getString("BranchManager");
+                int branchManager = resultSet.getInt("BranchManager");
                 LocalDate dateCreated = resultSet.getDate("DateCreated").toLocalDate();
+                
+                Employee manager=Workforce.getEmployee(branchManager);
 
-                Branch branch = new Branch(branchId, name, city, active, address, phone, numberOfEmployees , dateCreated);
+                Branch branch = new Branch(branchId, name, city, active, address, phone, numberOfEmployees,manager ,dateCreated);
                 branches.add(branch);
             }
         } catch (SQLException ex) {

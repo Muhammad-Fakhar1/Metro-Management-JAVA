@@ -117,7 +117,15 @@ public class Server {
                 }
                 out.flush();
                 break;
-            case "CHECKOUT":
+            case "ALL_BRANCHES":
+                ArrayList<Branch> branches = Assets.getAllBranches();
+                if (branches != null) {
+                    String branchesJson = objectMapper.writeValueAsString(branches);
+                    out.println(branches);
+                } else {
+                    out.println("null");
+                }
+                out.flush();
                 break;
             case "EMPLOYEES":
                 identifier = in.readLine();
@@ -191,8 +199,17 @@ public class Server {
                     out.println("Error parsing product JSON");
                 }
                 break;
-            case "CATEGORY":
-                System.out.println("Handling ALL_CATEGORIES");
+            case "BRANCH_MANAGER":
+                id1 = in.readLine();
+                objectString = in.readLine();
+                Employee manager = objectMapper.readValue(objectString, Employee.class);
+                if (SuperAdmin.addBranchManager(manager, id1)) {
+                    out.println("Branch Manager added successfully");
+                } else {
+                    out.println("Failed to add Branch Manager");
+
+                }
+
                 break;
             case "BRANCH":
                 objectString = in.readLine();
