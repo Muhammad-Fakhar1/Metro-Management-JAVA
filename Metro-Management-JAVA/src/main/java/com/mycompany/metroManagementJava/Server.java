@@ -205,8 +205,52 @@ public class Server {
         }
     }
 
-    private static void handleRemove(BufferedReader in, PrintWriter out) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private static void handleRemove(BufferedReader in, PrintWriter out) throws IOException {
+        String type = in.readLine();
+        String identifier;
+
+        switch (type) {
+            case "PRODUCT":
+                identifier = in.readLine();
+
+                if (DataEntryManager.removeProduct(identifier)) {
+                    out.println("Product Removed");
+                } else {
+                    out.println("Failed to Remove Product");
+                }
+                out.flush();
+                break;
+            case "VENDOR":
+                identifier = in.readLine();
+
+                if (DataEntryManager.removeVendor(identifier)) {
+                    out.println("Vendor Removed");
+                } else {
+                    out.println("Failed to Remove Vendor");
+                }
+                out.flush();
+                break;
+            case "CATEGORY":
+                identifier = in.readLine();
+
+                if (DataEntryManager.removeCategory(identifier)) {
+                    out.println("Category Removed");
+                } else {
+                    out.println("Failed to Remove Category");
+                }
+                out.flush();
+                break;
+            case "BRANCH":
+                identifier = in.readLine();
+                if (SuperAdmin.removeBranch(identifier)) {
+                    out.println("Branch Removed");
+                } else {
+                    out.println("Failed to Remove Branch");
+                }
+                out.flush();
+                break;
+
+        }
     }
 
     private static void handleLogin(BufferedReader in, PrintWriter out) throws IOException {
