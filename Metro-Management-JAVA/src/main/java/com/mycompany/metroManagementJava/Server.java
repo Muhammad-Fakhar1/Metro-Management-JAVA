@@ -194,8 +194,15 @@ public class Server {
             case "CATEGORY":
                 System.out.println("Handling ALL_CATEGORIES");
                 break;
-            case "CHECKOUT":
-                System.out.println("Handling CHECKOUT");
+            case "BRANCH":
+                objectString = in.readLine();
+                Branch branch = objectMapper.readValue(objectString, Branch.class);
+                if (SuperAdmin.addBranch(branch)) {
+                    out.println("Branch added Succesfully");
+                } else {
+                    out.println("Failed to add Branch");
+                }
+                out.flush();
                 break;
 
             default:
