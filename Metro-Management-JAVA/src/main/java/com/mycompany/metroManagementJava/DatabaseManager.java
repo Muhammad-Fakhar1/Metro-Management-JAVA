@@ -21,6 +21,28 @@ public class DatabaseManager {
     }
 
     public static void initializeDatabase() {
+        String createCategoryTableSQL = "CREATE TABLE IF NOT EXISTS category ("
+                + "categoryTitle VARCHAR(255) NOT NULL UNIQUE, "
+                + "productCount INT NOT NULL, "
+                + "GSTRate FLOAT NOT NULL, "
+                + "description VARCHAR(255) NOT NULL UNIQUE, "
+                + "Active BOOLEAN NOT NULL DEFAULT TRUE, "
+                + "PRIMARY KEY (categoryTitle)"
+                + ") ENGINE=INNODB;";
+
+        String createBranchesTableSQL = "CREATE TABLE IF NOT EXISTS branches ("
+                + "BranchID INT AUTO_INCREMENT NOT NULL, "
+                + "Name VARCHAR(255) NOT NULL UNIQUE, "
+                + "City VARCHAR(255) NOT NULL, "
+                + "Active BOOLEAN NOT NULL DEFAULT TRUE, "
+                + "Address VARCHAR(255) NOT NULL, "
+                + "ContactInfo VARCHAR(255), "
+                + "EmployeeCount INT NOT NULL, "
+                + "BranchManager INT, "
+                + "DateCreated DATE NOT NULL, "
+                + "PRIMARY KEY (BranchID)"
+                + ") ENGINE=INNODB;";
+
         String createEmployeeTableSQL = "CREATE TABLE IF NOT EXISTS employees ("
                 + "EmployeeID INT AUTO_INCREMENT NOT NULL, "
                 + "Name VARCHAR(255) NOT NULL UNIQUE, "
@@ -29,13 +51,22 @@ public class DatabaseManager {
                 + "CNIC VARCHAR(255) NOT NULL, "
                 + "Address VARCHAR(255), "
                 + "PhoneNumber VARCHAR(20), "
-                + "BranchCode VARCHAR(50) NOT NULL, "
+                + "BranchCode INT NOT NULL, "
                 + "Salary FLOAT, "
                 + "Active BOOLEAN, "
                 + "Role VARCHAR(50), "
                 + "PRIMARY KEY (EmployeeID), "
                 + "FOREIGN KEY (BranchCode) REFERENCES branches(BranchID)"
-                + ")";
+                + ") ENGINE=INNODB;";
+
+        String createVendorsTableSQL = "CREATE TABLE IF NOT EXISTS vendors ("
+                + "VendorID INT AUTO_INCREMENT NOT NULL, "
+                + "Name VARCHAR(255) NOT NULL UNIQUE, "
+                + "ContactInfo VARCHAR(255), "
+                + "AmountSpent FLOAT NOT NULL, "
+                + "Active BOOLEAN NOT NULL DEFAULT TRUE, "
+                + "PRIMARY KEY (VendorID)"
+                + ") ENGINE=INNODB;";
 
         String createProductsTableSQL = "CREATE TABLE IF NOT EXISTS products ("
                 + "ProductID INT AUTO_INCREMENT NOT NULL, "
@@ -48,48 +79,20 @@ public class DatabaseManager {
                 + "Quantity INT NOT NULL, "
                 + "PRIMARY KEY (ProductID), "
                 + "FOREIGN KEY (Category) REFERENCES category(categoryTitle)"
-                + ")";
-
-        String createVendorsTableSQL = "CREATE TABLE IF NOT EXISTS vendors ("
-                + "VendorID INT AUTO_INCREMENT NOT NULL, "
-                + "Name VARCHAR(255) NOT NULL, "
-                + "ContactInfo VARCHAR(255), "
-                + "AmountSpent FLOAT NOT NULL, "
-                + "Active BOOLEAN NOT NULL DEFAULT TRUE, "
-                + "PRIMARY KEY (VendorID), "
-                + "UNIQUE (Name)"
-                + ")";
-
-        String createBranchesTableSQL = "CREATE TABLE IF NOT EXISTS branches ("
-                + "BranchID INT AUTO_INCREMENT NOT NULL, "
-                + "Name VARCHAR(255) NOT NULL, "
-                + "City VARCHAR(255) NOT NULL, "
-                + "Active BOOLEAN NOT NULL DEFAULT TRUE, "
-                + "Address VARCHAR(255) NOT NULL, "
-                + "ContactInfo VARCHAR(255), "
-                + "EmployeeCount INT NOT NULL, "
-                + "BranchManager INT NOT NULL, "
-                + "DateCreated DATE NOT NULL, "
-                + "PRIMARY KEY (BranchID), "
-                + "FOREIGN KEY (BranchManager) REFERENCES employees(EmployeeID)"
-                + "UNIQUE (Name)"
-                + ")";
+                + ") ENGINE=INNODB;";
 
         String createSalesPurchaseTableSQL = "CREATE TABLE IF NOT EXISTS sales_purchase ("
                 + "date DATE NOT NULL, "
                 + "sale FLOAT NOT NULL, "
                 + "purchase FLOAT NOT NULL, "
                 + "PRIMARY KEY (date)"
-                + ")";
+                + ") ENGINE=INNODB;";
 
-        String createCategoryTableSQL = "CREATE TABLE IF NOT EXISTS category ("
-                + "categoryTitle VARCHAR(255) NOT NULL UNIQUE, "
-                + "productCount INT NOT NULL, "
-                + "GSTRate FLOAT NOT NULL, "
-                + "description VARCHAR(255) NOT NULL UNIQUE, "
-                + "Active BOOLEAN NOT NULL DEFAULT TRUE, "
-                + "PRIMARY KEY (categoryTitle)"
-                + ")";
+        String alterBranchesTableSQL = "ALTER TABLE branches "
+                + "ADD CONSTRAINT FK_BranchManager FOREIGN KEY (BranchManager) REFERENCES employees(EmployeeID);";
+
+        String alterEmployeeTableSQL = "ALTER TABLE employees "
+                + "ADD CONSTRAINT FK_BranchCode FOREIGN KEY (BranchCode) REFERENCES branches(BranchID);";
 
         try (Statement stmt = connection.createStatement()) {
             stmt.executeUpdate(createBranchesTableSQL);
@@ -98,6 +101,8 @@ public class DatabaseManager {
             stmt.executeUpdate(createProductsTableSQL);
             stmt.executeUpdate(createVendorsTableSQL);
             stmt.executeUpdate(createSalesPurchaseTableSQL);
+            stmt.executeUpdate(alterBranchesTableSQL);
+            stmt.executeUpdate(alterEmployeeTableSQL);
 
             System.out.println("Database initialized successfully!");
         } catch (SQLException e) {
