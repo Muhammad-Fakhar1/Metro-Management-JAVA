@@ -47,6 +47,9 @@ public class Server {
                         handleGet(in, out);
                     case "ADD":
                         handleAdd(in, out);
+                    case "REMOVE":
+                        handleRemove(in,out);
+                        break;
                     case "CLOSE":
                         out.println("Connection closed by client");
                         return;
@@ -198,6 +201,10 @@ public class Server {
                 out.println("Invalid type");
                 break;
         }
+    }
+
+    private static void handleRemove(BufferedReader in, PrintWriter out) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }
