@@ -121,7 +121,7 @@ public class Server {
                 ArrayList<Branch> branches = Assets.getAllBranches();
                 if (branches != null) {
                     String branchesJson = objectMapper.writeValueAsString(branches);
-                    out.println(branches);
+                    out.println(branchesJson);
                 } else {
                     out.println("null");
                 }
