@@ -11,7 +11,7 @@ public class LoginManager {
         try {
             ResultSet rs = DatabaseManager.get(query);
 
-            if (rs != null && password.equals(rs.getString("Password"))) {
+            if (rs != null && rs.next() && password.equals(rs.getString("Password"))) {
                 return new Employee(
                         rs.getString("EmployeeID"),
                         rs.getString("Name"),
