@@ -7,13 +7,16 @@ public class ReportManager {
 
     private static double getTotalAmount(LocalDate startDate, LocalDate endDate, String columnName) throws SQLException {
         double totalAmount = 0.0;
-        
-        if (endDate.isBefore(startDate)) {
+
+        if (endDate != null && startDate != null && endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("End date should be after start date");
         }
 
-        String query = "SELECT SUM(" + columnName + ") AS total FROM sales_purchase WHERE date BETWEEN '"
-                + startDate.toString() + "' AND '" + endDate.toString() + "'";
+        String query = "SELECT SUM(" + columnName + ") AS total FROM sales_purchase";
+
+        if (startDate != null && endDate != null) {
+            query += " WHERE date BETWEEN '" + startDate.toString() + "' AND '" + endDate.toString() + "'";
+        }
 
         ResultSet rs = null;
         try {
@@ -36,5 +39,13 @@ public class ReportManager {
 
     public static double getPurchase(LocalDate startDate, LocalDate endDate) throws SQLException {
         return getTotalAmount(startDate, endDate, "purchase");
+    }
+
+    public static double getAllTotalPurchase() throws SQLException {
+        return getTotalAmount(null, null, "purchase");
+    }
+
+    public static double getAllTotalSale() throws SQLException {
+        return getTotalAmount(null, null, "sale");
     }
 }

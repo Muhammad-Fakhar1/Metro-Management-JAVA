@@ -10,15 +10,15 @@ public class DatabaseManager {
     private static final String PASSWORD = "";
     private static Connection connection;
 
-    //    static {
-//        try {
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//            connection = DriverManager.getConnection(URL, USER, PASSWORD);
-//          initializeDatabase();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+        static {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+          initializeDatabase();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public static void initializeDatabase() {
@@ -30,7 +30,7 @@ public class DatabaseManager {
                 + "CNIC VARCHAR(255) NOT NULL, "
                 + "Address VARCHAR(255), "
                 + "PhoneNumber VARCHAR(20), "
-                + "BranchCode VARCHAR(50) NOT NULL foreign, "
+                + "BranchCode VARCHAR(50) NOT NULL,"
                 + "Salary FLOAT, "
                 + "Active BOOLEAN, "
                 + "Role VARCHAR(50), "

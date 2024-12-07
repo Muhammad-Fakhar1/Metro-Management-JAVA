@@ -1,6 +1,6 @@
 package com.mycompany.metroManagementJava;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Branch {
 
@@ -12,9 +12,9 @@ public class Branch {
     private String phone;
     private int numberOfEmployees;
     private String branchManager;
-    private final Date dateCreated;
+    private final LocalDate dateCreated;
 
-    public Branch(String branchId, String name, String city, String address, String phone,String branchManagerId) {
+    public Branch(String branchId, String name, String city, String address, String phone, String branchManagerId) {
         this.branchId = branchId;
         this.name = name;
         this.city = city;
@@ -23,7 +23,19 @@ public class Branch {
         this.phone = phone;
         this.numberOfEmployees = 0;
         this.branchManager = branchManagerId;
-        this.dateCreated = new Date();
+        this.dateCreated = LocalDate.now();
+    }
+
+    public Branch(String branchId, String name, String city,boolean isActive, String address, String phone,int numberOfEmployees, String branchManagerId,LocalDate date) {
+        this.branchId = branchId;
+        this.name = name;
+        this.city = city;
+        this.isActive = isActive;
+        this.address = address;
+        this.phone = phone;
+        this.numberOfEmployees = numberOfEmployees;
+        this.branchManager = branchManagerId;
+        this.dateCreated = date;
     }
 
     public String getBranchId() {
@@ -90,7 +102,7 @@ public class Branch {
         this.branchManager = branchManager;
     }
 
-    public Date getDateCreated() {
+    public LocalDate getDateCreated() {
         return dateCreated;
     }
 

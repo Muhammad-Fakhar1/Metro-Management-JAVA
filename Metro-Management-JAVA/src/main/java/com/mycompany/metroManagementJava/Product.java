@@ -1,6 +1,10 @@
 package com.mycompany.metroManagementJava;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Product {
+
     private String productID;
     private String title;
     private float originalPrice;
@@ -10,7 +14,16 @@ public class Product {
     private String description;
     private int quantity;
 
-    public Product(String productID, String title, float originalPrice, String category, float unitPrice, float cartonPrice, String description,int quantity) {
+    @JsonCreator
+    public Product(
+            @JsonProperty("productID") String productID,
+            @JsonProperty("title") String title,
+            @JsonProperty("originalPrice") float originalPrice,
+            @JsonProperty("category") String category,
+            @JsonProperty("unitPrice") float unitPrice,
+            @JsonProperty("cartonPrice") float cartonPrice,
+            @JsonProperty("description") String description,
+            @JsonProperty("quantity") int quantity) {
         this.productID = productID;
         this.title = title;
         this.originalPrice = originalPrice;
@@ -72,6 +85,7 @@ public class Product {
     public String getDescription() {
         return description;
     }
+
     public int getQuantity() {
         return quantity;
     }
@@ -82,5 +96,5 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
-    }   
+    }
 }

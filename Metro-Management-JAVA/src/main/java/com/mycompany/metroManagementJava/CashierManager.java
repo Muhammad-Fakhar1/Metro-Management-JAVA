@@ -37,7 +37,7 @@ public class CashierManager {
         }
     }
 
-    public static boolean checkout(Order order,String EmployeeID) throws SQLException {
+    public static Order checkout(Order order,String EmployeeID) throws SQLException {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE))) {
         for (OrderItem item : order.getItems()) {
@@ -47,7 +47,7 @@ public class CashierManager {
             writer.write(log);
             writer.newLine();
             if (!updateProductQuantity(productID, -quantity)) {
-                return false;
+                return null;
             }
         }
         } catch (IOException e) {
@@ -68,7 +68,7 @@ public class CashierManager {
         }
 
         order.setStatus("Checked Out");
-        return true;
+        return order;
     }
 
     private static boolean updateProductQuantity(String productID, int quantityChange) throws SQLException {
