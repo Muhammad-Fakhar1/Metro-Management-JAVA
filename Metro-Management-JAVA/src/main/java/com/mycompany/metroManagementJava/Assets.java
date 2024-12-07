@@ -12,14 +12,19 @@ import java.util.logging.Logger;
 
 public class Assets {
 
-    public static List<String> getCategories() {
-        List<String> categories = new ArrayList<>();
-        String sql = "SELECT DISTINCT Category FROM products";
+    public static List<Category> getCategories() {
+        List<Category> categories = new ArrayList<>();
+        String sql = "SELECT * FROM categoryList";
         ResultSet rs;
         try {
             rs = DatabaseManager.get(sql);
             while (rs.next()) {
-                categories.add(rs.getString("Category"));
+                String categoryTitle = rs.getString("categoryTitle");
+                int productCount = rs.getInt("productCount");
+                float GSTRate = rs.getFloat("GSTRate");
+                boolean Active = rs.getBoolean("Active");
+
+                categories.add(new Category(categoryTitle, productCount, GSTRate, Active));
             }
             rs.close();
         } catch (SQLException ex) {
@@ -92,7 +97,7 @@ public class Assets {
                 float cartonPrice = rs.getFloat("CartonPrice");
                 String description = rs.getString("Description");
                 int quantity = rs.getInt("Quantity");
-                
+
                 return new Product(productID, title, originalPrice, category, unitPrice, cartonPrice, description, quantity);
             }
         } catch (SQLException ex) {
