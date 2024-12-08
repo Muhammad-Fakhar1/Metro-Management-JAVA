@@ -129,7 +129,7 @@ public class Assets {
                 
                 Employee manager=Workforce.getEmployee(branchManager);
 
-                Branch branch = new Branch(branchId, name, city, active, address, phone, numberOfEmployees,manager ,dateCreated);
+                Branch branch = new Branch(branchId, name, city, active, address, phone, numberOfEmployees,manager,dateCreated);
                 branches.add(branch);
             }
         } catch (SQLException ex) {

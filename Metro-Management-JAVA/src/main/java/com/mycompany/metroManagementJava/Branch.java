@@ -45,7 +45,7 @@ public class Branch {
         this.address = address;
         this.phone = phone;
         this.numberOfEmployees = numberOfEmployees;
-        this.branchManager=this.branchManager;
+        this.branchManager=branchManager;
         this.dateCreated = date;
     }
 

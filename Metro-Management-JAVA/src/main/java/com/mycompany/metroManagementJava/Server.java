@@ -45,10 +45,13 @@ public class Server {
                 switch (command) {
                     case "GET":
                         handleGet(in, out);
+                        break;
                     case "ADD":
                         handleAdd(in, out);
+                        break;
                     case "REMOVE":
                         handleRemove(in, out);
+                        break;
                     case "LOGIN":
                         handleLogin(in, out);
                         break;
@@ -137,7 +140,7 @@ public class Server {
                     out.println("null");
                 }
                 out.flush();
-
+                break;
             default:
                 out.println("Invalid type");
                 break;
@@ -207,9 +210,8 @@ public class Server {
                     out.println("Branch Manager added successfully");
                 } else {
                     out.println("Failed to add Branch Manager");
-
                 }
-
+                out.flush();
                 break;
             case "BRANCH":
                 objectString = in.readLine();
@@ -227,6 +229,7 @@ public class Server {
                 out.println("Invalid type");
                 break;
         }
+
     }
 
     private static void handleRemove(BufferedReader in, PrintWriter out) throws IOException {

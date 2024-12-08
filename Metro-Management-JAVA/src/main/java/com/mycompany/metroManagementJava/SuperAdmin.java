@@ -4,18 +4,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-
 public class SuperAdmin {
 
     public static boolean addBranch(Branch branch) {
-        String sql = "INSERT INTO branches (Name, City, Active, Address, ContactInfo, EmployeeCount, BranchManager, DateCreated) "
+        String sql = "INSERT INTO branches (Name, City, Active, Address, ContactInfo, EmployeeCount, DateCreated) "
                 + "VALUES ('" + branch.getName() + "', "
                 + "'" + branch.getCity() + "', "
                 + branch.isActive() + ", "
                 + "'" + branch.getAddress() + "', "
                 + "'" + branch.getPhone() + "', "
                 + branch.getNumberOfEmployees() + ", "
-                + "'" + branch.getBranchManager().getEmployeeID() + "', "
                 + "'" + LocalDate.now().toString() + "')";
 
         if (DatabaseManager.add(sql)) {
