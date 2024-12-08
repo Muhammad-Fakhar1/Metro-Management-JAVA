@@ -6,11 +6,11 @@ import java.util.ArrayList;
 public class Workforce {
 
     public static Employee getEmployee(int employeeID) {
-      return getEmployee("EmployeeID",Integer.toString(employeeID));
+        return getEmployee("EmployeeID", Integer.toString(employeeID));
     }
-    
-    public static Employee getEmployee(String attribute,String value) {
-        String sql = "SELECT * FROM Employees WHERE "+attribute+" = '" + value + "'";
+
+    public static Employee getEmployee(String attribute, String value) {
+        String sql = "SELECT * FROM Employees WHERE " + attribute + " = '" + value + "'";
         ResultSet rs = null;
         Employee employee = null;
 
@@ -46,7 +46,6 @@ public class Workforce {
 
         return employee;
     }
-    
 
     public static ArrayList<Employee> getAllEmployees(String Attribute, String Value) {
         String sql = "SELECT * FROM Employees WHERE " + Attribute + " = '" + Value + "'";
