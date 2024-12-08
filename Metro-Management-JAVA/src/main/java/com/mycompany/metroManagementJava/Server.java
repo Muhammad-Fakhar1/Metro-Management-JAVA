@@ -82,7 +82,7 @@ public class Server {
         switch (type) {
             case "PRODUCT":
                 identifier = in.readLine();
-                Product product = Assets.getProduct(identifier);
+                Product product = Assets.getProduct(Integer.parseInt(identifier));
                 if (product != null) {
                     out.println(objectMapper.writeValueAsString(product));
                 } else {
@@ -145,14 +145,14 @@ public class Server {
                 }
                 break;
             case "REPORT":
-                identifier=in.readLine();
+                identifier = in.readLine();
                 Report report = ReportManager.getReport(Integer.parseInt(identifier));
                 if (report != null) {
                     out.println(objectMapper.writeValueAsString(report));
                 } else {
                     out.println("null");
-                } 
-                out.flush();      
+                }
+                out.flush();
             default:
                 out.println("Invalid type");
                 break;
@@ -174,7 +174,7 @@ public class Server {
                 try {
                     Product product = objectMapper.readValue(objectString, Product.class);
                     if (DataEntryManager.addProduct(product, id1, id2)) {
-                        out.println("Product added successfully");
+                        out.println(Assets.getProduct("title", product.getTitle()));
                     } else {
                         out.println("Failed to add product");
                     }
@@ -188,7 +188,7 @@ public class Server {
                 try {
                     Employee employee = objectMapper.readValue(objectString, Employee.class);
                     if (BranchManager.addEmployee(employee)) {
-                        out.println("Employee added successfully");
+                        out.println(Workforce.getEmployee("Name", employee.getName()));
                     } else {
                         out.println("Failed to add employee");
                     }
@@ -202,9 +202,9 @@ public class Server {
                 try {
                     Vendor vendor = objectMapper.readValue(objectString, Vendor.class);
                     if (DataEntryManager.addVendor(vendor)) {
-                        out.println("Vendor added successfully");
+                        out.println(Assets.getVendor("Name",vendor.getName()));
                     } else {
-                        out.println("Failed to add vendor");
+                        out.println("null");
                     }
                 } catch (Exception e) {
                     out.println("Error parsing vendor JSON");
@@ -246,7 +246,7 @@ public class Server {
                 int requiredQuantity = Integer.parseInt(in.readLine());
 
                 Order order = objectMapper.readValue(orderJson, Order.class);
-                Product product = Assets.getProduct(productID);
+                Product product = Assets.getProduct(Integer.parseInt(productID));
 
                 if (CashierManager.addProductToOrder(order, product, requiredQuantity)) {
                     out.println(objectMapper.writeValueAsString(order));
@@ -328,8 +328,8 @@ public class Server {
                 String orderJson = in.readLine();
                 int employeeID = Integer.parseInt(in.readLine());
                 Order order = objectMapper.readValue(orderJson, Order.class);
-                Employee emp=Workforce.getEmployee(employeeID);
-                Order checkedOut = CashierManager.checkout(order, employeeID,emp.getBranchCode());
+                Employee emp = Workforce.getEmployee(employeeID);
+                Order checkedOut = CashierManager.checkout(order, employeeID, emp.getBranchCode());
                 if (checkedOut != null) {
                     out.println(objectMapper.writeValueAsString(checkedOut));
                 } else {

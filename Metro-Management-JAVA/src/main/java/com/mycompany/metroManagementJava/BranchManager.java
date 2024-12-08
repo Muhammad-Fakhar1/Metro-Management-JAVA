@@ -15,7 +15,14 @@ public class BranchManager {
                 + "'" + employee.getRole().toString() + "', "
                 + employee.isActive() + ")";
 
-        return DatabaseManager.add(sql);
+        if (DatabaseManager.add(sql)) {
+            String updateBranchSql = "UPDATE branches SET EmployeeCount = EmployeeCount + 1 WHERE branchID ='" + employee.getBranchCode() + "'";
+            DatabaseManager.update(updateBranchSql);
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public static boolean removeEmployee(String employeeID) {

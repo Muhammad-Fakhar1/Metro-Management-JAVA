@@ -27,13 +27,13 @@ public class DataEntryManager {
 
             String log = EmployeeID + "," + product.getProductID() + "," + product.getQuantity() + "," + todayDate + "," + purchaseAmount;
 
-            String checkSql = "SELECT Quantity FROM products WHERE Title = '" + product.getTitle()+ "' AND branchCode='";
+            String checkSql = "SELECT Quantity FROM products WHERE Title = '" + product.getTitle() + "' AND branchCode='" + product.getBranchCode() + "'";
             ResultSet rs = DatabaseManager.get(checkSql);
 
             if (rs.next()) {
                 int existingQuantity = rs.getInt("Quantity");
                 int newQuantity = existingQuantity + product.getQuantity();
-                String updateSql = "UPDATE products SET Quantity = " + newQuantity + " WHERE Title = '" + product.getTitle()+ "'";
+                String updateSql = "UPDATE products SET Quantity = " + newQuantity + " WHERE Title = '" + product.getTitle() + "' AND branchCode='" + product.getBranchCode() + "'";
                 rs.close();
                 if (!DatabaseManager.add(updateSql)) {
                     System.out.println("Failed to update product quantity for ProductID: " + product.getProductID());
@@ -41,14 +41,15 @@ public class DataEntryManager {
                 }
             } else {
                 rs.close();
-                String insertSql = "INSERT INTO products (Title, OriginalPrice, Category, UnitPrice, CartonPrice, Description, Quantity) VALUES ('"
+                String insertSql = "INSERT INTO products (Title, OriginalPrice, Category, UnitPrice, CartonPrice, Description, Quantity, branchCode) VALUES ('"
                         + product.getTitle() + "', "
                         + product.getOriginalPrice() + ", '"
                         + product.getCategory() + "', "
                         + product.getUnitPrice() + ", "
                         + product.getCartonPrice() + ", '"
                         + product.getDescription() + "', "
-                        + product.getQuantity()
+                        + product.getQuantity() + ", "
+                        + product.getBranchCode()
                         + ")";
 
                 if (!DatabaseManager.add(insertSql)) {
@@ -71,7 +72,7 @@ public class DataEntryManager {
             }
             rs2.close();
 
-            String categoryUpdateSql = "UPDATE category SET productCount = productCount + 1 WHERE categoryTitle = '" + product.getCategory() + "'";
+            String categoryUpdateSql = "UPDATE category SET productCount = productCount + 1 WHERE categoryTitle = '" + product.getCategory() + "' AND branchCode='" + product.getBranchCode() + "'";
             if (!DatabaseManager.update(categoryUpdateSql)) {
                 return false;
             }
@@ -91,9 +92,8 @@ public class DataEntryManager {
     }
 
     public static boolean removeProduct(int productID) {
-        String sql = "DELETE FROM products WHERE ProductID = '" + productID + "'";
-        boolean result;
-        result = DatabaseManager.delete(sql);
+        String sql = "DELETE FROM products WHERE ProductID = " + productID;
+        boolean result = DatabaseManager.delete(sql);
         if (result) {
             String log = "Removed product with ProductID: " + productID;
             logAction(log);
@@ -106,7 +106,7 @@ public class DataEntryManager {
     }
 
     public static boolean addVendor(Vendor vendor) {
-        String sql = "INSERT INTO vendors (Name, ContactInfo, AmountSpent, Active,branchCode) VALUES ('"
+        String sql = "INSERT INTO vendors (Name, ContactInfo, AmountSpent, Active, branchCode) VALUES ('"
                 + vendor.getName() + "', '"
                 + vendor.getContactInfo() + "', "
                 + vendor.getAmountSpent() + ", "
@@ -128,7 +128,7 @@ public class DataEntryManager {
     }
 
     public static boolean removeVendor(int vendorID) {
-        String sql = "UPDATE vendors SET Active = FALSE WHERE VendorID = '" + vendorID + "'";
+        String sql = "UPDATE vendors SET Active = FALSE WHERE VendorID = " + vendorID;
         boolean result = DatabaseManager.add(sql);
 
         if (result) {
@@ -148,7 +148,7 @@ public class DataEntryManager {
                 + category.getProductCount() + ", "
                 + category.getGSTRate() + ", '"
                 + category.getDescription() + "', "
-                + (category.isActive() ? "TRUE" : "FALSE")
+                + (category.isActive() ? "TRUE" : "FALSE") + ", "
                 + ")";
 
         boolean result = DatabaseManager.add(sql);
