@@ -19,7 +19,7 @@ public class SuperAdminDashboard extends BaseFrame {
     private Body sab;
 
     public SuperAdminDashboard(Employee superAdmin, Branch branch) {
-        super("Super Admin", superAdmin.getName(), branch.getName(), 0.80, 0.75);
+        super("Super Admin", superAdmin, branch.getName(), 0.80, 0.75);
 
         this.branch = branch;
         this.superAdmin = superAdmin;

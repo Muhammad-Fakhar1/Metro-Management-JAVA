@@ -25,14 +25,14 @@ public abstract class BaseFrame extends JFrame {
     private final double HEIGHT_RATIO;
     private Dimension screenSize;
 
-    public BaseFrame(String title, String username, String branchName, double WIDTH_RATIO, double HEIGHT_RATIO) {
+    public BaseFrame(String title, Employee e, String branchName, double WIDTH_RATIO, double HEIGHT_RATIO) {
         super(title);
         this.WIDTH_RATIO = WIDTH_RATIO;
         this.HEIGHT_RATIO = HEIGHT_RATIO;
 
         setupFrame();
         sidebar = new Sidebar(getWidth(), getHeight());
-        header = new Header(username, branchName, getWidth(), getHeight());
+        header = new Header(e, branchName, getWidth(), getHeight());
         body = new JScrollPane();
 
         setSidebar();

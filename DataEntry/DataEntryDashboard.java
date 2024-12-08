@@ -22,7 +22,7 @@ public class DataEntryDashboard extends BaseFrame {
     private final Branch b;
     
     public DataEntryDashboard(Employee e,Branch b) {
-        super("Data Entry", e.getName(), b.getName(), 0.80, 0.75);
+        super("Data Entry", e, b.getName(), 0.80, 0.75);
         deb = new DashboardUI(body.getWidth(), body.getHeight());
         this.e=e;
         this.b=b;

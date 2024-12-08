@@ -3,6 +3,8 @@ package com.metro.Components;
 import com.formdev.flatlaf.ui.FlatButtonBorder;
 import com.formdev.flatlaf.ui.FlatLineBorder;
 import com.metro.ImageProcessor;
+import com.metro.Info.EmployeeDisplayFrame;
+import com.metro.Models.Employee;
 import com.metro.ThemeManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -12,6 +14,7 @@ import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -23,13 +26,15 @@ public class Header extends JPanel {
     private final int headerHeight;
     private final String userName;
     private final String branchName;
+    private  Employee emp;
     
     //private static JTextField searchField;
 
-    public Header(String name, String branch, int frameWidth, int frameHeight) {
+    public Header(Employee emp, String branch, int frameWidth, int frameHeight) {
         headerHeight = (int) (frameHeight * 0.10);
-        this.userName = name;
+        this.userName = emp.getName();
         this.branchName = branch;
+        this.emp=emp;
         
 //        searchField=new JTextField();
 //        searchField.setPreferredSize(new Dimension(300,25));
@@ -83,9 +88,14 @@ public class Header extends JPanel {
         panel.setBackground(Color.GRAY);
         panel.setPreferredSize(new Dimension(30, 30));
 
-//        JButton actionButton = new JButton("Action");
-//        actionButton.setFont(new Font("Poppins", Font.PLAIN, 12));
-//        actionButton.setFocusPainted(false);
+        JButton actionButton = new JButton();
+        actionButton.setFont(new Font("Poppins", Font.PLAIN, 12));
+        actionButton.setFocusPainted(false);
+        actionButton.setContentAreaFilled(false);
+        actionButton.addActionListener(e->new EmployeeDisplayFrame(emp));
+        
+        panel.add(actionButton);
+        
         rightContent.add(nameLabel);
         rightContent.add(panel);
         rightPanel.add(rightContent);

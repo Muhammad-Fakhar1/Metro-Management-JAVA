@@ -19,7 +19,7 @@ public class BranchManagerDashboard extends BaseFrame {
     private Controller controller;
 
     public BranchManagerDashboard(Employee e,Branch b) {
-        super("Branch Manager", e.getName(), b.getName(), 0.80, 0.75);
+        super("Branch Manager", e, b.getName(), 0.80, 0.75);
         this.e = e;
         this.b=b;
         branchcode=b.getBranchId();

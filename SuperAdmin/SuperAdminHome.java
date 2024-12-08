@@ -11,7 +11,7 @@ public class SuperAdminHome extends BaseFrame{
     private Employee superAdmin;
     
     public SuperAdminHome(Employee superAdmin) {
-        super("Super Admin",superAdmin.getName(),"", 0.80, 0.75);
+        super("Super Admin",superAdmin,"", 0.80, 0.75);
         this.superAdmin=superAdmin;
         sab=new BranchesUI(superAdmin,body.getWidth(), body.getHeight());
         updateBody(sab);    

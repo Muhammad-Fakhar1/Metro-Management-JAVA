@@ -22,7 +22,7 @@ public class CashierDashboard extends BaseFrame {
     private Branch b;
 
     public CashierDashboard(Employee e,Branch b) {
-        super("Cashier", e.getName(), b.getName(), 0.80, 0.75);
+        super("Cashier", e, b.getName(), 0.80, 0.75);
         this.emp = e;
         this.b=b;
         cb = new WorkstationUI(emp.getEmployeeID(), body.getHeight(), body.getWidth());
