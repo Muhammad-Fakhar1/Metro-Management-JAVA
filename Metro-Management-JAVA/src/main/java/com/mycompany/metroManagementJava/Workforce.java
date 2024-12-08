@@ -118,20 +118,22 @@ public class Workforce {
     }
 
     public static boolean updateEmployee(Employee employee) {
-        if(employee!=null){
+        if (employee != null) {
             return false;
         }
-        String sql = "UPDATE Employees SET Name =" 
-                + employee.getName() + ", Password = " 
-                + employee.getPassword() + ", Email = " 
-                + employee.getEmail() + ", CNIC = " 
-                + employee.getCnic() + ", Address = " 
-                + employee.getAddress() + ", PhoneNumber = " 
-                + employee.getPhoneNumber() + ", BranchCode = " 
-                + employee.getBranchCode() + ", Salary = " 
-                + employee.getSalary() + ", Role = " 
-                + employee.getRole() + ", Active = " 
-                + employee.isActive() + " WHERE EmployeeID = ?";
+        String sql = "UPDATE Employees SET Name = '"
+                + employee.getName() + "', Password = '"
+                + employee.getPassword() + "', Email = '"
+                + employee.getEmail() + "', CNIC = '"
+                + employee.getCnic() + "', Address = '"
+                + employee.getAddress() + "', PhoneNumber = '"
+                + employee.getPhoneNumber() + "', BranchCode = '"
+                + employee.getBranchCode() + "', Salary = "
+                + employee.getSalary() + ", Role = '"
+                + employee.getRole() + "', Active = "
+                + employee.isActive() + " WHERE EmployeeID = "
+                + employee.getEmployeeID() + ";";
+
         return DatabaseManager.update(sql);
     }
 
