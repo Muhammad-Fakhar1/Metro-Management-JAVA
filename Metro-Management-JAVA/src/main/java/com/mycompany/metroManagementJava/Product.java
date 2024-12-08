@@ -13,6 +13,7 @@ public class Product {
     private float cartonPrice;
     private String description;
     private int quantity;
+    private int branchCode;
 
     @JsonCreator
     public Product(
@@ -22,7 +23,8 @@ public class Product {
             @JsonProperty("unitPrice") float unitPrice,
             @JsonProperty("cartonPrice") float cartonPrice,
             @JsonProperty("description") String description,
-            @JsonProperty("quantity") int quantity) {
+            @JsonProperty("quantity") int quantity,
+            @JsonProperty("branchCode") int branchCode) {
         this.title = title;
         this.originalPrice = originalPrice;
         this.category = category;
@@ -30,10 +32,11 @@ public class Product {
         this.cartonPrice = cartonPrice;
         this.description = description;
         this.quantity = quantity;
+        this.branchCode=branchCode;
     }
 
-    public Product(int productID,String title, float originalPrice, String category, float unitPrice, float cartonPrice, String description, int quantity) {
-        this.productID=productID;
+    public Product(int productID, String title, float originalPrice, String category, float unitPrice, float cartonPrice, String description, int quantity,int branchCode) {
+        this.productID = productID;
         this.title = title;
         this.originalPrice = originalPrice;
         this.category = category;
@@ -41,9 +44,17 @@ public class Product {
         this.cartonPrice = cartonPrice;
         this.description = description;
         this.quantity = quantity;
+        this.branchCode=branchCode;
     }
 
-    
+    public int getBranchCode() {
+        return branchCode;
+    }
+
+    public void setBranchCode(int branchCode) {
+        this.branchCode = branchCode;
+    }
+
     public int getProductID() {
         return productID;
     }

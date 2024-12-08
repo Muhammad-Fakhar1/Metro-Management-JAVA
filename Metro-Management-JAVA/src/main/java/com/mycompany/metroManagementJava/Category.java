@@ -22,7 +22,7 @@ public class Category {
     public Category(@JsonProperty("title") String title,
             @JsonProperty("productCount") int productCount,
             @JsonProperty("GSTRate") float GSTRate,
-            @JsonProperty("title") String description,
+            @JsonProperty("description") String description,
             @JsonProperty("Active") boolean Active
     ) {
         this.title = title;

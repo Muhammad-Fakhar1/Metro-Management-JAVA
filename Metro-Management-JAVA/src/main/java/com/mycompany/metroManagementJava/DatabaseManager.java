@@ -65,7 +65,9 @@ public class DatabaseManager {
                 + "ContactInfo VARCHAR(255), "
                 + "AmountSpent FLOAT NOT NULL, "
                 + "Active BOOLEAN NOT NULL DEFAULT TRUE, "
-                + "PRIMARY KEY (VendorID)"
+                + "branchCode INT NOT NULL, "
+                + "PRIMARY KEY (VendorID), "
+                + "FOREIGN KEY (branchCode) REFERENCES branches(BranchID)"
                 + ") ENGINE=INNODB;";
 
         String createProductsTableSQL = "CREATE TABLE IF NOT EXISTS products ("
@@ -77,8 +79,10 @@ public class DatabaseManager {
                 + "CartonPrice FLOAT NOT NULL, "
                 + "Description VARCHAR(255), "
                 + "Quantity INT NOT NULL, "
+                + "branchCode INT NOT NULL, "
                 + "PRIMARY KEY (ProductID), "
-                + "FOREIGN KEY (Category) REFERENCES category(categoryTitle)"
+                + "FOREIGN KEY (Category) REFERENCES category(categoryTitle), "
+                + "FOREIGN KEY (branchCode) REFERENCES branches(BranchID)"
                 + ") ENGINE=INNODB;";
 
         String createSalesPurchaseTableSQL = "CREATE TABLE IF NOT EXISTS sales_purchase ("

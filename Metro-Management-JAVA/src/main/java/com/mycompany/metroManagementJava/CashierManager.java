@@ -9,9 +9,9 @@ import java.time.LocalDate;
 
 public class CashierManager {
 
-    private static final String LOG_FILE="CASHIER_LOG_FILE.txt";
+    private static final String LOG_FILE = "CASHIER_LOG_FILE.txt";
 
-    public static boolean checkProductAvailability(Order order, int productID, int requiredQuantity) throws SQLException {
+    private static boolean checkProductAvailability(Order order, int productID, int requiredQuantity) throws SQLException {
         int existingQuantityInOrder = order.existingItemQuantity(productID);
         requiredQuantity += existingQuantityInOrder;
 
@@ -28,28 +28,33 @@ public class CashierManager {
         }
     }
 
-    public static boolean addProductToOrder(Order order, Product product, int requiredQuantity) throws SQLException {
-        if (checkProductAvailability(order, product.getProductID(), requiredQuantity)) {
-            order.addProduct(product, requiredQuantity);
-            return true;
-        } else {
+    public static boolean addProductToOrder(Order order, Product product, int requiredQuantity) {
+        try {
+            if (checkProductAvailability(order, product.getProductID(), requiredQuantity)) {
+                order.addProduct(product, requiredQuantity);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
             return false;
         }
     }
 
-    public static Order checkout(Order order,String EmployeeID) throws SQLException {
+    public static Order checkout(Order order, String EmployeeID) throws SQLException {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE))) {
-        for (OrderItem item : order.getItems()) {
-            int productID = item.getProduct().getProductID();
-            int quantity = item.getQuantity();
-            String log=EmployeeID+","+productID+","+quantity+","+item.getAmount();
-            writer.write(log);
-            writer.newLine();
-            if (!updateProductQuantity(productID, -quantity)) {
-                return null;
+            for (OrderItem item : order.getItems()) {
+                int productID = item.getProduct().getProductID();
+                int quantity = item.getQuantity();
+                String log = EmployeeID + "," + productID + "," + quantity + "," + item.getAmount();
+                writer.write(log);
+                writer.newLine();
+                if (!updateProductQuantity(productID, -quantity)) {
+                    return null;
+                }
             }
-        }
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -7,7 +7,6 @@ import java.time.LocalDate;
 
 public class Branch {
 
-    
     private int branchId;
     private String name;
     private String city;
@@ -26,7 +25,7 @@ public class Branch {
             @JsonProperty("phone") String phone,
             @JsonProperty("isActive") boolean isActive,
             @JsonProperty("numberOfEmployees") int numberOfEmployees,
-            @JsonProperty("dateCreated")@JsonFormat(pattern = "yyyy-MM-dd") LocalDate dateCreated 
+            @JsonProperty("dateCreated") @JsonFormat(pattern = "yyyy-MM-dd") LocalDate dateCreated
     ) {
         this.name = name;
         this.city = city;
@@ -34,10 +33,10 @@ public class Branch {
         this.phone = phone;
         this.isActive = isActive;
         this.numberOfEmployees = numberOfEmployees;
-        this.dateCreated = dateCreated;  
+        this.dateCreated = dateCreated;
     }
 
-    public Branch(int branchId, String name, String city, boolean isActive, String address, String phone, int numberOfEmployees,Employee branchManager, LocalDate date) {
+    public Branch(int branchId, String name, String city, boolean isActive, String address, String phone, int numberOfEmployees, Employee branchManager, LocalDate date) {
         this.branchId = branchId;
         this.name = name;
         this.city = city;
@@ -45,7 +44,7 @@ public class Branch {
         this.address = address;
         this.phone = phone;
         this.numberOfEmployees = numberOfEmployees;
-        this.branchManager=branchManager;
+        this.branchManager = branchManager;
         this.dateCreated = date;
     }
 

@@ -41,14 +41,16 @@ public class DataEntryManager {
                 }
             } else {
                 rs.close();
-                String insertSql = "INSERT INTO products (Title, OriginalPrice, Category, UnitPrice, CartonPrice, Description, Quantity) VALUES ('"
+                String insertSql = "INSERT INTO products (Title, OriginalPrice, Category, UnitPrice, CartonPrice, Description, Quantity,branchCode) VALUES ('"
                         + product.getTitle() + "', "
                         + product.getOriginalPrice() + ", '"
                         + product.getCategory() + "', "
                         + product.getUnitPrice() + ", "
                         + product.getCartonPrice() + ", '"
                         + product.getDescription() + "', "
-                        + product.getQuantity() + ")";
+                        + product.getQuantity() + "', "
+                        +product.getBranchCode()
+                        + ")";
                 if (!DatabaseManager.add(insertSql)) {
                     return false;
                 }
@@ -103,11 +105,14 @@ public class DataEntryManager {
     }
 
     public static boolean addVendor(Vendor vendor) {
-        String sql = "INSERT INTO vendors (Name, ContactInfo, AmountSpent, Active) VALUES ('"
+        String sql = "INSERT INTO vendors (Name, ContactInfo, AmountSpent, Active,branchCode) VALUES ('"
                 + vendor.getName() + "', '"
                 + vendor.getContactInfo() + "', "
                 + vendor.getAmountSpent() + ", "
-                + (vendor.isActive() ? "TRUE" : "FALSE") + ")";
+                + (vendor.isActive() ? "TRUE" : "FALSE") + ", "
+                +vendor.getBranchCode()
+                + ")";
+        
         boolean result = DatabaseManager.add(sql);
 
         if (result) {
@@ -136,7 +141,7 @@ public class DataEntryManager {
         return result;
     }
 
-    public static boolean addCategory(Category category) throws SQLException {
+    public static boolean addCategory(Category category) {
         String sql = "INSERT INTO category (categoryTitle, productCount, GSTRate) VALUES ('"
                 + category.getTitle() + "', "
                 + category.getProductCount() + ", "

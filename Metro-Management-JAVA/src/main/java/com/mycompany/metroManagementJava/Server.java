@@ -55,6 +55,9 @@ public class Server {
                     case "LOGIN":
                         handleLogin(in, out);
                         break;
+                    case "UPDATE":
+                        handleUpdate(in, out);
+                        break;
                     case "CLOSE":
                         out.println("Connection closed by client");
                         return;
@@ -223,6 +226,17 @@ public class Server {
                 }
                 out.flush();
                 break;
+            case "CATEGORY":
+                objectString = in.readLine();
+                Category category = objectMapper.readValue(objectString, Category.class);
+
+                if (DataEntryManager.addCategory(category)) {
+                    out.println("Category added Succesfully");
+                } else {
+                    out.println("Failed to add Category");
+                }
+                out.flush();
+                break;
 
             default:
                 System.out.println("Invalid type received: " + type);
@@ -293,6 +307,21 @@ public class Server {
             out.println("null");
         }
         out.flush();
+    }
+
+    private static void handleUpdate(BufferedReader in, PrintWriter out) throws IOException {
+        String orderJson = in.readLine();
+        String productID = in.readLine();
+        int requiredQuantity = Integer.parseInt(in.readLine());
+
+        Order order = objectMapper.readValue(orderJson, Order.class);
+        Product product = Assets.getProduct(productID);
+
+        if (CashierManager.addProductToOrder(order, product, requiredQuantity)) {
+            out.println("Order Updated");
+        } else {
+            out.println("Failed to update Order");
+        }
     }
 
 }
