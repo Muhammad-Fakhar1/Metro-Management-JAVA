@@ -18,15 +18,19 @@ public class CashierDashboard extends BaseFrame {
         super("Cashier", "Muhammad Fakhar bin Rashid", "Lahore", 0.80, 0.75);
         this.emp = e;
         this.branchCode = e.getBranchCode();
-        cb = new WorkstationUI(emp.getEmployeeID(),body.getHeight(), body.getWidth());
+        cb = new WorkstationUI(emp.getEmployeeID(), body.getHeight(), body.getWidth());
         updateBody(cb, false);
+
+        if ("123456".equals(e.getPassword())) {
+            showPasswordChangeDialog(e);
+        }
     }
 
     @Override
     protected void setSidebar() {
-        sidebar.addButton("Workstation", new ImageIcon("images/home.png"), e -> updateBody(new WorkstationUI(emp.getEmployeeID(),body.getHeight(), body.getWidth()), false));
+        sidebar.addButton("Workstation", new ImageIcon("images/home.png"), e -> updateBody(new WorkstationUI(emp.getEmployeeID(), body.getHeight(), body.getWidth()), false));
         sidebar.addButton("Sales", new ImageIcon("images/users.png"), e -> System.out.println("vendors clicked"));
-        sidebar.addButton("Products", new ImageIcon("images/box.png"), e -> updateBody(new ProductUI(branchCode,body.getWidth(), body.getHeight(), false), true));
+        sidebar.addButton("Products", new ImageIcon("images/box.png"), e -> updateBody(new ProductUI(branchCode, body.getWidth(), body.getHeight(), false), true));
     }
 
     private void updateBody(Body newPanel, boolean scrollable) {

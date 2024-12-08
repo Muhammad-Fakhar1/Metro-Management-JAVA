@@ -13,11 +13,16 @@ public class DataEntryDashboard extends BaseFrame {
     private Body deb;
     private Employee e;
     private int branchCode;
+
     public DataEntryDashboard(Employee e) {
         super("Data Entry", "Muhammad Fakhar bin Rashid", "Lahore", 0.80, 0.75);
         deb = new DashboardUI(body.getWidth(), body.getHeight());
-        this.branchCode=e.getBranchCode();
+        this.branchCode = e.getBranchCode();
         updateBody(deb);
+
+        if ("123456".equals(e.getPassword())) {
+            showPasswordChangeDialog(e);
+        }
     }
 
     @Override
@@ -26,12 +31,12 @@ public class DataEntryDashboard extends BaseFrame {
                 -> updateBody(new DashboardUI(body.getWidth(), body.getHeight())));
 
         sidebar.addButton("Vendors", new ImageIcon("images/users.png"), e
-                -> updateBody(new VendorsUI(e.getID(),branchCode,body.getWidth(), 400, true)));
+                -> updateBody(new VendorsUI(e.getID(), branchCode, body.getWidth(), 400, true)));
 
-        sidebar.addButton("Products", new ImageIcon("images/box.png"), e -> updateBody(new ProductUI(branchCode,body.getWidth(), body.getHeight(), false)));
+        sidebar.addButton("Products", new ImageIcon("images/box.png"), e -> updateBody(new ProductUI(branchCode, body.getWidth(), body.getHeight(), false)));
 
         sidebar.addButton("Categories", new ImageIcon("images/category.png"), e
-                -> updateBody(new CategoryUI(branchCode,body.getWidth(), body.getHeight(),true)));
+                -> updateBody(new CategoryUI(branchCode, body.getWidth(), body.getHeight(), true)));
 
     }
 
