@@ -93,6 +93,16 @@ public class Server {
                 }
                 out.flush();
                 break;
+            case "EMPLOYEE":
+                identifier=in.readLine();
+                Employee emp=Workforce.getEmployee(Integer.parseInt(identifier));
+                
+                if(emp!=null){
+                    out.println(objectMapper.writeValueAsString(emp));
+                }
+                else{
+                    out.println("null");
+                }
             case "ALL_PRODUCTS":
                 identifier = in.readLine();
                 branchCode = Integer.parseInt(identifier);
@@ -150,7 +160,6 @@ public class Server {
                 }
                 out.flush();
                 break;
-
             default:
                 out.println("Invalid type");
                 break;
@@ -237,6 +246,7 @@ public class Server {
                 objectString = in.readLine();
                 Category category = objectMapper.readValue(objectString, Category.class);
 
+                System.out.println(category.toString());
                 if (DataEntryManager.addCategory(category)) {
                     out.println("Category added Succesfully");
                 } else {

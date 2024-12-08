@@ -41,16 +41,17 @@ public class DataEntryManager {
                 }
             } else {
                 rs.close();
-                String insertSql = "INSERT INTO products (Title, OriginalPrice, Category, UnitPrice, CartonPrice, Description, Quantity,branchCode) VALUES ('"
+                String insertSql = "INSERT INTO products (Title, OriginalPrice, Category, UnitPrice, CartonPrice, Description, Quantity, branchCode) VALUES ('"
                         + product.getTitle() + "', "
                         + product.getOriginalPrice() + ", '"
                         + product.getCategory() + "', "
                         + product.getUnitPrice() + ", "
                         + product.getCartonPrice() + ", '"
                         + product.getDescription() + "', "
-                        + product.getQuantity() + "', "
-                        +product.getBranchCode()
+                        + product.getQuantity() + ", "
+                        + product.getBranchCode()
                         + ")";
+
                 if (!DatabaseManager.add(insertSql)) {
                     return false;
                 }
@@ -110,9 +111,9 @@ public class DataEntryManager {
                 + vendor.getContactInfo() + "', "
                 + vendor.getAmountSpent() + ", "
                 + (vendor.isActive() ? "TRUE" : "FALSE") + ", "
-                +vendor.getBranchCode()
+                + vendor.getBranchCode()
                 + ")";
-        
+
         boolean result = DatabaseManager.add(sql);
 
         if (result) {
@@ -142,10 +143,14 @@ public class DataEntryManager {
     }
 
     public static boolean addCategory(Category category) {
-        String sql = "INSERT INTO category (categoryTitle, productCount, GSTRate) VALUES ('"
+        String sql = "INSERT INTO category (categoryTitle, productCount, GSTRate, description, Active) VALUES ('"
                 + category.getTitle() + "', "
                 + category.getProductCount() + ", "
-                + category.getGSTRate() + ")";
+                + category.getGSTRate() + ", '"
+                + category.getDescription() + "', "
+                + (category.isActive() ? "TRUE" : "FALSE")
+                + ")";
+
         boolean result = DatabaseManager.add(sql);
 
         if (result) {

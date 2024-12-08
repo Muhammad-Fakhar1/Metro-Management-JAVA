@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,9 +32,9 @@ public class Assets {
         return categories;
     }
 
-    public static ArrayList<Vendor> getAllVendors() {
+    public static ArrayList<Vendor> getAllVendors(int branchCode) {
         ArrayList<Vendor> vendors = new ArrayList<>();
-        String sql = "SELECT * FROM vendors";
+        String sql = "SELECT * FROM vendors WHERE branchCode='"+branchCode+"'";
         try {
             ResultSet rs = DatabaseManager.get(sql);
 
@@ -59,9 +58,9 @@ public class Assets {
         return vendors;
     }
 
-    public static ArrayList<Product> getAllProducts() {
+    public static ArrayList<Product> getAllProducts(int branchCode) {
         ArrayList<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM Products";
+        String sql = "SELECT * FROM Products WHERE branchCode='"+branchCode+"'";
         try {
             ResultSet rs = DatabaseManager.get(sql);
             while (rs.next()) {

@@ -71,4 +71,10 @@ public class Category {
     public void setGSTRate(float GSTRate) {
         this.GSTRate = GSTRate;
     }
+
+    @Override
+    public String toString() {
+        return "Category{" + "title=" + title + ", productCount=" + productCount + ", GSTRate=" + GSTRate + ", description=" + description + ", Active=" + Active + '}';
+    }
+    
 }

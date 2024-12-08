@@ -48,4 +48,6 @@ public class ReportManager {
     public static double getAllTotalSale() throws SQLException {
         return getTotalAmount(null, null, "sale");
     }
+    
+    
 }
