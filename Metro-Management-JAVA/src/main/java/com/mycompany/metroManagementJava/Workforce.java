@@ -83,12 +83,12 @@ public class Workforce {
     }
 
     public static ArrayList<Employee> getAllEmployees(int branchCode) {
-        String bCode=Integer.toString(branchCode);
+        String bCode = Integer.toString(branchCode);
         return getAllEmployees("BranchCode", bCode);
     }
 
-   public static double getSalaryExpenditure() {
-        String sql = "SELECT SUM(Salary) AS Salary FROM Employees WHERE Active = TRUE";
+    public static double getSalaryExpenditure(int branchCode) {
+        String sql = "SELECT SUM(Salary) AS Salary FROM Employees WHERE Active = TRUE AND branchCode = " + branchCode;
         ResultSet rs = null;
         double totalSalaryExpenditure = 0.0;
 
@@ -112,6 +112,5 @@ public class Workforce {
         System.out.println(totalSalaryExpenditure);
         return totalSalaryExpenditure;
     }
-
 
 }

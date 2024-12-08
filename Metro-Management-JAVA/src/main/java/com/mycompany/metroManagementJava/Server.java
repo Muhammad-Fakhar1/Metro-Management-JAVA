@@ -145,7 +145,8 @@ public class Server {
                 }
                 break;
             case "REPORT":
-                Report report = ReportManager.getReport();
+                identifier=in.readLine();
+                Report report = ReportManager.getReport(Integer.parseInt(identifier));
                 if (report != null) {
                     out.println(objectMapper.writeValueAsString(report));
                 } else {
@@ -268,7 +269,7 @@ public class Server {
         switch (type) {
             case "PRODUCT":
                 identifier = in.readLine();
-                if (DataEntryManager.removeProduct(identifier)) {
+                if (DataEntryManager.removeProduct(Integer.parseInt(identifier))) {
                     out.println("Product Removed");
                 } else {
                     out.println("Failed to Remove Product");
@@ -276,7 +277,7 @@ public class Server {
                 break;
             case "VENDOR":
                 identifier = in.readLine();
-                if (DataEntryManager.removeVendor(identifier)) {
+                if (DataEntryManager.removeVendor(Integer.parseInt(identifier))) {
                     out.println("Vendor Removed");
                 } else {
                     out.println("Failed to Remove Vendor");

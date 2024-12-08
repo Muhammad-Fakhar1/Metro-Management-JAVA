@@ -90,8 +90,11 @@ public class DatabaseManager {
                 + "date DATE NOT NULL, "
                 + "sale FLOAT NOT NULL, "
                 + "purchase FLOAT NOT NULL, "
-                + "PRIMARY KEY (date)"
+                + "branchCode INT NOT NULL, "
+                + "PRIMARY KEY (date, branchCode), "
+                + "FOREIGN KEY (branchCode) REFERENCES branches(branchID) "
                 + ") ENGINE=INNODB;";
+        
 
         String alterBranchesTableSQL = "ALTER TABLE branches "
                 + "ADD CONSTRAINT FK_BranchManager FOREIGN KEY (BranchManager) REFERENCES employees(EmployeeID);";
@@ -224,6 +227,7 @@ public class DatabaseManager {
     }
 
     private static class ReconnectTask implements Runnable {
+
         @Override
         public void run() {
             while (true) {
