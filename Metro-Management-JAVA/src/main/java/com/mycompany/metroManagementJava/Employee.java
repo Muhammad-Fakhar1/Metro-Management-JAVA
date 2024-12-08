@@ -1,12 +1,14 @@
 package com.mycompany.metroManagementJava;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 
 public class Employee {
 
+    @JsonIgnore
     private int EmployeeID;
     private String name;
     private String email;
@@ -14,7 +16,7 @@ public class Employee {
     private String Password;
     private String address;
     private String phoneNumber;
-    private String branchCode;
+    private int branchCode;
     private float salary;
     private boolean active;
     private Role role;
@@ -22,13 +24,12 @@ public class Employee {
 
     @JsonCreator
     public Employee(
-            @JsonProperty("EmployeeID") int id,
             @JsonProperty("Name") String Name,
             @JsonProperty("email") String email,
             @JsonProperty("cnic") String cnic,
             @JsonProperty("address") String address,
             @JsonProperty("phoneNumber") String phoneNumber,
-            @JsonProperty("branchCode") String branchCode,
+            @JsonProperty("branchCode") int branchCode,
             @JsonProperty("salary") float salary,
             @JsonProperty("role") Role role,
             @JsonProperty("active") boolean active
@@ -45,7 +46,7 @@ public class Employee {
         this.active = active;
     }
 
-    public Employee(int EmployeeID, String Name, String Password, String email, String cnic, String address, String phoneNumber, String branchCode, float salary, boolean active, Role role) {
+    public Employee(int EmployeeID, String Name, String Password, String email, String cnic, String address, String phoneNumber, int branchCode, float salary, boolean active, Role role) {
         this.EmployeeID = EmployeeID;
         this.name = Name;
         this.Password = Password;
@@ -83,11 +84,11 @@ public class Employee {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getBranchCode() {
+    public int getBranchCode() {
         return branchCode;
     }
 
-    public void setBranchhCode(String branchhCode) {
+    public void setBranchhCode(int branchhCode) {
         this.branchCode = branchhCode;
     }
 
@@ -147,7 +148,7 @@ public class Employee {
         this.email = email;
     }
 
-    public void setBranchCode(String branchCode) {
+    public void setBranchCode(int branchCode) {
         this.branchCode = branchCode;
     }
 

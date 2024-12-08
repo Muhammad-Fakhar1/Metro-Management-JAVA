@@ -21,7 +21,7 @@ public class LoginManager {
                             rs.getString("CNIC"),
                             rs.getString("Address"),
                             rs.getString("PhoneNumber"),
-                            rs.getString("BranchCode"),
+                            rs.getInt("BranchCode"),
                             rs.getFloat("Salary"),
                             rs.getBoolean("Active"),
                             Role.valueOf(rs.getString("Role"))
