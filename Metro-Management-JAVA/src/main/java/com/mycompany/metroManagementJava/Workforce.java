@@ -20,7 +20,7 @@ public class Workforce {
                 String CNIC = rs.getString("CNIC");
                 String address = rs.getString("Address");
                 String phoneNumber = rs.getString("PhoneNumber");
-                String branch = rs.getString("BranchCode");
+                int branch = rs.getInt("BranchCode");
                 float salary = rs.getFloat("Salary");
                 String roleString = rs.getString("Role");
                 Role role = Role.valueOf(roleString.toUpperCase());
@@ -58,7 +58,7 @@ public class Workforce {
                 String CNIC = rs.getString("CNIC");
                 String address = rs.getString("Address");
                 String phoneNumber = rs.getString("PhoneNumber");
-                String branch = rs.getString("BranchCode");
+                int branch = rs.getInt("BranchCode");
                 float salary = rs.getFloat("Salary");
                 String roleString = rs.getString("Role");
                 Role role = Role.valueOf(roleString.toUpperCase());
