@@ -87,4 +87,30 @@ public class Workforce {
         return getAllEmployees("BranchCode", bCode);
     }
 
+   public static double getSalaryExpenditure() {
+        String sql = "SELECT SUM(Salary) AS Salary FROM Employees WHERE Active = TRUE";
+        ResultSet rs = null;
+        double totalSalaryExpenditure = 0.0;
+
+        try {
+            rs = DatabaseManager.get(sql);
+            if (rs.next()) {
+                totalSalaryExpenditure = rs.getDouble("totalSalary");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return totalSalaryExpenditure;
+    }
+
+
 }
