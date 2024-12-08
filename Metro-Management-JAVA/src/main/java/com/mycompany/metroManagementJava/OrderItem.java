@@ -1,10 +1,14 @@
 package com.mycompany.metroManagementJava;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class OrderItem {
     private Product product;
     private int quantity;
 
-    public OrderItem(Product product, int quantity) {
+    @JsonCreator
+    public OrderItem(@JsonProperty("product") Product product, @JsonProperty("quantity") int quantity) {
         this.product = product;
         this.quantity = quantity;
     }

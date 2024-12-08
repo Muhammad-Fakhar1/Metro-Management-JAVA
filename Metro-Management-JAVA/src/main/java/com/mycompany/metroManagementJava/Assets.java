@@ -11,7 +11,7 @@ public class Assets {
 
     public static ArrayList<Category> getAllCategories() {
         ArrayList<Category> categories = new ArrayList<>();
-        String sql = "SELECT * FROM categoryList";
+        String sql = "SELECT * FROM category";
         ResultSet rs;
         try {
             rs = DatabaseManager.get(sql);
@@ -32,9 +32,24 @@ public class Assets {
         return categories;
     }
 
+    public static float getCategoryTax(String title) {
+        String sql = "SELECT * FROM category WHERE categoryTitle = ?";
+
+        try {
+            ResultSet rs = DatabaseManager.get(sql);
+            if (rs.next()) {
+                return rs.getFloat("GSTRate");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return 0.0f; 
+    }
+
     public static ArrayList<Vendor> getAllVendors(int branchCode) {
         ArrayList<Vendor> vendors = new ArrayList<>();
-        String sql = "SELECT * FROM vendors WHERE branchCode='"+branchCode+"'";
+        String sql = "SELECT * FROM vendors WHERE branchCode='" + branchCode + "'";
         try {
             ResultSet rs = DatabaseManager.get(sql);
 
@@ -60,7 +75,7 @@ public class Assets {
 
     public static ArrayList<Product> getAllProducts(int branchCode) {
         ArrayList<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM Products WHERE branchCode='"+branchCode+"'";
+        String sql = "SELECT * FROM Products WHERE branchCode='" + branchCode + "'";
         try {
             ResultSet rs = DatabaseManager.get(sql);
             while (rs.next()) {
@@ -87,7 +102,6 @@ public class Assets {
         return products;
     }
 
-    
     public static Product getProduct(String pID) {
         String sql = "SELECT * FROM products WHERE ProductID = '" + pID + "'";
         try {
@@ -101,9 +115,9 @@ public class Assets {
                 float cartonPrice = rs.getFloat("CartonPrice");
                 String description = rs.getString("Description");
                 int quantity = rs.getInt("Quantity");
-                int branchCode=rs.getInt("branchCode");
+                int branchCode = rs.getInt("branchCode");
 
-                return new Product(productID, title, originalPrice, category, unitPrice, cartonPrice, description, quantity,branchCode);
+                return new Product(productID, title, originalPrice, category, unitPrice, cartonPrice, description, quantity, branchCode);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -128,10 +142,10 @@ public class Assets {
                 int numberOfEmployees = resultSet.getInt("EmployeeCount");
                 int branchManager = resultSet.getInt("BranchManager");
                 LocalDate dateCreated = resultSet.getDate("DateCreated").toLocalDate();
-                
-                Employee manager=Workforce.getEmployee(branchManager);
 
-                Branch branch = new Branch(branchId, name, city, active, address, phone, numberOfEmployees,manager,dateCreated);
+                Employee manager = Workforce.getEmployee(branchManager);
+
+                Branch branch = new Branch(branchId, name, city, active, address, phone, numberOfEmployees, manager, dateCreated);
                 branches.add(branch);
             }
         } catch (SQLException ex) {

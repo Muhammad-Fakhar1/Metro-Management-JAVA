@@ -42,7 +42,7 @@ public class CashierManager {
         }
     }
 
-    public static Order checkout(Order order, String EmployeeID) throws SQLException {
+    public static Order checkout(Order order, String EmployeeID) {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE))) {
             for (OrderItem item : order.getItems()) {
@@ -55,24 +55,26 @@ public class CashierManager {
                     return null;
                 }
             }
+
+            String todayDate = LocalDate.now().toString();
+
+            ResultSet rs = DatabaseManager.get("SELECT * FROM sales_purchase WHERE date = '" + todayDate + "'");
+            double orderTotalPrice = order.getTotalPrice();
+
+            if (rs.next()) {
+                double currSale = rs.getFloat("sale");
+                double updatedSale = currSale + orderTotalPrice;
+                DatabaseManager.add("UPDATE sales_purchase SET sale = " + updatedSale + " WHERE date = '" + todayDate + "'");
+            } else {
+                DatabaseManager.add("INSERT INTO sales_purchase (date, sale, purchase) VALUES ('" + todayDate + "', " + orderTotalPrice + ", 0)");
+            }
+
+            order.setStatus("Checked Out");
         } catch (IOException e) {
             e.printStackTrace();
+        } catch(SQLException ex){
+            ex.printStackTrace();
         }
-
-        String todayDate = LocalDate.now().toString();
-
-        ResultSet rs = DatabaseManager.get("SELECT * FROM sales_purchase WHERE date = '" + todayDate + "'");
-        double orderTotalPrice = order.getTotalPrice();
-
-        if (rs.next()) {
-            double currSale = rs.getFloat("sale");
-            double updatedSale = currSale + orderTotalPrice;
-            DatabaseManager.add("UPDATE sales_purchase SET sale = " + updatedSale + " WHERE date = '" + todayDate + "'");
-        } else {
-            DatabaseManager.add("INSERT INTO sales_purchase (date, sale, purchase) VALUES ('" + todayDate + "', " + orderTotalPrice + ", 0)");
-        }
-
-        order.setStatus("Checked Out");
         return order;
     }
 

@@ -1,22 +1,33 @@
 package com.mycompany.metroManagementJava;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
+
     private List<OrderItem> items;
     private String status;
-    private double totalPrice; 
+    private double totalPrice;
 
     public Order() {
         this.items = new ArrayList<>();
         this.status = "Pending";
         this.totalPrice = 0.0;
     }
+    @JsonCreator
+    public Order(@JsonProperty("items") List<OrderItem> items,
+                 @JsonProperty("status") String status,
+                 @JsonProperty("totalPrice") double totalPrice) {
+        this.items = items;
+        this.status = status;
+        this.totalPrice = totalPrice;
+    }
 
     public void addProduct(Product product, int quantity) {
         for (OrderItem item : items) {
-            if (item.getProduct().getProductID()==product.getProductID()) {
+            if (item.getProduct().getProductID() == product.getProductID()) {
                 item.setQuantity(item.getQuantity() + quantity);
                 recalculateTotalPrice();
                 return;
@@ -27,9 +38,19 @@ public class Order {
     }
 
     private void recalculateTotalPrice() {
-        totalPrice = 0.0;
-        for (OrderItem item : items) {
-            totalPrice += item.getProduct().getOriginalPrice() * item.getQuantity();
+        totalPrice = 0.0f;
+
+        for (OrderItem orderItem : items) {
+            Product product = orderItem.getProduct();
+
+            if (product != null) {
+                float unitPrice = product.getUnitPrice();
+                float categoryTaxRate = Assets.getCategoryTax(product.getCategory());
+                float taxAmount = unitPrice * categoryTaxRate;
+                float unitRetailPrice = unitPrice + taxAmount;
+
+                totalPrice += unitRetailPrice * orderItem.getQuantity();
+            }
         }
     }
 
@@ -39,11 +60,11 @@ public class Order {
 
     public int existingItemQuantity(int productID) {
         for (OrderItem item : items) {
-            if (item.getProduct().getProductID()==productID) {
+            if (item.getProduct().getProductID() == productID) {
                 return item.getQuantity();
             }
         }
-        return 0; 
+        return 0;
     }
 
     public String getStatus() {

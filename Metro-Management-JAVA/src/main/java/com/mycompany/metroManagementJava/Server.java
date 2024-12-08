@@ -2,8 +2,8 @@ package com.mycompany.metroManagementJava;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import java.io.BufferedReader;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -29,11 +29,9 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 threadPool.execute(() -> handleClient(socket));
             }
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     private static void handleClient(Socket socket) {
@@ -74,7 +72,6 @@ public class Server {
                 System.err.println("Error closing socket: " + e.getMessage());
             }
         }
-
     }
 
     private static void handleGet(BufferedReader in, PrintWriter out) throws IOException {
@@ -91,86 +88,73 @@ public class Server {
                 } else {
                     out.println("null");
                 }
-                out.flush();
                 break;
             case "EMPLOYEE":
-                identifier=in.readLine();
-                Employee emp=Workforce.getEmployee(Integer.parseInt(identifier));
-                
-                if(emp!=null){
-                    out.println(objectMapper.writeValueAsString(emp));
-                }
-                else{
+                identifier = in.readLine();
+                Employee employee = Workforce.getEmployee(Integer.parseInt(identifier));
+                if (employee != null) {
+                    out.println(objectMapper.writeValueAsString(employee));
+                } else {
                     out.println("null");
                 }
+                break;
             case "ALL_PRODUCTS":
                 identifier = in.readLine();
                 branchCode = Integer.parseInt(identifier);
                 ArrayList<Product> products = Assets.getAllProducts(branchCode);
                 if (products != null) {
-                    String productsJson = objectMapper.writeValueAsString(products);
-                    out.println(productsJson);
+                    out.println(objectMapper.writeValueAsString(products));
                 } else {
                     out.println("null");
                 }
-                out.flush();
-
                 break;
             case "ALL_VENDORS":
                 identifier = in.readLine();
                 branchCode = Integer.parseInt(identifier);
                 ArrayList<Vendor> vendors = Assets.getAllVendors(branchCode);
                 if (vendors != null) {
-                    String vendorsJson = objectMapper.writeValueAsString(vendors);
-                    out.println(vendorsJson);
+                    out.println(objectMapper.writeValueAsString(vendors));
                 } else {
                     out.println("null");
                 }
-                out.flush();
                 break;
             case "ALL_CATEGORIES":
                 ArrayList<Category> categories = Assets.getAllCategories();
                 if (categories != null) {
-                    String categoriesJson = objectMapper.writeValueAsString(categories);
-                    out.println(categories);
+                    out.println(objectMapper.writeValueAsString(categories));
                 } else {
                     out.println("null");
                 }
-                out.flush();
                 break;
             case "ALL_BRANCHES":
                 ArrayList<Branch> branches = Assets.getAllBranches();
                 if (branches != null) {
-                    String branchesJson = objectMapper.writeValueAsString(branches);
-                    out.println(branchesJson);
+                    out.println(objectMapper.writeValueAsString(branches));
                 } else {
                     out.println("null");
                 }
-                out.flush();
                 break;
             case "ALL_EMPLOYEES":
                 identifier = in.readLine();
                 branchCode = Integer.parseInt(identifier);
                 ArrayList<Employee> branchEmployees = Workforce.getAllEmployees(branchCode);
                 if (branchEmployees != null) {
-                    String brEmployeesJson = objectMapper.writeValueAsString(branchEmployees);
-                    out.println(brEmployeesJson);
+                    out.println(objectMapper.writeValueAsString(branchEmployees));
                 } else {
                     out.println("null");
                 }
-                out.flush();
                 break;
             default:
                 out.println("Invalid type");
                 break;
         }
+        out.flush();
     }
 
     private static void handleAdd(BufferedReader in, PrintWriter out) throws IOException {
         String type = in.readLine();
         String id1;
         String id2;
-
         String objectString;
 
         switch (type) {
@@ -186,14 +170,13 @@ public class Server {
                         out.println("Failed to add product");
                     }
                 } catch (Exception e) {
-                    System.out.println("Error parsing product JSON: " + e.getMessage());
-                    e.printStackTrace();
                     out.println("Error parsing product JSON");
+                    e.printStackTrace();
                 }
                 break;
             case "EMPLOYEE":
+                objectString = in.readLine();
                 try {
-                    objectString = in.readLine();
                     Employee employee = objectMapper.readValue(objectString, Employee.class);
                     if (BranchManager.addEmployee(employee)) {
                         out.println("Employee added successfully");
@@ -201,14 +184,13 @@ public class Server {
                         out.println("Failed to add employee");
                     }
                 } catch (Exception e) {
-                    System.out.println("Error parsing product JSON: " + e.getMessage());
+                    out.println("Error parsing employee JSON");
                     e.printStackTrace();
-                    out.println("Error parsing product JSON");
                 }
                 break;
             case "VENDOR":
+                objectString = in.readLine();
                 try {
-                    objectString = in.readLine();
                     Vendor vendor = objectMapper.readValue(objectString, Vendor.class);
                     if (DataEntryManager.addVendor(vendor)) {
                         out.println("Vendor added successfully");
@@ -216,9 +198,8 @@ public class Server {
                         out.println("Failed to add vendor");
                     }
                 } catch (Exception e) {
-                    System.out.println("Error parsing product JSON: " + e.getMessage());
+                    out.println("Error parsing vendor JSON");
                     e.printStackTrace();
-                    out.println("Error parsing product JSON");
                 }
                 break;
             case "BRANCH_MANAGER":
@@ -230,37 +211,46 @@ public class Server {
                 } else {
                     out.println("Failed to add Branch Manager");
                 }
-                out.flush();
                 break;
             case "BRANCH":
                 objectString = in.readLine();
                 Branch branch = objectMapper.readValue(objectString, Branch.class);
                 if (SuperAdmin.addBranch(branch)) {
-                    out.println("Branch added Succesfully");
+                    out.println("Branch added successfully");
                 } else {
                     out.println("Failed to add Branch");
                 }
-                out.flush();
                 break;
             case "CATEGORY":
                 objectString = in.readLine();
                 Category category = objectMapper.readValue(objectString, Category.class);
-
-                System.out.println(category.toString());
                 if (DataEntryManager.addCategory(category)) {
-                    out.println("Category added Succesfully");
+                    out.println("Category added successfully");
                 } else {
                     out.println("Failed to add Category");
                 }
                 out.flush();
                 break;
+            case "PRODUCT_TO_ORDER":
+                String orderJson = in.readLine();
+                String productID = in.readLine();
+                int requiredQuantity = Integer.parseInt(in.readLine());
 
+                Order order = objectMapper.readValue(orderJson, Order.class);
+                Product product = Assets.getProduct(productID);
+
+                if (CashierManager.addProductToOrder(order, product, requiredQuantity)) {
+                    out.println(objectMapper.writeValueAsString(order));
+                } else {
+                    out.println("Failed to update Order");
+                }
+                out.flush();
+                break;
             default:
-                System.out.println("Invalid type received: " + type);
                 out.println("Invalid type");
                 break;
         }
-
+        out.flush();
     }
 
     private static void handleRemove(BufferedReader in, PrintWriter out) throws IOException {
@@ -270,33 +260,27 @@ public class Server {
         switch (type) {
             case "PRODUCT":
                 identifier = in.readLine();
-
                 if (DataEntryManager.removeProduct(identifier)) {
                     out.println("Product Removed");
                 } else {
                     out.println("Failed to Remove Product");
                 }
-                out.flush();
                 break;
             case "VENDOR":
                 identifier = in.readLine();
-
                 if (DataEntryManager.removeVendor(identifier)) {
                     out.println("Vendor Removed");
                 } else {
                     out.println("Failed to Remove Vendor");
                 }
-                out.flush();
                 break;
             case "CATEGORY":
                 identifier = in.readLine();
-
                 if (DataEntryManager.removeCategory(identifier)) {
                     out.println("Category Removed");
                 } else {
                     out.println("Failed to Remove Category");
                 }
-                out.flush();
                 break;
             case "BRANCH":
                 identifier = in.readLine();
@@ -305,10 +289,12 @@ public class Server {
                 } else {
                     out.println("Failed to Remove Branch");
                 }
-                out.flush();
                 break;
-
+            default:
+                out.println("Invalid type");
+                break;
         }
+        out.flush();
     }
 
     private static void handleLogin(BufferedReader in, PrintWriter out) throws IOException {
@@ -318,8 +304,7 @@ public class Server {
         Employee employee = LoginManager.login(email, password);
 
         if (employee != null) {
-            String employeeJson = objectMapper.writeValueAsString(employee);
-            out.println(employeeJson);
+            out.println(objectMapper.writeValueAsString(employee));
         } else {
             out.println("null");
         }
@@ -327,18 +312,26 @@ public class Server {
     }
 
     private static void handleUpdate(BufferedReader in, PrintWriter out) throws IOException {
-        String orderJson = in.readLine();
-        String productID = in.readLine();
-        int requiredQuantity = Integer.parseInt(in.readLine());
+        String type = in.readLine();
 
-        Order order = objectMapper.readValue(orderJson, Order.class);
-        Product product = Assets.getProduct(productID);
-
-        if (CashierManager.addProductToOrder(order, product, requiredQuantity)) {
-            out.println("Order Updated");
-        } else {
-            out.println("Failed to update Order");
+        switch (type) {
+            case "CHECKOUT":
+                String orderJson = in.readLine();
+                String employeeID=in.readLine();
+                Order order =objectMapper.readValue(orderJson, Order.class);
+                
+                Order checkedOut=CashierManager.checkout(order, employeeID);
+                if(checkedOut!=null){
+                    out.println(objectMapper.writeValueAsString(checkedOut));
+                }
+                else{
+                    out.println("Failed to checkOut");
+                }
+            default:
+                out.println("Invalid type");
+                break;
         }
-    }
+        out.flush();
 
+    }
 }

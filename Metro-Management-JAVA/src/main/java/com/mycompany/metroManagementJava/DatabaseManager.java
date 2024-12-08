@@ -38,7 +38,7 @@ public class DatabaseManager {
                 + "Address VARCHAR(255) NOT NULL, "
                 + "ContactInfo VARCHAR(255), "
                 + "EmployeeCount INT NOT NULL, "
-                + "BranchManager INT, "
+                + "BranchManager INT UNIQUE, "
                 + "DateCreated DATE NOT NULL, "
                 + "PRIMARY KEY (BranchID)"
                 + ") ENGINE=INNODB;";
