@@ -328,8 +328,8 @@ public class Server {
                 String orderJson = in.readLine();
                 int employeeID = Integer.parseInt(in.readLine());
                 Order order = objectMapper.readValue(orderJson, Order.class);
-
-                Order checkedOut = CashierManager.checkout(order, employeeID);
+                Employee emp=Workforce.getEmployee(employeeID);
+                Order checkedOut = CashierManager.checkout(order, employeeID,emp.getBranchCode());
                 if (checkedOut != null) {
                     out.println(objectMapper.writeValueAsString(checkedOut));
                 } else {

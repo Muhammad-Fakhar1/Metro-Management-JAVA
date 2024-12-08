@@ -42,7 +42,7 @@ public class CashierManager {
         }
     }
 
-    public static Order checkout(Order order, int EmployeeID) {
+    public static Order checkout(Order order, int EmployeeID, int branchCode) {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE))) {
             for (OrderItem item : order.getItems()) {
@@ -58,15 +58,15 @@ public class CashierManager {
 
             String todayDate = LocalDate.now().toString();
 
-            ResultSet rs = DatabaseManager.get("SELECT * FROM sales_purchase WHERE date = '" + todayDate + "'");
+            ResultSet rs = DatabaseManager.get("SELECT * FROM sales_purchase WHERE date = '" + todayDate + "' AND branchCode='" + branchCode + "'");
             double orderTotalPrice = order.getTotalPrice();
 
             if (rs.next()) {
                 double currSale = rs.getFloat("sale");
                 double updatedSale = currSale + orderTotalPrice;
-                DatabaseManager.add("UPDATE sales_purchase SET sale = " + updatedSale + " WHERE date = '" + todayDate + "'");
+                DatabaseManager.add("UPDATE sales_purchase SET sale = " + updatedSale + " WHERE date = '" + todayDate + "' AND branchCode='" + branchCode + "'");
             } else {
-                DatabaseManager.add("INSERT INTO sales_purchase (date, sale, purchase) VALUES ('" + todayDate + "', " + orderTotalPrice + ", 0)");
+                DatabaseManager.add("INSERT INTO sales_purchase (date, sale, purchase, branchCode) VALUES ('" + todayDate + "', " + orderTotalPrice + ", 0, " + branchCode + ")");
             }
 
             order.setStatus("Checked Out");
