@@ -328,12 +328,13 @@ public class Server {
 
     private static void handleUpdate(BufferedReader in, PrintWriter out) throws IOException {
         String type = in.readLine();
+        String objectJson;
 
         switch (type) {
             case "CHECKOUT":
-                String orderJson = in.readLine();
+                objectJson = in.readLine();
                 int employeeID = Integer.parseInt(in.readLine());
-                Order order = objectMapper.readValue(orderJson, Order.class);
+                Order order = objectMapper.readValue(objectJson, Order.class);
                 Employee emp = Workforce.getEmployee(employeeID);
                 Order checkedOut = CashierManager.checkout(order, employeeID, emp.getBranchCode());
                 if (checkedOut != null) {
@@ -341,6 +342,17 @@ public class Server {
                 } else {
                     out.println("Failed to checkOut");
                 }
+                break;
+            case "EMPLOYEE":
+                objectJson = in.readLine();
+                Employee employee = objectMapper.readValue(objectJson, Employee.class);
+                if (Workforce.updateEmployee(employee)) {
+                    out.println("Password Changed");
+                } else {
+                    out.println("Failed to Change Password");
+                }
+                out.flush();
+                break;
             default:
                 out.println("Invalid type");
                 break;

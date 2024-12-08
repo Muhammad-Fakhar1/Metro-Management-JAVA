@@ -33,7 +33,8 @@ public class Assets {
     }
 
     public static float getCategoryTax(String title) {
-        String sql = "SELECT * FROM category WHERE categoryTitle = ?";
+        
+        String sql = "SELECT * FROM category WHERE categoryTitle =" + title;
 
         try {
             ResultSet rs = DatabaseManager.get(sql);

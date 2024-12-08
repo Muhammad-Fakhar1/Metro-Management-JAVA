@@ -117,4 +117,22 @@ public class Workforce {
         return totalSalaryExpenditure;
     }
 
+    public static boolean updateEmployee(Employee employee) {
+        if(employee!=null){
+            return false;
+        }
+        String sql = "UPDATE Employees SET Name =" 
+                + employee.getName() + ", Password = " 
+                + employee.getPassword() + ", Email = " 
+                + employee.getEmail() + ", CNIC = " 
+                + employee.getCnic() + ", Address = " 
+                + employee.getAddress() + ", PhoneNumber = " 
+                + employee.getPhoneNumber() + ", BranchCode = " 
+                + employee.getBranchCode() + ", Salary = " 
+                + employee.getSalary() + ", Role = " 
+                + employee.getRole() + ", Active = " 
+                + employee.isActive() + " WHERE EmployeeID = ?";
+        return DatabaseManager.update(sql);
+    }
+
 }
