@@ -2,8 +2,7 @@ package com.mycompany.metroManagementJava;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.YearMonth;
+import java.util.ArrayList;
 
 public class ReportManager {
 
@@ -14,7 +13,7 @@ public class ReportManager {
             throw new IllegalArgumentException("End date should be after start date");
         }
 
-        String query = "SELECT SUM(" + columnName + ") AS total FROM sales_purchase WHERE branchCode=" + branchCode;
+        String query = "SELECT SUM(AS total FROM sales_purchase WHERE branchCode=" + branchCode;
 
         if (startDate != null && endDate != null) {
             query += " AND date BETWEEN '" + startDate.toString() + "' AND '" + endDate.toString() + "'";
@@ -51,40 +50,24 @@ public class ReportManager {
         return getTotalAmount(null, null, "sale", branchCode);
     }
 
-    public static double getMonthlyRevenue(Month month, int branchCode) {
-        int year = LocalDate.now().getYear();
+    public static ArrayList<Report> getReport(int branchCode) {
+        ArrayList<Report> reportList = new ArrayList<>();
+        String query = "SELECT * FROM sales_purchase WHERE branchCode=" + branchCode;
 
-        YearMonth yearMonth = YearMonth.of(year, month);
-        LocalDate firstDayOfMonth = yearMonth.atDay(1);
-        LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
-
-        if (LocalDate.now().isBefore(lastDayOfMonth)) {
-            return 0.0;
-        }
-
-        double revenue = 0.0;
+        ResultSet rs = null;
         try {
-            revenue = getSale(firstDayOfMonth, lastDayOfMonth, branchCode) - getPurchase(firstDayOfMonth, lastDayOfMonth, branchCode) - Workforce.getSalaryExpenditure(branchCode);
+            rs = DatabaseManager.get(query);
+            while (rs!=null&&rs.next()) {
+                LocalDate date = rs.getDate("date").toLocalDate();
+                double sale = rs.getDouble("sale");
+                double purchase = rs.getDouble("purchase");
+                Report report = new Report(date, sale, purchase);
+                reportList.add(report);
+            }
+            rs.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-
-        return revenue;
-    }
-
-    public static Report getReport(int branchCode) {
-        double totalSale = 0.0;
-        double totalPurchase = 0.0;
-        double monthlyRevenue = 0.0;
-
-        try {
-            totalSale = getTotalSale(branchCode);
-            totalPurchase = getTotalPurchase(branchCode);
-            monthlyRevenue = getMonthlyRevenue(LocalDate.now().getMonth(), branchCode);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return new Report(totalSale, totalPurchase, monthlyRevenue);
+        return reportList;
     }
 }

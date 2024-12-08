@@ -146,13 +146,19 @@ public class Server {
                 break;
             case "REPORT":
                 identifier = in.readLine();
-                Report report = ReportManager.getReport(Integer.parseInt(identifier));
-                if (report != null) {
-                    out.println(objectMapper.writeValueAsString(report));
+                ArrayList<Report> reports = ReportManager.getReport(Integer.parseInt(identifier));
+                if (reports != null) {
+                    out.println(objectMapper.writeValueAsString(reports));
                 } else {
                     out.println("null");
                 }
                 out.flush();
+                break;
+            case "ALL_REPORT":
+                identifier = in.readLine();
+                out.println(Assets.getStock(Integer.parseInt(identifier)));
+                out.println(Workforce.getSalaryExpenditure(Integer.parseInt(identifier)));
+                break;
             default:
                 out.println("Invalid type");
                 break;
@@ -202,7 +208,7 @@ public class Server {
                 try {
                     Vendor vendor = objectMapper.readValue(objectString, Vendor.class);
                     if (DataEntryManager.addVendor(vendor)) {
-                        out.println(Assets.getVendor("Name",vendor.getName()));
+                        out.println(Assets.getVendor("Name", vendor.getName()));
                     } else {
                         out.println("null");
                     }
