@@ -9,6 +9,7 @@ public class Vendor {
     private String name;
     private String contactInfo;
     private float amountSpent;
+    private int branchCode;
     boolean isActive;
 
     @JsonCreator
@@ -16,24 +17,33 @@ public class Vendor {
             @JsonProperty("name") String name,
             @JsonProperty("contactInfo") String contactInfo,
             @JsonProperty("amountSpent") float amountSpent,
-            @JsonProperty("active") boolean active
+            @JsonProperty("active") boolean active,
+            @JsonProperty("branchCode") int branchCode
     ) {
         this.name = name;
         this.contactInfo = contactInfo;
         this.amountSpent = amountSpent;
         this.isActive = active;
+        this.branchCode = branchCode;
     }
 
-    public Vendor(int vendorID, String name, String contactInfo, float amountSpent, boolean isActive) {
+    public Vendor(int vendorID, String name, String contactInfo, float amountSpent, boolean isActive, int branchCode) {
         this.vendorID = vendorID;
         this.name = name;
         this.contactInfo = contactInfo;
         this.amountSpent = amountSpent;
         this.isActive = isActive;
+        this.branchCode = branchCode;
     }
-    
 
-    
+    public int getBranchCode() {
+        return branchCode;
+    }
+
+    public void setBranchCode(int branchCode) {
+        this.branchCode = branchCode;
+    }
+
     public int getVendorID() {
         return vendorID;
     }

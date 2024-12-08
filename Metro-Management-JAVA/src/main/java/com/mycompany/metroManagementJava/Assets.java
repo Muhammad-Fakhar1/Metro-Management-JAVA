@@ -45,7 +45,8 @@ public class Assets {
                         rs.getString("Name"),
                         rs.getString("ContactInfo"),
                         rs.getFloat("AmountSpent"),
-                        rs.getBoolean("Active")
+                        rs.getBoolean("Active"),
+                        rs.getInt("branchCode")
                 );
                 vendors.add(vendor);
             }
@@ -72,7 +73,8 @@ public class Assets {
                         rs.getFloat("UnitPrice"),
                         rs.getFloat("CartonPrice"),
                         rs.getString("Description"),
-                        rs.getInt("quantity")
+                        rs.getInt("quantity"),
+                        rs.getInt("branchCode")
                 );
 
                 products.add(product);
@@ -100,8 +102,9 @@ public class Assets {
                 float cartonPrice = rs.getFloat("CartonPrice");
                 String description = rs.getString("Description");
                 int quantity = rs.getInt("Quantity");
+                int branchCode=rs.getInt("branchCode");
 
-                return new Product(productID, title, originalPrice, category, unitPrice, cartonPrice, description, quantity);
+                return new Product(productID, title, originalPrice, category, unitPrice, cartonPrice, description, quantity,branchCode);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
