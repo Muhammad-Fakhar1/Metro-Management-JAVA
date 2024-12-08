@@ -82,8 +82,9 @@ public class Workforce {
         return employees;
     }
 
-    public static ArrayList<Employee> getAllEmployees(String branchCode) {
-        return getAllEmployees("BranchCode", branchCode);
+    public static ArrayList<Employee> getAllEmployees(int branchCode) {
+        String bCode=Integer.toString(branchCode);
+        return getAllEmployees("BranchCode", bCode);
     }
 
 }

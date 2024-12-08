@@ -80,6 +80,7 @@ public class Server {
     private static void handleGet(BufferedReader in, PrintWriter out) throws IOException {
         String type = in.readLine();
         String identifier;
+        int branchCode;
 
         switch (type) {
             case "PRODUCT":
@@ -93,7 +94,9 @@ public class Server {
                 out.flush();
                 break;
             case "ALL_PRODUCTS":
-                ArrayList<Product> products = Assets.getAllProducts();
+                identifier = in.readLine();
+                branchCode = Integer.parseInt(identifier);
+                ArrayList<Product> products = Assets.getAllProducts(branchCode);
                 if (products != null) {
                     String productsJson = objectMapper.writeValueAsString(products);
                     out.println(productsJson);
@@ -104,7 +107,9 @@ public class Server {
 
                 break;
             case "ALL_VENDORS":
-                ArrayList<Vendor> vendors = Assets.getAllVendors();
+                identifier = in.readLine();
+                branchCode = Integer.parseInt(identifier);
+                ArrayList<Vendor> vendors = Assets.getAllVendors(branchCode);
                 if (vendors != null) {
                     String vendorsJson = objectMapper.writeValueAsString(vendors);
                     out.println(vendorsJson);
@@ -133,17 +138,19 @@ public class Server {
                 }
                 out.flush();
                 break;
-            case "EMPLOYEES":
+            case "ALL_EMPLOYEES":
                 identifier = in.readLine();
-                ArrayList<Employee> employees = Workforce.getAllEmployees(identifier);
-                if (employees != null) {
-                    String employeesJson = objectMapper.writeValueAsString(employees);
-                    out.println(employeesJson);
+                branchCode = Integer.parseInt(identifier);
+                ArrayList<Employee> branchEmployees = Workforce.getAllEmployees(branchCode);
+                if (branchEmployees != null) {
+                    String brEmployeesJson = objectMapper.writeValueAsString(branchEmployees);
+                    out.println(brEmployeesJson);
                 } else {
                     out.println("null");
                 }
                 out.flush();
                 break;
+
             default:
                 out.println("Invalid type");
                 break;
