@@ -2,6 +2,8 @@ package com.mycompany.metroManagementJava;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
 
 public class ReportManager {
 
@@ -41,13 +43,48 @@ public class ReportManager {
         return getTotalAmount(startDate, endDate, "purchase");
     }
 
-    public static double getAllTotalPurchase() throws SQLException {
+    public static double getTotalPurchase() throws SQLException {
         return getTotalAmount(null, null, "purchase");
     }
 
-    public static double getAllTotalSale() throws SQLException {
+    public static double getTotalSale() throws SQLException {
         return getTotalAmount(null, null, "sale");
     }
-    
-    
+
+    public static double getMonthlyRevenue(Month month) {
+        int year = LocalDate.now().getYear();
+
+        YearMonth yearMonth = YearMonth.of(year, month);
+        LocalDate firstDayOfMonth = yearMonth.atDay(1);
+        LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
+
+        double revenue = 0.0;
+        try {
+            revenue = getSale(firstDayOfMonth, lastDayOfMonth) - getPurchase(firstDayOfMonth, lastDayOfMonth) - Workforce.getSalaryExpenditure();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return revenue;
+    }
+
+    public static Report getReport() {
+        double totalSale = 0.0;
+        double totalPurchase = 0.0;
+        double monthlyRevenue = 0.0;
+
+        try {
+            totalSale = getTotalSale();
+            totalPurchase = getTotalPurchase();
+
+            monthlyRevenue = getMonthlyRevenue(LocalDate.now().getMonth());  // Use current month
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return new Report(totalSale, totalPurchase, monthlyRevenue);
+    }
+
+
 }

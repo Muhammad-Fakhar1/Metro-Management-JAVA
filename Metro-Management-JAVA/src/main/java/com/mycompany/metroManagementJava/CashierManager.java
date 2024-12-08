@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 public class CashierManager {
 
-    private static final String LOG_FILE = "CASHIER_LOG_FILE.txt";
+    private static final String LOG_FILE = "CASHIER_LOG_FILE";
 
     private static boolean checkProductAvailability(Order order, int productID, int requiredQuantity) throws SQLException {
         int existingQuantityInOrder = order.existingItemQuantity(productID);
@@ -42,7 +42,7 @@ public class CashierManager {
         }
     }
 
-    public static Order checkout(Order order, String EmployeeID) {
+    public static Order checkout(Order order, int EmployeeID) {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE))) {
             for (OrderItem item : order.getItems()) {

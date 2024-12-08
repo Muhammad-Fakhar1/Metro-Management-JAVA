@@ -144,6 +144,15 @@ public class Server {
                     out.println("null");
                 }
                 break;
+            case "REPORT":
+                Report report = ReportManager.getReport();
+
+                if (report != null) {
+                    out.println(objectMapper.writeValueAsString(report));
+                } else {
+                    out.println("null");
+                } 
+                out.flush();      
             default:
                 out.println("Invalid type");
                 break;
@@ -317,14 +326,13 @@ public class Server {
         switch (type) {
             case "CHECKOUT":
                 String orderJson = in.readLine();
-                String employeeID=in.readLine();
-                Order order =objectMapper.readValue(orderJson, Order.class);
-                
-                Order checkedOut=CashierManager.checkout(order, employeeID);
-                if(checkedOut!=null){
+                int employeeID = Integer.parseInt(in.readLine());
+                Order order = objectMapper.readValue(orderJson, Order.class);
+
+                Order checkedOut = CashierManager.checkout(order, employeeID);
+                if (checkedOut != null) {
                     out.println(objectMapper.writeValueAsString(checkedOut));
-                }
-                else{
+                } else {
                     out.println("Failed to checkOut");
                 }
             default:

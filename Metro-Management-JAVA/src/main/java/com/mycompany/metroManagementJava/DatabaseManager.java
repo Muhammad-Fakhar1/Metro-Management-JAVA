@@ -9,6 +9,7 @@ public class DatabaseManager {
     private static final String USER = "root";
     private static final String PASSWORD = "";
     private static Connection connection;
+    private static boolean waiting = false;
 
     static {
         try {
@@ -65,9 +66,9 @@ public class DatabaseManager {
                 + "ContactInfo VARCHAR(255), "
                 + "AmountSpent FLOAT NOT NULL, "
                 + "Active BOOLEAN NOT NULL DEFAULT TRUE, "
-                + "branchCode INT NOT NULL, "
+                + "BranchCode INT NOT NULL, "
                 + "PRIMARY KEY (VendorID), "
-                + "FOREIGN KEY (branchCode) REFERENCES branches(BranchID)"
+                + "FOREIGN KEY (BranchCode) REFERENCES branches(BranchID)"
                 + ") ENGINE=INNODB;";
 
         String createProductsTableSQL = "CREATE TABLE IF NOT EXISTS products ("
@@ -79,10 +80,10 @@ public class DatabaseManager {
                 + "CartonPrice FLOAT NOT NULL, "
                 + "Description VARCHAR(255), "
                 + "Quantity INT NOT NULL, "
-                + "branchCode INT NOT NULL, "
+                + "BranchCode INT NOT NULL, "
                 + "PRIMARY KEY (ProductID), "
                 + "FOREIGN KEY (Category) REFERENCES category(categoryTitle), "
-                + "FOREIGN KEY (branchCode) REFERENCES branches(BranchID)"
+                + "FOREIGN KEY (BranchCode) REFERENCES branches(BranchID)"
                 + ") ENGINE=INNODB;";
 
         String createSalesPurchaseTableSQL = "CREATE TABLE IF NOT EXISTS sales_purchase ("
@@ -99,11 +100,11 @@ public class DatabaseManager {
                 + "ADD CONSTRAINT FK_BranchCode FOREIGN KEY (BranchCode) REFERENCES branches(BranchID);";
 
         try (Statement stmt = connection.createStatement()) {
-            stmt.executeUpdate(createBranchesTableSQL);
             stmt.executeUpdate(createCategoryTableSQL);
+            stmt.executeUpdate(createBranchesTableSQL);
             stmt.executeUpdate(createEmployeeTableSQL);
-            stmt.executeUpdate(createProductsTableSQL);
             stmt.executeUpdate(createVendorsTableSQL);
+            stmt.executeUpdate(createProductsTableSQL);
             stmt.executeUpdate(createSalesPurchaseTableSQL);
             stmt.executeUpdate(alterBranchesTableSQL);
             stmt.executeUpdate(alterEmployeeTableSQL);
@@ -189,7 +190,10 @@ public class DatabaseManager {
     }
 
     private static synchronized void waitConnection() {
-        new Thread(new ReconnectTask()).start();
+        if (!waiting) {
+            new Thread(new ReconnectTask()).start();
+            waiting = true;
+        }
     }
 
     public static void updateDB() {
@@ -220,13 +224,13 @@ public class DatabaseManager {
     }
 
     private static class ReconnectTask implements Runnable {
-
         @Override
         public void run() {
             while (true) {
                 try {
                     if (checkConnection()) {
                         updateDB();
+                        waiting = false;
                         break;
                     }
                     Thread.sleep(5000);
