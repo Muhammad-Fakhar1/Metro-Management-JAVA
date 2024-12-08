@@ -1,22 +1,31 @@
 package com.metro.DataEntry;
 
+import com.metro.BranchManager.BranchManagerDashboard;
 import com.metro.Components.BaseFrame;
 import com.metro.Components.Body;
+import com.metro.Controller;
+import com.metro.Models.Branch;
 import com.metro.Models.Employee;
 import com.metro.Sections.CategoryUI;
 import com.metro.Sections.ProductUI;
 import com.metro.Sections.VendorsUI;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 public class DataEntryDashboard extends BaseFrame {
 
     private Body deb;
-    private Employee e;
-    private int branchCode;
-
-    public DataEntryDashboard(Employee e) {
-        super("Data Entry", "Muhammad Fakhar bin Rashid", "Lahore", 0.80, 0.75);
+    private final Employee e;
+    private final int branchCode;
+    private final Branch b;
+    
+    public DataEntryDashboard(Employee e,Branch b) {
+        super("Data Entry", e.getName(), b.getName(), 0.80, 0.75);
         deb = new DashboardUI(body.getWidth(), body.getHeight());
+        this.e=e;
+        this.b=b;
         this.branchCode = e.getBranchCode();
         updateBody(deb);
 

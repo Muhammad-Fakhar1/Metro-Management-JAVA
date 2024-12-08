@@ -23,7 +23,7 @@ public class SuperAdminDashboard extends BaseFrame {
 
         this.branch = branch;
         this.superAdmin = superAdmin;
-        sab = new DashboardUI(body.getWidth(), body.getHeight());
+        sab = new DashboardUI(branch.getBranchId(),body.getWidth(), body.getHeight());
         updateBody(sab, false);
 
         if ("123456".equals(superAdmin.getPassword())) {
@@ -33,7 +33,7 @@ public class SuperAdminDashboard extends BaseFrame {
 
     @Override
     protected void setSidebar() {
-        sidebar.addButton("Dashboard", new ImageIcon("images/home.png"), e -> updateBody(new DashboardUI(body.getWidth(), body.getHeight()), false));
+        sidebar.addButton("Dashboard", new ImageIcon("images/home.png"), e -> updateBody(new DashboardUI(branch.getBranchId(),body.getWidth(), body.getHeight()), false));
         sidebar.addButton("Employees", new ImageIcon("images/users.png"), e -> updateBody(new EmployeeUI(branch.getBranchId(), body.getWidth(), body.getHeight()), false));
         sidebar.addButton("Reports", new ImageIcon("images/file.png"), e -> updateBody(new ReportsUI(branch.getBranchId(), body.getWidth(), body.getHeight()), false));
         sidebar.addButton("Products", new ImageIcon("images/box.png"), e -> updateBody(new ProductUI(branch.getBranchId(), body.getWidth(), body.getHeight(), false), true));

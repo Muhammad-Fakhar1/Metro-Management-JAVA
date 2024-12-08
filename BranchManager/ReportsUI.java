@@ -3,6 +3,7 @@ package com.metro.BranchManager;
 import com.formdev.flatlaf.ui.FlatLineBorder;
 import com.metro.Components.RoundedPanel;
 import com.metro.Controller;
+import com.metro.Models.Report;
 import com.metro.ThemeManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -13,6 +14,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
@@ -52,6 +54,11 @@ public final class ReportsUI extends branchManagerBody {
         this.branchCode = branchCode;
         this.dashboardWidth = width;
         this.dashboardHeight = height;
+        try {
+            this.controller = Controller.getInstance();
+        } catch (IOException ex) {
+            Logger.getLogger(ReportsUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(ThemeManager.getBodyBackgroundColor());
         setBorder(new EmptyBorder(0, 15, 0, 15));
@@ -86,8 +93,8 @@ public final class ReportsUI extends branchManagerBody {
         fromField.setBorder(new FlatLineBorder(new Insets(2, 6, 2, 10), Color.lightGray, 1, 10));
         toField.setBorder(new FlatLineBorder(new Insets(2, 6, 2, 10), Color.lightGray, 1, 10));
 
-        fromField.setPreferredSize(new Dimension(fromField.getPreferredSize().width, 30));
-        toField.setPreferredSize(new Dimension(toField.getPreferredSize().width, 30));
+        fromField.setPreferredSize(new Dimension(fromField.getPreferredSize().width, 25));
+        toField.setPreferredSize(new Dimension(toField.getPreferredSize().width, 25));
 
         fromField.setFont(ThemeManager.getPoppinsFont(10, Font.PLAIN));
         toField.setFont(ThemeManager.getPoppinsFont(10, Font.PLAIN));
@@ -242,31 +249,37 @@ public final class ReportsUI extends branchManagerBody {
     }
 
     private void populateTable() {
-        String[][] dummyReports = {
-            {"2024-12-01", "5000", "3000", "2000"},
-            {"2024-12-02", "7000", "4000", "3000"},
-            {"2024-12-03", "8000", "5000", "3000"},
-            {"2024-12-04", "6000", "2000", "4000"},
-            {"2024-12-05", "9000", "7000", "2000"},
-            {"2024-12-06", "10000", "8000", "2000"},};
+        try {
+            ArrayList<Report> reports = controller.getReports(branchCode);
+            tableModel.setRowCount(0);
+            for (Report report : reports) {
+                String[] row = new String[4];
+                row[0] = report.getDate().toString();
+                row[1] = String.valueOf(report.getTotalSale());
+                row[2] = String.valueOf(report.getTotalPurchase());
+                row[3] = String.valueOf(report.getProfit());
+                tableModel.addRow(row);
+            }
 
-        for (String[] report : dummyReports) {
-            tableModel.addRow(report);
+        } catch (IOException ex) {
+            Logger.getLogger(ReportsUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         updateStatistics();
     }
 
     private void updateStatistics() {
-        int SALES = 0, PURCHASE = 0;
+        float SALES = 0, PURCHASE = 0;
 
         for (int i = 0; i < table.getRowCount(); i++) {
             int modelRow = table.convertRowIndexToModel(i);
-            SALES += Integer.parseInt((String) tableModel.getValueAt(modelRow, 1));
-            PURCHASE += Integer.parseInt((String) tableModel.getValueAt(modelRow, 2));
+
+            // Parse the values as float instead of int
+            SALES += Float.parseFloat((String) tableModel.getValueAt(modelRow, 1));
+            PURCHASE += Float.parseFloat((String) tableModel.getValueAt(modelRow, 2));
         }
 
-        int profit = SALES - PURCHASE;
+        float profit = SALES - PURCHASE;
 
         totalSales.setText(Float.toString(SALES));
         totalPurchase.setText(Float.toString(PURCHASE));

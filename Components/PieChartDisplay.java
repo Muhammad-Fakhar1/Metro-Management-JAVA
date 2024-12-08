@@ -13,6 +13,7 @@ import org.knowm.xchart.style.PieStyler.AnnotationType;
 
 import java.util.Map;
 import org.knowm.xchart.PieSeries;
+import org.knowm.xchart.style.Styler;
 
 public class PieChartDisplay extends JPanel {
 
@@ -32,7 +33,12 @@ public class PieChartDisplay extends JPanel {
         chart.getStyler().setAnnotationsFont(ThemeManager.getPoppinsFont(8, Font.BOLD));
  
         chart.getStyler().setAnnotationType(AnnotationType.Percentage);
-        chart.getStyler().setLegendVisible(false);
+        chart.getStyler().setLegendVisible(true);
+        chart.getStyler().setLegendPosition(Styler.LegendPosition.OutsideS);
+        chart.getStyler().setLegendLayout(Styler.LegendLayout.Horizontal);
+        chart.getStyler().setLegendFont(ThemeManager.getPoppinsFont(12, Font.PLAIN));
+        chart.getStyler().setLegendBorderColor(Color.white);
+        
         chart.getStyler().setInfoPanelFont(ThemeManager.getPoppinsFont(8, Font.PLAIN));
         chart.getStyler().setCircular(true);
         chart.getStyler().setDefaultSeriesRenderStyle(PieSeries.PieSeriesRenderStyle.Donut);
@@ -40,6 +46,7 @@ public class PieChartDisplay extends JPanel {
         chart.getStyler().setAnnotationDistance(0.75);
         chart.getStyler().setStartAngleInDegrees(90);
         chart.getStyler().setSeriesColors(ThemeManager.getColorForPieChart());
+        
     }
 
     public void addData(Map<String, Double> data) {

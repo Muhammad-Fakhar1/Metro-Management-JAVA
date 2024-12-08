@@ -1,11 +1,15 @@
 package com.metro.Components;
 
+import com.metro.Controller;
 import com.metro.Models.Employee;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -71,6 +75,13 @@ public abstract class BaseFrame extends JFrame {
         int option = JOptionPane.showConfirmDialog(this, newPasswordField, "Change Password", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (option == JOptionPane.OK_OPTION && newPasswordField.getPassword().length > 0 && !Arrays.equals(newPasswordField.getPassword(), "123456".toCharArray())) {
             e.setPassword(new String(newPasswordField.getPassword()));
+            try {
+                Controller controller = Controller.getInstance();
+                controller.updatePassword(e);
+            } catch (IOException ex) {
+                Logger.getLogger(BaseFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
             enableSidebarButtons();
         } else {
             JOptionPane.showMessageDialog(null, "Choose a password other than '123456'", "Invalid Password", JOptionPane.WARNING_MESSAGE);

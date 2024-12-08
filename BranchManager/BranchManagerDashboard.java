@@ -4,6 +4,8 @@ import com.metro.Sections.VendorsUI;
 import com.metro.Sections.ProductUI;
 import com.metro.Components.BaseFrame;
 import com.metro.Components.Body;
+import com.metro.Controller;
+import com.metro.Models.Branch;
 import com.metro.Models.Employee;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
@@ -13,12 +15,15 @@ public class BranchManagerDashboard extends BaseFrame {
     private Body bmd;
     private Employee e;
     private int branchcode;
+    private Branch b;
+    private Controller controller;
 
-    public BranchManagerDashboard(Employee e) {
-        super("Branch Manager", "Muhammad Fakhar bin Rashid", "Lahore", 0.80, 0.75);
+    public BranchManagerDashboard(Employee e,Branch b) {
+        super("Branch Manager", e.getName(), b.getName(), 0.80, 0.75);
         this.e = e;
-        this.branchcode = e.getBranchCode();
-        bmd = new DashboardUI(body.getWidth(), body.getHeight());
+        this.b=b;
+        branchcode=b.getBranchId();
+        bmd = new DashboardUI(branchcode,body.getWidth(), body.getHeight());
         updateBody(bmd, false);
 
         if ("123456".equals(e.getPassword())) {
@@ -28,7 +33,7 @@ public class BranchManagerDashboard extends BaseFrame {
 
     @Override
     protected void setSidebar() {
-        sidebar.addButton("Dashboard", new ImageIcon("images/home.png"), e -> updateBody(new DashboardUI(body.getWidth(), body.getHeight()), false));
+        sidebar.addButton("Dashboard", new ImageIcon("images/home.png"), e -> updateBody(new DashboardUI(branchcode,body.getWidth(), body.getHeight()), false));
         sidebar.addButton("Employee", new ImageIcon("images/users.png"), e -> {
             updateBody(new EmployeeUI(branchcode, body.getWidth(), body.getHeight()), false);
         });

@@ -13,6 +13,7 @@ import com.metro.Models.Vendor;
 import com.metro.Models.Branch;
 import com.metro.Models.Category;
 import com.metro.Models.Order;
+import com.metro.Models.Report;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,6 +23,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Controller {
 
@@ -91,22 +94,25 @@ public class Controller {
         ArrayList<Employee> employees = objectMapper.readValue(response, new TypeReference<ArrayList<Employee>>() {
         });
 
-        String[][] employeeArray = new String[employees.size()][6];
+        ArrayList<String[]> validEmployees = new ArrayList<>();
 
         for (int i = 0; i < employees.size(); i++) {
-
             Employee emp = employees.get(i);
-            if (emp.getRole() != Role.BRANCH_MANAGER) {
-                employeeArray[i][0] = emp.getCnic();
-                employeeArray[i][1] = emp.getName();
-                employeeArray[i][2] = emp.getPhoneNumber();
-                employeeArray[i][3] = emp.getAddress();
-                employeeArray[i][4] = "Rs. " + emp.getSalary();
-                employeeArray[i][5] = emp.getRole().toString();
+            if (emp.getRole() != Role.BRANCH_MANAGER && emp.getRole() != null) {
+                String[] employeeRow = new String[6];
+                employeeRow[0] = emp.getCnic();
+                employeeRow[1] = emp.getName();
+                employeeRow[2] = emp.getPhoneNumber();
+                employeeRow[3] = emp.getAddress();
+                employeeRow[4] = "Rs. " + emp.getSalary();
+                employeeRow[5] = emp.getRole().toString();
+
+                validEmployees.add(employeeRow);
             }
         }
 
-        return employeeArray;
+        String[][] employeeArray = new String[validEmployees.size()][6];
+        return validEmployees.toArray(employeeArray);
     }
 
     public ArrayList<Branch> getBranches() throws IOException {
@@ -119,6 +125,19 @@ public class Controller {
         });
 
         return branches;
+    }
+
+    public ArrayList<Report> getReports(int branchCode) throws IOException {
+        pw.println("GET");
+        pw.println("REPORT");
+        pw.println(Integer.toString(branchCode));
+
+        String response = br.readLine();
+        System.out.println(response);
+        ArrayList<Report> reports = objectMapper.readValue(response, new TypeReference<ArrayList<Report>>() {
+        });
+
+        return reports;
     }
 
     public ArrayList<Vendor> getVendors(int branchCode) throws IOException {
@@ -154,11 +173,25 @@ public class Controller {
 
         String response = br.readLine();
         if (response == null || response.isEmpty()) {
-            return null; 
+            return null;
         }
         Product product = objectMapper.readValue(response, Product.class);
 
         return product;
+    }
+
+    public Branch getABranch(int branchCode) {
+        try {
+            ArrayList<Branch> branches = getBranches();
+            for (Branch branch : branches) {
+                if (branch.getBranchId() == branchCode) {
+                    return branch;
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public ArrayList<Category> getCategories() throws IOException {
@@ -190,6 +223,24 @@ public class Controller {
             return true;
         }
         return false;
+    }
+
+    public void updatePassword(Employee e) throws IOException {
+        pw.println("UPDATE");
+        pw.println("EMPLOYEE");
+
+        pw.println(objectMapper.writeValueAsString(e));
+
+        String response = br.readLine();
+        System.out.println(response);
+
+        if ("Password Changed".equals(response)) {
+            System.out.println("Password has been successfully updated.");
+        } else if ("Failed to Change Password".equals(response)) {
+            System.out.println("Password update failed.");
+        } else {
+            System.out.println("Unexpected server response: " + response);
+        }
     }
 
     public boolean addVendor(String name, String phone, int branchCode) throws IOException {
@@ -346,4 +397,5 @@ public class Controller {
             System.err.println("Error closing connections: " + e.getMessage());
         }
     }
+
 }

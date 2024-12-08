@@ -9,11 +9,12 @@ public class ThemeManager {
     private static final Color headerBackgroundColor = Color.WHITE;
     private static final Color bodyBackgroundColor = new Color(242, 242, 242);
     private static final Color[] shadesOfBlue = {
+        new Color(0x133A6D),
         new Color(0x4A90E2),
         new Color(0x357ABD),
         new Color(0x2565AE),
         new Color(0x1B4F8E),
-        new Color(0x133A6D)
+
     };
 
     public static Color getSidebarBackgroundColor() {

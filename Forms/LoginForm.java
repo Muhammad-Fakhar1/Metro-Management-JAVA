@@ -5,6 +5,7 @@ import com.metro.Cashier.CashierDashboard;
 import com.metro.Controller;
 import com.metro.DataEntry.DataEntryDashboard;
 import com.metro.ImageProcessor;
+import com.metro.Models.Branch;
 import com.metro.Models.Employee;
 import com.metro.Models.Role;
 import com.metro.SuperAdmin.SuperAdminHome;
@@ -113,18 +114,19 @@ public class LoginForm extends Form {
         }
 
         if (e != null) {
+            Branch b=controller.getABranch(e.getBranchCode());
            
             switch (e.getRole()) {
                 case Role.CASHIER:
-                    new CashierDashboard(e);
+                    new CashierDashboard(e,b);
                     dispose();
                     break;
                 case Role.DATA_ENTRY:
-                    new DataEntryDashboard(e);
+                    new DataEntryDashboard(e,b);
                     dispose();
                     break;
                 case Role.BRANCH_MANAGER:
-                    new BranchManagerDashboard(e);
+                    new BranchManagerDashboard(e,b);
                     dispose();
                     break;
                 case Role.SUPER_ADMIN:
