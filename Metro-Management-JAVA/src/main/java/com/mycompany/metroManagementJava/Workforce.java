@@ -95,7 +95,7 @@ public class Workforce {
         try {
             rs = DatabaseManager.get(sql);
             if (rs.next()) {
-                totalSalaryExpenditure = rs.getDouble("totalSalary");
+                totalSalaryExpenditure = rs.getDouble("Salary");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -109,6 +109,7 @@ public class Workforce {
             }
         }
 
+        System.out.println(totalSalaryExpenditure);
         return totalSalaryExpenditure;
     }
 

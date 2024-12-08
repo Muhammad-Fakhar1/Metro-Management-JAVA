@@ -57,6 +57,10 @@ public class ReportManager {
         YearMonth yearMonth = YearMonth.of(year, month);
         LocalDate firstDayOfMonth = yearMonth.atDay(1);
         LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
+        
+        if(LocalDate.now().isBefore(lastDayOfMonth)){
+            return 0.0;
+        }
 
         double revenue = 0.0;
         try {
@@ -77,7 +81,7 @@ public class ReportManager {
             totalSale = getTotalSale();
             totalPurchase = getTotalPurchase();
 
-            monthlyRevenue = getMonthlyRevenue(LocalDate.now().getMonth());  // Use current month
+            monthlyRevenue = getMonthlyRevenue(LocalDate.now().getMonth()); 
 
         } catch (SQLException e) {
             e.printStackTrace();

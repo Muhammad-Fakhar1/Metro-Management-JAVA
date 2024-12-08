@@ -146,7 +146,6 @@ public class Server {
                 break;
             case "REPORT":
                 Report report = ReportManager.getReport();
-
                 if (report != null) {
                     out.println(objectMapper.writeValueAsString(report));
                 } else {
