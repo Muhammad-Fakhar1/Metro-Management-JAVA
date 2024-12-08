@@ -43,7 +43,7 @@ public abstract class BaseFrame extends JFrame {
         getContentPane().setBackground(Color.white);
         //setResizable(false);
         setLocationRelativeTo(null);
-        getRootPane().putClientProperty("JRootPane.titleBarBackground", Color.white);
+        getRootPane().putClientProperty("JRootPane.titleBarBackground", Color.white);//to change the title bar color
     }
     
     private Dimension getScaledDimension() {

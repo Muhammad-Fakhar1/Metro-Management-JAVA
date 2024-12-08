@@ -5,9 +5,10 @@ import com.formdev.flatlaf.ui.FlatButtonBorder;
 import com.formdev.flatlaf.ui.FlatLineBorder;
 import com.formdev.flatlaf.ui.FlatMarginBorder;
 import com.metro.Components.Body;
-import com.metro.Controller;
 import com.metro.Models.Employee;
 import com.metro.Components.RoundedPanel;
+import com.metro.Forms.BranchCreationForm;
+import com.metro.Forms.VendorRegisterForm;
 import com.metro.ImageProcessor;
 import com.metro.ThemeManager;
 import java.awt.BorderLayout;
@@ -18,6 +19,12 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.time.LocalDate;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -28,31 +35,39 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BranchesUI extends Body {
 
-    private int dashboardWidth;
-    private final int dashboardHeight;
-    private final Controller controller;
+    private int Width;
+    private final int Height;
     private final Employee superAdmin;
     private ArrayList<Branch> branches;
-    private ArrayList<ImageIcon> icons;
+    private final ArrayList<ImageIcon> icons;
     private ArrayList<BranchCard> branchCards;
 
-    private static JTextField searchField;
-    private JButton searchButton;
+    private static JTextField searchingField;
 
     public BranchesUI(Employee superAdmin, int width, int height) {
         this.superAdmin = superAdmin;
-        this.dashboardWidth = width;
-        this.dashboardHeight = height;
-        this.controller = Controller.getInstance();
+        this.Width = width;
+        this.Height = height;
+
         icons = new ArrayList<>();
         branchCards = new ArrayList<>();
 
-        searchField = new JTextField();
-        searchField.setPreferredSize(new Dimension(300, 25));
-        searchField.setBorder(new FlatLineBorder(new Insets(2, 10, 2, 10), new Color(200, 200, 200), 1, 10));
+        searchingField = new JTextField();
+        searchingField.setPreferredSize(new Dimension(300, 20));
+        searchingField.setBorder(new FlatLineBorder(new Insets(0, 10, 0, 10), new Color(200, 200, 200), 1, 10));
+        searchingField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (searchingField.hasFocus() && e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    filterBranches();
+                }
+            }
+        });
 
         getBranches();
         getIcons();
@@ -65,7 +80,7 @@ public class BranchesUI extends Body {
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                dashboardWidth = getWidth();
+                Width = getWidth();
                 removeAll();
                 add(addSection("Select A Branch", "Branch"));
                 revalidate();
@@ -82,13 +97,12 @@ public class BranchesUI extends Body {
         int rows = (int) Math.ceil(size / 3.0);
         double multiplier = 1 + (rows - 1) * 0.7;
 
-        int panelHeight = (int) (dashboardHeight * multiplier);
+        int panelHeight = (int) (Height * multiplier);
 
-//        if (size < 9) {
-//            panelHeight = panelHeight + dashboardHeight - 100;
-//            rows += 1;
-//        }
-
+        if (size < 9) {
+            panelHeight = panelHeight*2 + dashboardHeight;
+            rows += 1;
+        }
         RoundedPanel stats = new RoundedPanel(15);
         stats.setPreferredSize(new Dimension(0, panelHeight));
         stats.setBackground(ThemeManager.getBodyBackgroundColor());
@@ -110,7 +124,7 @@ public class BranchesUI extends Body {
         JButton label = new JButton(ImageProcessor.resizeIcon(new ImageIcon("images/search.png"), 25, 25));
         label.addActionListener(e -> filterBranches());
         rightSide.add(label);
-        rightSide.add(searchField);
+        rightSide.add(searchingField);
 
         panel.add(Label, BorderLayout.WEST);
         panel.add(rightSide, BorderLayout.EAST);
@@ -128,16 +142,18 @@ public class BranchesUI extends Body {
         button.setBackground(Color.WHITE);
         button.setForeground(Color.LIGHT_GRAY);
 
+        button.addActionListener(e -> {
+            openBranchForm();
+        });
+
         container.add(button);
 
-        // Add the cards to the container in the correct order
         for (int i = 0; i < size; i++) {
-            container.add(branchCards.get(i));  // Add the cards as they are sorted
+            container.add(branchCards.get(i));
         }
-       
 
         int placeholders;
-        if (dashboardWidth > 1100) {
+        if (Width > 1100) {
             placeholders = (rows + 1) * 4 - size - 1;
         } else {
             placeholders = (rows + 1) * 3 - size - 1;
@@ -153,7 +169,11 @@ public class BranchesUI extends Body {
     }
 
     private void getBranches() {
-        branches = controller.getBranches();
+        try {
+            branches = controller.getBranches();
+        } catch (IOException ex) {
+            Logger.getLogger(BranchesUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void getIcons() {
@@ -171,7 +191,7 @@ public class BranchesUI extends Body {
     }
 
     private void filterBranches() {
-        String searchText = searchField.getText().toLowerCase();
+        String searchText = searchingField.getText().toLowerCase();
         ArrayList<BranchCard> filteredCards = new ArrayList<>();
         ArrayList<BranchCard> nonFilteredCards = new ArrayList<>();
 
@@ -191,5 +211,40 @@ public class BranchesUI extends Body {
         add(addSection("Select A Branch", "Branch"));
         revalidate();
         repaint();
+    }
+
+    private void openBranchForm() {
+        if (form == null) {
+            form = new BranchCreationForm("Create New Branch", data -> {
+                String name = (String) data.get("name");
+                String city = (String) data.get("city");
+                String address = (String) data.get("address");
+                String phone = (String) data.get("phone");
+                
+                try {
+                    if(controller.addBranch(name, city, address, phone)){
+                        Branch b=new Branch(name, city, address, phone, true, 0, LocalDate.now());
+                        form.dispose();
+                        
+                        branchCards.add(new BranchCard(superAdmin, b, icons));
+                        removeAll();
+                        addSection("Select a Branch", "Branch");
+                        repaint();
+                        revalidate();
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(BranchesUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }, 450, 550);
+            form.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    form = null;
+                }
+            });
+        } else {
+            form.toFront();
+            form.requestFocus();
+        }
     }
 }

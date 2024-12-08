@@ -1,9 +1,14 @@
 package com.metro.Models;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.LocalDate;
 
 public class Branch {
-    private String branchId;
+
+    
+    private int branchId;
     private String name;
     private String city;
     private boolean isActive;
@@ -11,25 +16,44 @@ public class Branch {
     private String phone;
     private int numberOfEmployees;
     private Employee branchManager;
-    private final Date dateCreated;
+    private final LocalDate dateCreated;
 
-    public Branch(String branchId, String name, String city, String address, String phone,Employee manager) {
+    @JsonCreator
+    public Branch(
+            @JsonProperty("name") String name,
+            @JsonProperty("city") String city,
+            @JsonProperty("address") String address,
+            @JsonProperty("phone") String phone,
+            @JsonProperty("isActive") boolean isActive,
+            @JsonProperty("numberOfEmployees") int numberOfEmployees,
+            @JsonProperty("dateCreated")@JsonFormat(pattern = "yyyy-MM-dd") LocalDate dateCreated 
+    ) {
+        this.name = name;
+        this.city = city;
+        this.address = address;
+        this.phone = phone;
+        this.isActive = isActive;
+        this.numberOfEmployees = numberOfEmployees;
+        this.dateCreated = dateCreated;  
+    }
+
+    public Branch(int branchId, String name, String city, boolean isActive, String address, String phone, int numberOfEmployees,Employee branchManager, LocalDate date) {
         this.branchId = branchId;
         this.name = name;
         this.city = city;
-        this.isActive = true;
+        this.isActive = isActive;
         this.address = address;
         this.phone = phone;
-        this.numberOfEmployees = 0;
-        this.branchManager = manager; 
-        this.dateCreated = new Date(); 
+        this.numberOfEmployees = numberOfEmployees;
+        this.branchManager=this.branchManager;
+        this.dateCreated = date;
     }
 
-    public String getBranchId() {
+    public int getBranchId() {
         return branchId;
     }
 
-    public void setBranchId(String branchId) {
+    public void setBranchId(int branchId) {
         this.branchId = branchId;
     }
 
@@ -89,7 +113,8 @@ public class Branch {
         this.branchManager = branchManager;
     }
 
-    public Date getDateCreated() {
+    public LocalDate getDateCreated() {
         return dateCreated;
-    }  
+    }
+
 }

@@ -35,7 +35,7 @@ public class CategoryCard extends Card {
         top.setBackground(new Color(0x133A6D));
         top.setBorder(new FlatLineBorder(new Insets(0, 0, 0, 0), new Color(0x133A6D), 3, 10));
 
-        JLabel label = createLabel(c.getTitle(), new Font("Poppins", Font.BOLD, 12), Color.white, new EmptyBorder(10, 15, 10, 0));
+        JLabel label = createLabel(c.getTitle(), new Font("Poppins", Font.BOLD, 12), Color.white, new EmptyBorder(15, 15, 15, 0));
 
         top.add(label, BorderLayout.CENTER);
         return top;

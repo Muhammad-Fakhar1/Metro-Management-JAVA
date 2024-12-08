@@ -1,30 +1,54 @@
 package com.metro.Models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Vendor {
 
-    private String vendorID;
+    private int vendorID;
     private String name;
     private String contactInfo;
     private float amountSpent;
+    private int branchCode;
     boolean isActive;
 
-    public Vendor(String vendorID, String name, String contactInfo, float amountSpent) {
-        this(vendorID, name, contactInfo, amountSpent, true);
-    }
-
-    public Vendor(String vendorID, String name, String contactInfo, float amountSpent, boolean active) {
-        this.vendorID = vendorID;
+    @JsonCreator
+    public Vendor(
+            @JsonProperty("name") String name,
+            @JsonProperty("contactInfo") String contactInfo,
+            @JsonProperty("amountSpent") float amountSpent,
+            @JsonProperty("active") boolean active,
+            @JsonProperty("branchCode") int branchCode
+    ) {
         this.name = name;
         this.contactInfo = contactInfo;
         this.amountSpent = amountSpent;
         this.isActive = active;
+        this.branchCode = branchCode;
     }
 
-    public String getVendorID() {
+    public Vendor(int vendorID, String name, String contactInfo, float amountSpent, boolean isActive, int branchCode) {
+        this.vendorID = vendorID;
+        this.name = name;
+        this.contactInfo = contactInfo;
+        this.amountSpent = amountSpent;
+        this.isActive = isActive;
+        this.branchCode = branchCode;
+    }
+
+    public int getBranchCode() {
+        return branchCode;
+    }
+
+    public void setBranchCode(int branchCode) {
+        this.branchCode = branchCode;
+    }
+
+    public int getVendorID() {
         return vendorID;
     }
 
-    public void setVendorID(String vendorID) {
+    public void setVendorID(int vendorID) {
         this.vendorID = vendorID;
     }
 

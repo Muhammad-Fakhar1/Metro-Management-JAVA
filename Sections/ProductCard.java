@@ -44,8 +44,8 @@ public class ProductCard extends Card {
         top.setBackground(new Color(0x133A6D));
         top.setBorder(new FlatLineBorder(new Insets(0, 0, 0, 0), new Color(0x133A6D), 3, 10));
 
-        JLabel label = createLabel(p.getTitle(), new Font("Poppins", Font.BOLD, 14), Color.white, new EmptyBorder(10, 15, 10, 0));
-        JLabel status = createLabel(p.getProductID(), new Font("Poppins", Font.BOLD, 11), Color.white, new EmptyBorder(15, 15, 15, 20));
+        JLabel label = createLabel(p.getTitle(), new Font("Poppins", Font.BOLD, 12), Color.white, new EmptyBorder(10, 15, 10, 0));
+        JLabel status = createLabel(Integer.toString(p.getProductID()), new Font("Poppins", Font.BOLD, 11), Color.white, new EmptyBorder(15, 15, 15, 20));
 
         top.add(status, BorderLayout.EAST);
         top.add(label, BorderLayout.CENTER);
@@ -60,7 +60,7 @@ public class ProductCard extends Card {
 
         center.add(createInfoPanel(icons.get(0), p.getCategory(), 12, Font.PLAIN));
         center.add(createInfoPanel(icons.get(1), p.getQuantity() + " Units", 12, Font.PLAIN));
-        center.add(createInfoPanel(null, " Prices (Rs) ", 11, Font.BOLD));
+        center.add(createInfoPanel(null, " Prices (Rs) ", 11, Font.PLAIN));
 
         RoundedPanel pricesPanel = new RoundedPanel(10);
         pricesPanel.setLayout(new GridLayout(2, 3, 5, 5));

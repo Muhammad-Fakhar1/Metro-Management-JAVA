@@ -3,16 +3,20 @@ package com.metro.Sections;
 import com.metro.Components.Body;
 import com.metro.Components.Card;
 import com.metro.Models.Product;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 public class ProductUI extends Body {
 
     private ArrayList<Product> products;
     private final ArrayList<ImageIcon> icons;
+    private int branchCode;
     
-    public ProductUI(int width, int height, boolean showButton) {
-
+    public ProductUI(int branchCode,int width, int height, boolean showButton) {
+        this.branchCode=branchCode;
         this.showButton = showButton;
         this.dashboardWidth = width;
         this.dashboardHeight = 400;
@@ -28,7 +32,11 @@ public class ProductUI extends Body {
     }
 
     private void getProducts() {
-        products = controller.getProducts();
+        try {
+            products = controller.getProducts(branchCode);
+        } catch (IOException ex) {
+            Logger.getLogger(ProductUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         getIcons();
         createProductCards();
     }

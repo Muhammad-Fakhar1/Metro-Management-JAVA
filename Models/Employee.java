@@ -1,34 +1,63 @@
 package com.metro.Models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.metro.Models.Role;
+
 
 public class Employee {
 
-    private String EmployeeID;
-    private String Name;
+    @JsonIgnore
+    private int EmployeeID;
+    private String name;
+    private String email;
+    private String cnic;
     private String Password;
     private String address;
     private String phoneNumber;
-    private String branchCode;
+    private int branchCode;
     private float salary;
     private boolean active;
-
     private Role role;
 
-    public Employee(String EmployeeID, String Name, String address, String phoneNumber, String branchCode, float salary, Role role) {
-        this(EmployeeID, Name, "123456", address, phoneNumber, branchCode, salary, role);
-    }
 
-    public Employee(String EmployeeID, String Name, String Password, String address, String phoneNumber, String branchCode, float salary, Role role) {
-        this.EmployeeID = EmployeeID;
-        this.Name = Name;
+    @JsonCreator
+    public Employee(
+            @JsonProperty("Name") String Name,
+            @JsonProperty("email") String email,
+            @JsonProperty("cnic") String cnic,
+            @JsonProperty("address") String address,
+            @JsonProperty("phoneNumber") String phoneNumber,
+            @JsonProperty("branchCode") int branchCode,
+            @JsonProperty("salary") float salary,
+            @JsonProperty("role") Role role,
+            @JsonProperty("active") boolean active
+    ) {
+        this.name = Name;
+        this.Password = "123456";
+        this.email = email;
+        this.cnic = cnic;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.branchCode = branchCode;
         this.salary = salary;
         this.role = role;
-        this.active = true;
+        this.active = active;
+    }
+
+    public Employee(int EmployeeID, String Name, String Password, String email, String cnic, String address, String phoneNumber, int branchCode, float salary, boolean active, Role role) {
+        this.EmployeeID = EmployeeID;
+        this.name = Name;
         this.Password = Password;
+        this.email = email;
+        this.cnic = cnic;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.branchCode = branchCode;
+        this.salary = salary;
+        this.active = active;
+        this.role = role;
     }
 
     public boolean isActive() {
@@ -55,11 +84,11 @@ public class Employee {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getBranchCode() {
+    public int getBranchCode() {
         return branchCode;
     }
 
-    public void setBranchhCode(String branchhCode) {
+    public void setBranchhCode(int branchhCode) {
         this.branchCode = branchhCode;
     }
 
@@ -71,20 +100,20 @@ public class Employee {
         this.salary = salary;
     }
 
-    public String getEmployeeID() {
+    public int getEmployeeID() {
         return EmployeeID;
     }
 
-    public void setEmployeeID(String EmployeeID) {
+    public void setEmployeeID(int EmployeeID) {
         this.EmployeeID = EmployeeID;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String Name) {
-        this.Name = Name;
+        this.name = Name;
     }
 
     public String getPassword() {
@@ -103,8 +132,28 @@ public class Employee {
         this.role = role;
     }
 
+    public String getCnic() {
+        return cnic;
+    }
+
+    public void setCnic(String cnic) {
+        this.cnic = cnic;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setBranchCode(int branchCode) {
+        this.branchCode = branchCode;
+    }
+
     @Override
     public String toString() {
-        return "Employee{" + "EmployeeID=" + EmployeeID + ", Name=" + Name + ", Password=" + Password + ", address=" + address + ", phoneNumber=" + phoneNumber + ", branchCode=" + branchCode + ", salary=" + salary + ", active=" + active + ", role=" + role + '}';
+        return "Employee{" + "EmployeeID=" + EmployeeID + ", Name=" + name + ", email=" + email + ", cnic=" + cnic + ", Password=" + Password + ", address=" + address + ", phoneNumber=" + phoneNumber + ", branchCode=" + branchCode + ", salary=" + salary + ", active=" + active + ", role=" + role + '}';
     }
 }

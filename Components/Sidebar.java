@@ -60,4 +60,8 @@ public class Sidebar extends JPanel {
     private void setSystemStatusPanel() {
         bottomPanel = new SystemStatus();
     }
+    
+    public JPanel getButtonPanel(){
+        return buttonPanel;
+    }
 }

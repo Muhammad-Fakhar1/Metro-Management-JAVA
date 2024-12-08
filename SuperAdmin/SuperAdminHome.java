@@ -1,11 +1,13 @@
 package com.metro.SuperAdmin;
 
+import com.metro.Sections.BranchesUI;
 import com.metro.Components.BaseFrame;
+import com.metro.Components.Body;
 import com.metro.Models.Employee;
 
 public class SuperAdminHome extends BaseFrame{
     
-    private SuperAdminBody sab;
+    private Body sab;
     private Employee superAdmin;
     
     public SuperAdminHome(Employee superAdmin) {
@@ -20,7 +22,7 @@ public class SuperAdminHome extends BaseFrame{
         sidebar.setVisible(false);
     }   
     
-    private void updateBody(SuperAdminBody newPanel) {
+    private void updateBody(Body newPanel) {
         sab = newPanel;
         body.add(sab);
         body.setViewportView(sab);

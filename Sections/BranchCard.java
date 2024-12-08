@@ -3,23 +3,41 @@ package com.metro.Sections;
 import com.formdev.flatlaf.ui.FlatLineBorder;
 import com.metro.Models.Branch;
 import com.metro.Components.Card;
+import com.metro.Controller;
+import com.metro.Forms.EmployeeRegisterForm;
+import com.metro.Forms.Form;
 import com.metro.Models.Employee;
 import com.metro.ImageProcessor;
+import com.metro.Models.Role;
 import com.metro.SuperAdmin.SuperAdminDashboard;
 import com.metro.ThemeManager;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BranchCard extends Card {
 
-    private Branch b;
+    private final Branch b;
+    private Controller controller;
+    private Form form;
+    private JButton btn;
 
     public BranchCard(Employee superAdmin, Branch b, ArrayList<ImageIcon> icons) {
         super(b.getName());
         this.b = b;
+        try {
+            controller = Controller.getInstance();
+        } catch (IOException ex) {
+            Logger.getLogger(BranchCard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         setBackground(Color.white);
         setBorder(new FlatLineBorder(new Insets(5, 5, 0, 5), new Color(238, 238, 238), 3, 15));
         setLayout(new BorderLayout());
@@ -54,11 +72,11 @@ public class BranchCard extends Card {
         center.setBorder(new EmptyBorder(10, 15, 0, 15));
 
         String[] labels = {
-            b.getBranchId(),
+            Integer.toString(b.getBranchId()),
             b.getAddress() + ", " + b.getCity(),
             b.getPhone(),
             b.getNumberOfEmployees() + " Employees",
-            "Created on: " + new SimpleDateFormat("yyyy-MM-dd").format(b.getDateCreated())
+            "Created on: " + b.getDateCreated()
         };
 
         for (int i = 0; i < labels.length; i++) {
@@ -87,10 +105,32 @@ public class BranchCard extends Card {
         bottom.setOpaque(false);
         bottom.setBorder(new EmptyBorder(15, 15, 15, 15));
 
-        JButton btn = new JButton("Manager " + b.getBranchManager().getName(), ImageProcessor.resizeIcon(icons.get(5), 20, 20));
+        String label;
+        Icon btnIcon = new ImageIcon();
+        if (b.getBranchManager() != null) {
+            label = "Manager " + b.getBranchManager().getName();
+            btnIcon = ImageProcessor.resizeIcon(icons.get(5), 20, 20);
+        } else {
+            label = "Assign a Manager";
+            btnIcon = ImageProcessor.resizeIcon(new ImageIcon("images/person.png"), 18, 18);
+        }
+
+        btn = new JButton(label, btnIcon);
+        btn.setFont(ThemeManager.getPoppinsFont(12, Font.PLAIN));
         btn.setIconTextGap(10);
         btn.setPreferredSize(new Dimension(0, 50));
-        btn.addActionListener(e -> System.out.println("Branch manager clicked!"));
+
+        if (b.getBranchManager() == null) {
+            btn.setFont(ThemeManager.getPoppinsFont(12, Font.BOLD));
+            btn.setBackground(new Color(238, 238, 238));
+            btn.setForeground(ThemeManager.getButtonColor());
+        }
+
+        btn.addActionListener(e -> {
+            if (b.getBranchManager() == null) {
+                openEmployeeForm();
+            }
+        });
 
         bottom.add(btn);
         return bottom;
@@ -108,4 +148,46 @@ public class BranchCard extends Card {
         return b;
     }
 
+    private void openEmployeeForm() {
+        if (form == null) {
+            form = new EmployeeRegisterForm(data -> {
+                String cnic = (String) data.get("cnic");
+                String email = (String) data.get("email");
+                String name = (String) data.get("name");
+                String address = (String) data.get("address");
+                String phone = (String) data.get("phone");
+                float salary = (float) data.get("Salary");
+                Role role = (Role) data.get("role");
+
+                System.out.println(email);
+                Employee e = new Employee(name, email, cnic, address, phone, b.getBranchId(), salary, role, true);
+                System.out.println(e);
+                try {
+                    if (controller.AssignManager(e)==true) {
+                        form.dispose();
+                        b.setBranchManager(e);
+                        String label = "Manager " + b.getBranchManager().getName();
+                        Icon btnIcon = ImageProcessor.resizeIcon(new ImageIcon("images/profile.png"), 20, 20);
+                        btn.setText(label);
+                        btn.setIcon(btnIcon);
+
+                        btn.setFont(ThemeManager.getPoppinsFont(12, Font.PLAIN));
+                        btn.setBackground(Color.white);
+                        btn.setForeground(Color.black);
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(BranchCard.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }, 450, 550, false);
+            form.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    form = null;
+                }
+            });
+        } else {
+            form.toFront();
+            form.requestFocus();
+        }
+    }
 }

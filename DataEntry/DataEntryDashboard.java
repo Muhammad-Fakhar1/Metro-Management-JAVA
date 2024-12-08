@@ -1,15 +1,22 @@
 package com.metro.DataEntry;
 
 import com.metro.Components.BaseFrame;
+import com.metro.Components.Body;
+import com.metro.Models.Employee;
+import com.metro.Sections.CategoryUI;
+import com.metro.Sections.ProductUI;
+import com.metro.Sections.VendorsUI;
 import javax.swing.ImageIcon;
 
 public class DataEntryDashboard extends BaseFrame {
 
-    private DataEntryBody deb;
-
-    public DataEntryDashboard() {
-        super("Data Entry","Muhammad Fakhar bin Rashid","Lahore", 0.80, 0.75);
+    private Body deb;
+    private Employee e;
+    private int branchCode;
+    public DataEntryDashboard(Employee e) {
+        super("Data Entry", "Muhammad Fakhar bin Rashid", "Lahore", 0.80, 0.75);
         deb = new DashboardUI(body.getWidth(), body.getHeight());
+        this.branchCode=e.getBranchCode();
         updateBody(deb);
     }
 
@@ -19,19 +26,16 @@ public class DataEntryDashboard extends BaseFrame {
                 -> updateBody(new DashboardUI(body.getWidth(), body.getHeight())));
 
         sidebar.addButton("Vendors", new ImageIcon("images/users.png"), e
-                -> updateBody(new VendorsUI(body.getWidth(), body.getHeight())));
+                -> updateBody(new VendorsUI(e.getID(),branchCode,body.getWidth(), 400, true)));
 
-        sidebar.addButton("Products", new ImageIcon("images/box.png"), e
-                -> System.out.println("Products clicked"));
+        sidebar.addButton("Products", new ImageIcon("images/box.png"), e -> updateBody(new ProductUI(branchCode,body.getWidth(), body.getHeight(), false)));
 
         sidebar.addButton("Categories", new ImageIcon("images/category.png"), e
-                -> updateBody(new CategoriesUI(body.getWidth(), body.getHeight())));
+                -> updateBody(new CategoryUI(branchCode,body.getWidth(), body.getHeight(),true)));
 
-        sidebar.addButton("Settings", new ImageIcon("images/settings.png"), e
-                -> System.out.println("Settings clicked"));
     }
 
-    private void updateBody(DataEntryBody newPanel) {
+    private void updateBody(Body newPanel) {
         deb = newPanel;
         body.add(deb);
         body.setViewportView(deb);

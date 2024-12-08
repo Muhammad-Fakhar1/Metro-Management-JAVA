@@ -1,5 +1,8 @@
 package com.metro.Components;
 
+import com.formdev.flatlaf.ui.FlatButtonBorder;
+import com.formdev.flatlaf.ui.FlatLineBorder;
+import com.metro.ImageProcessor;
 import com.metro.ThemeManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -7,8 +10,11 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 public class Header extends JPanel {
@@ -17,11 +23,17 @@ public class Header extends JPanel {
     private final int headerHeight;
     private final String userName;
     private final String branchName;
+    
+    //private static JTextField searchField;
 
     public Header(String name, String branch, int frameWidth, int frameHeight) {
         headerHeight = (int) (frameHeight * 0.10);
         this.userName = name;
         this.branchName = branch;
+        
+//        searchField=new JTextField();
+//        searchField.setPreferredSize(new Dimension(300,25));
+//        searchField.setBorder(new FlatLineBorder(new Insets(2,10,2,10),new Color(200,200,200),1,10));
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(frameWidth, headerHeight));
@@ -46,6 +58,7 @@ public class Header extends JPanel {
 
     private JPanel createCenterPanel() {
         JPanel spacerPanel = new JPanel();
+        spacerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         spacerPanel.setBackground(ThemeManager.getHeaderBackgroundColor());
         return spacerPanel;
     }
@@ -79,4 +92,8 @@ public class Header extends JPanel {
 
         return rightPanel;
     }
+    
+//    public static JTextField getSearchField(){
+//        return searchField;
+//    }
 }

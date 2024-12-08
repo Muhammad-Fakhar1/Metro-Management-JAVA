@@ -1,8 +1,11 @@
 package com.metro.Models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Product {
 
-    private String productID;
+    private int productID;
     private String title;
     private float originalPrice;
     private String category;
@@ -10,8 +13,29 @@ public class Product {
     private float cartonPrice;
     private String description;
     private int quantity;
+    private int branchCode;
 
-    public Product(String productID, String title, float originalPrice, String category, float unitPrice, float cartonPrice, String description) {
+    @JsonCreator
+    public Product(
+            @JsonProperty("title") String title,
+            @JsonProperty("originalPrice") float originalPrice,
+            @JsonProperty("category") String category,
+            @JsonProperty("unitPrice") float unitPrice,
+            @JsonProperty("cartonPrice") float cartonPrice,
+            @JsonProperty("description") String description,
+            @JsonProperty("quantity") int quantity,
+            @JsonProperty("branchCode") int branchCode) {
+        this.title = title;
+        this.originalPrice = originalPrice;
+        this.category = category;
+        this.unitPrice = unitPrice;
+        this.cartonPrice = cartonPrice;
+        this.description = description;
+        this.quantity = quantity;
+        this.branchCode=branchCode;
+    }
+
+    public Product(int productID, String title, float originalPrice, String category, float unitPrice, float cartonPrice, String description, int quantity,int branchCode) {
         this.productID = productID;
         this.title = title;
         this.originalPrice = originalPrice;
@@ -19,13 +43,23 @@ public class Product {
         this.unitPrice = unitPrice;
         this.cartonPrice = cartonPrice;
         this.description = description;
+        this.quantity = quantity;
+        this.branchCode=branchCode;
     }
 
-    public String getProductID() {
+    public int getBranchCode() {
+        return branchCode;
+    }
+
+    public void setBranchCode(int branchCode) {
+        this.branchCode = branchCode;
+    }
+
+    public int getProductID() {
         return productID;
     }
 
-    public void setProductID(String productID) {
+    public void setProductID(int productID) {
         this.productID = productID;
     }
 

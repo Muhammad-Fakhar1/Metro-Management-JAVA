@@ -2,6 +2,7 @@ package com.metro.Sections;
 
 import com.formdev.flatlaf.ui.FlatLineBorder;
 import com.metro.Components.Card;
+import com.metro.Controller;
 import com.metro.Forms.ProductAdditionForm;
 import com.metro.ImageProcessor;
 import com.metro.ThemeManager;
@@ -14,7 +15,10 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -26,11 +30,19 @@ import javax.swing.border.EmptyBorder;
 public class VendorCard extends Card {
 
     private Vendor v;
+    private int empID;
+    private Controller controller;
     private ProductAdditionForm productForm;
 
-    public VendorCard(Vendor v, ArrayList<ImageIcon> icons, boolean showButoon) {
+    public VendorCard(int empID,Vendor v, ArrayList<ImageIcon> icons, boolean showButoon) {
         super(v.getName());
         this.v = v;
+        this.empID=empID;
+        try {
+            this.controller=Controller.getInstance();
+        } catch (IOException ex) {
+            Logger.getLogger(VendorCard.class.getName()).log(Level.SEVERE, null, ex);
+        }
         setBackground(Color.white);
         setBorder(new FlatLineBorder(new Insets(5, 5, 0, 5), new Color(238, 238, 238), 3, 15));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -44,7 +56,7 @@ public class VendorCard extends Card {
         if (showButoon) {
             add(bottom);
         } else {
-            add(Box.createVerticalStrut(20));
+            add(Box.createVerticalStrut(50));
         }
         add(Box.createVerticalStrut(5));
 
@@ -55,7 +67,7 @@ public class VendorCard extends Card {
         top.setBackground(new Color(0x133A6D));
         top.setBorder(new FlatLineBorder(new Insets(0, 0, 0, 0), new Color(0x133A6D), 3, 10));
 
-        JLabel label = createLabel(v.getName(), new Font("Poppins", Font.BOLD, 14), Color.white, new EmptyBorder(10, 15, 10, 0));
+        JLabel label = createLabel(v.getName(), new Font("Poppins", Font.BOLD, 12), Color.white, new EmptyBorder(10, 15, 10, 0));
         JLabel status = createLabel(v.isActive() ? "Active" : "Inactive", new Font("Poppins", Font.BOLD, 11), Color.white, new EmptyBorder(15, 15, 15, 20));
 
         top.add(status, BorderLayout.EAST);
@@ -69,7 +81,7 @@ public class VendorCard extends Card {
         center.setOpaque(false);
         center.setBorder(new EmptyBorder(10, 15, 0, 15));
 
-        center.add(createInfoPanel(icons.get(0), v.getVendorID(), 12, Font.PLAIN));
+        center.add(createInfoPanel(icons.get(0), Integer.toString(v.getVendorID()), 12, Font.PLAIN));
         center.add(createInfoPanel(icons.get(1), "Rs. " + Float.toString(v.getAmountSpent()) + " spent", 12, Font.PLAIN));
         center.add(createInfoPanel(icons.get(2), v.getContactInfo(), 12, Font.PLAIN));
         center.add(Box.createVerticalStrut(10));
@@ -103,7 +115,21 @@ public class VendorCard extends Card {
         btn.addActionListener(e -> {
             if (productForm == null) {
                 productForm = new ProductAdditionForm("", data -> {
-
+                    String title = (String) data.get("title");
+                    String category = (String) data.get("category");
+                    int originalPrice = (int) data.get("originalPrice");
+                    int unitPrice = (int) data.get("unitPrice");
+                    int cartonPrice = (int) data.get("cartonPrice");
+                    int quantity = (int) data.get("quantity");
+                    
+                    try {                 
+                        if(controller.addProduct(title, category, originalPrice, unitPrice, cartonPrice, quantity, v.getBranchCode(), empID, v.getVendorID())){
+                            productForm.dispose();
+                        }
+                    } catch (IOException ex) {
+                        Logger.getLogger(VendorCard.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+              
                 }, 500, 510);
                 productForm.addWindowListener(new WindowAdapter() {
                     @Override

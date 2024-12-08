@@ -29,10 +29,9 @@ public class SuperAdminDashboard extends BaseFrame {
     @Override
     protected void setSidebar() {
         sidebar.addButton("Dashboard", new ImageIcon("images/home.png"), e -> updateBody(new DashboardUI(body.getWidth(), body.getHeight()), false));
-        sidebar.addButton("Employees", new ImageIcon("images/users.png"), e -> updateBody(new EmployeeUI(body.getWidth(), body.getHeight()), false));
-        sidebar.addButton("Products", new ImageIcon("images/box.png"), e -> updateBody(new ProductUI(body.getWidth(), body.getHeight()), true));
-        sidebar.addButton("Vendors", new ImageIcon("images/users.png"), e -> updateBody(new VendorsUI(body.getWidth(), body.getHeight()), true));
-        //sidebar.addButton("Settings", new ImageIcon("images/settings.png"), e -> System.out.println("settings clicked"));
+        sidebar.addButton("Employees", new ImageIcon("images/users.png"), e -> updateBody(new EmployeeUI(branch.getBranchId(), body.getWidth(), body.getHeight()), false));
+        sidebar.addButton("Products", new ImageIcon("images/box.png"), e -> updateBody(new ProductUI(branch.getBranchId(), body.getWidth(), body.getHeight(), false), true));
+        sidebar.addButton("Vendors", new ImageIcon("images/users.png"), e -> updateBody(new VendorsUI(superAdmin.getEmployeeID(),branch.getBranchId(), body.getWidth(), body.getHeight(), false), true));
     }
 
     private void updateBody(Body newPanel, boolean scrollable) {
