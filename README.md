@@ -59,15 +59,23 @@ The **Store Management Application** is a desktop-based application developed du
 
 ---
 
+
 ## How to Run
-1. Clone this repository:
+### Frontend (developed by Fakhar)
+1. Navigate to the frontend branch:
    ```bash
-   git clone https://github.com/your-repo/store-management-app.git
+   git checkout Fakhar
    ```
 2. Open the project in your favorite IDE (e.g., IntelliJ IDEA, Eclipse).
+3. Compile and run the client application to launch the frontend.
+
+### Backend (developed by Saifullah)
+1. Navigate to the backend branch:
+   ```bash
+   git checkout Saifullah
+   ```
+2. Open the project in your favorite IDE.
 3. Compile and run the server application to start the backend.
-4. Compile and run the client application to launch the frontend.
-5. Log in using the appropriate role credentials to access specific features.
 
 ---
 
