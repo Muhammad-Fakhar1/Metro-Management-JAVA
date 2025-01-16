@@ -10,6 +10,16 @@ The **Store Management Application** is a desktop-based application developed du
 
 ---
 
+## Screenshots
+
+### Dashboard
+![Group 1](https://github.com/user-attachments/assets/d88a5242-4197-4f1a-bb39-3b134fcd2105)
+
+### Login Panel
+![Group 12](https://github.com/user-attachments/assets/ad0faec3-7d82-4ca1-acf2-6fac427666d7)
+
+---
+
 ## Features
 ### Role-Based System
 - **Super Admin**
@@ -58,18 +68,6 @@ The **Store Management Application** is a desktop-based application developed du
 3. Compile and run the server application to start the backend.
 4. Compile and run the client application to launch the frontend.
 5. Log in using the appropriate role credentials to access specific features.
-
----
-
-## Screenshots
-
-### Login Panel
-![Group 12](https://github.com/user-attachments/assets/ad0faec3-7d82-4ca1-acf2-6fac427666d7)
-
-
-### Dashboard
-![Group 1](https://github.com/user-attachments/assets/d88a5242-4197-4f1a-bb39-3b134fcd2105)
-
 
 ---
 
